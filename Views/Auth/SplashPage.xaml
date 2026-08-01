@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KaaDebug.Views.Auth.SplashPage"
+             Shell.NavBarIsVisible="False"
+             Title="SplashPage">
+
+    <Grid>
+        <Image Source="forest_background_fixed.jpg"
+               Aspect="AspectFill"
+               VerticalOptions="Start"
+               Opacity="0.70" />
+        <BoxView BackgroundColor="#F4FBF4" Opacity="0" InputTransparent="True" />
+
+
+        <Grid RowDefinitions="*, Auto, *"
+              Padding="32">
+
+            <VerticalStackLayout Grid.Row="1"
+                                 Spacing="16"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center">
+
+                <Image Source="kaadebug_logo.png"
+                       HeightRequest="180"
+                       WidthRequest="180"
+                       Aspect="AspectFit"
+                       SemanticProperties.Description="Logotipo do Budflow" />
+
+                <Label Text="KaáDebug"
+                       FontSize="26"
+                       FontAttributes="Bold"
+                       TextColor="#F8F9FA"
+                       HorizontalOptions="Center" />
+
+                <ActivityIndicator x:Name="LoadingIndicator"
+                                   IsRunning="True"
+                                   Color="#2E7D32"
+                                   HeightRequest="32"
+                                   WidthRequest="32"
+                                   Margin="0,24,0,0" />
+
+                <Label x:Name="StatusLabel"
+                       Text="Iniciando..."
+                       FontSize="12"
+                       TextColor="#F8F9FA"
+                       HorizontalOptions="Center"
+                       IsVisible="False" />
+
+            </VerticalStackLayout>
+
+            <Label Grid.Row="2"
+                   Text="v1.0.0"
+                   FontSize="11"
+                   TextColor="#F8F9FA"
+                   HorizontalOptions="Center"
+                   VerticalOptions="End" />
+
+        </Grid>
+    </Grid>
+
+</ContentPage>

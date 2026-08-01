@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KaaDebug.Views.Plants.SelectSpeciesPage"
+             xmlns:models="clr-namespace:KaaDebug.Core.Models.Plants"
+             Shell.NavBarIsVisible="True"
+             BackgroundColor="#F4F7F4"
+             Title="SelectSpeciesPage">
+
+    <Grid RowDefinitions="Auto, Auto, *">
+
+        <!-- Barra superior -->
+        <Grid Grid.Row="0"
+              ColumnDefinitions="Auto, *, Auto, Auto"
+              Padding="20,24,30,8">
+
+            <Label Grid.Column="0"
+                   Text="Cancelar"
+                   FontSize="14"
+                   TextColor="#5C715E"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnCancelTapped" />
+                </Label.GestureRecognizers>
+            </Label>
+
+            <Label Grid.Column="1"
+               Text="Selecionar espécie"
+               FontSize="16"
+               FontAttributes="Bold"
+               TextColor="#2E7D32"
+               HorizontalOptions="Center"
+               VerticalOptions="Center" />
+
+        </Grid>
+
+        <!-- Busca -->
+        <Border Grid.Row="1"
+            Margin="20,8,20,12"
+            Stroke="#D7E5D9"
+            StrokeShape="RoundRectangle 12"
+            BackgroundColor="White">
+            <SearchBar Placeholder="Buscar espécie"
+                   BackgroundColor="Transparent"
+                   TextColor="#5C715E"
+                   TextChanged="OnSearchTextChanged" />
+        </Border>
+
+        <!-- Conteúdo -->
+        <Grid Grid.Row="2">
+
+            <!-- Estado: carregando -->
+            <VerticalStackLayout x:Name="LoadingStateLayout"
+                              Spacing="12"
+                              VerticalOptions="Center"
+                              HorizontalOptions="Center"
+                              IsVisible="True">
+                <ActivityIndicator IsRunning="True" Color="#2E7D32" HeightRequest="36" WidthRequest="36" />
+                <Label Text="Carregando espécies..." FontSize="14" TextColor="#5C715E" />
+            </VerticalStackLayout>
+
+            <!-- Estado: erro -->
+            <VerticalStackLayout x:Name="ErrorStateLayout"
+                              Spacing="12"
+                              VerticalOptions="Center"
+                              HorizontalOptions="Center"
+                              IsVisible="False"
+                              Padding="24">
+                <Label Text="Não foi possível carregar as espécies"
+                   FontSize="15"
+                   FontAttributes="Bold"
+                   TextColor="#2E7D32"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center" />
+
+                <Button Text="Tentar novamente"
+                    FontAttributes="Bold"
+                    BackgroundColor="#2E7D32"
+                    TextColor="White"
+                    CornerRadius="12"
+                    HeightRequest="48"
+                    WidthRequest="200"
+                    Clicked="OnRetryClicked" />
+            </VerticalStackLayout>
+
+            <!-- Estado: sem resultados na busca -->
+            <Label x:Name="NoResultsLabel"
+               Text="Nenhuma espécie encontrada"
+               FontSize="14"
+               TextColor="#8A9A8C"
+               HorizontalOptions="Center"
+               VerticalOptions="Center"
+               IsVisible="False" />
+
+            <!-- Lista de espécies -->
+            <CollectionView x:Name="SpeciesCollectionView"
+                        IsVisible="False"
+                        SelectionMode="Single"
+                        SelectionChanged="OnSpeciesSelected"
+                        Margin="20,0,20,16">
+
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="8" />
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:PlantSpecies">
+                        <Border BackgroundColor="White"
+                            Stroke="#775b46"
+                            StrokeShape="RoundRectangle 14"
+                            Padding="12">
+
+                            <Grid ColumnDefinitions="Auto, *" ColumnSpacing="12">
+                                
+
+                                <Border Grid.Column="0"
+                                        StrokeShape="RoundRectangle 10"
+                                        WidthRequest="48"
+                                        HeightRequest="48"
+                                        Padding="0">
+                                    <Image Source="{Binding PhotoUrl}"
+                                       Aspect="AspectFill"
+                                       WidthRequest="48"
+                                       HeightRequest="48" />
+                                </Border>
+
+                                <Label Grid.Column="1"
+                                   Text="{Binding Name}"
+                                   FontSize="15"
+                                   FontAttributes="Bold"
+                                   TextColor="#2E4A30"
+                                   VerticalOptions="Center" />
+
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </Grid>
+
+    </Grid>
+</ContentPage>

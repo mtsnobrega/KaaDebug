@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KaaDebug.Views.Diagnostic.IADiagnosisPage"
+             xmlns:models="clr-namespace:KaaDebug.Core.Models.Diagnostic"
+             BackgroundColor="#F4F7F4"
+             Shell.NavBarIsVisible="False"
+             Title="IADiagnosisPage">
+    <Grid RowDefinitions="Auto, *">
+
+        <!-- Barra superior -->
+        <Grid Grid.Row="0"
+          ColumnDefinitions="Auto, *"
+          Padding="20,24,20,8">
+
+            <ImageButton Grid.Column="0"
+                     Source="go_back.png"
+                     BackgroundColor="Transparent"
+                     WidthRequest="40"
+                     HeightRequest="40"
+                     Clicked="OnBackClicked"
+                     SemanticProperties.Description="Voltar" />
+
+            <Label Grid.Column="1"
+               Text="Diagnóstico inteligente"
+               FontSize="18"
+               FontAttributes="Bold"
+               TextColor="#2E7D32"
+               HorizontalOptions="Center"
+               VerticalOptions="Center" />
+        </Grid>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20,8,20,24" Spacing="20">
+
+                <!-- ===== PAINEL DE CAPTURA ===== -->
+                <VerticalStackLayout x:Name="CapturePanel" Spacing="5">
+
+                    <Label Text="Fotografe sua planta"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="#2E7D32" />
+
+                    <Label Text="Capture uma foto clara das folhas ou da área afetada para que a IA possa identificar possíveis problemas."
+                       FontSize="14"
+                       TextColor="#5C715E" />
+
+                    <!-- Preview da imagem capturada (oculto antes de capturar) -->
+                    <Border x:Name="ImagePreviewBorder"
+                            StrokeShape="RoundRectangle 16"
+                            HeightRequest="220"
+                            IsVisible="False"
+                            Margin="0,10,0,5">
+                        <Image x:Name="CapturedImageView"
+                           Aspect="AspectFill" />
+                    </Border>
+
+                    <!-- Placeholder antes de capturar -->
+                    <Border x:Name="ImagePlaceholderBorder"
+                            BackgroundColor="#EAF5EA"
+                            Stroke="#775b46"
+                            StrokeShape="RoundRectangle 16"
+                            HeightRequest="180"
+                            Margin="0,10,0,10"
+                            IsVisible="True">
+                        <VerticalStackLayout Spacing="8"
+                                          HorizontalOptions="Center"
+                                          VerticalOptions="Center">
+                            <Label Text="📷" FontSize="36" HorizontalOptions="Center" />
+                            <Label Text="Nenhuma foto capturada"
+                               FontSize="13" TextColor="#5C715E"
+                               HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Botões de captura -->
+                    <Grid ColumnDefinitions="*, *" ColumnSpacing="10" Margin="0,0,0,20">
+
+                        <Button Grid.Column="0"
+                                BorderColor="#775b46"
+                                BorderWidth="2"
+                                Text="📷  Câmera"
+                                FontAttributes="Bold"
+                                FontSize="15"
+                                BackgroundColor="#2E7D32"
+                                TextColor="White"
+                                CornerRadius="13"
+                                HeightRequest="48"
+                                Clicked="OnOpenCameraClicked" />
+
+                        <Button Grid.Column="1"
+                                Text="🖼️  Galeria"
+                                FontAttributes="Bold"
+                                FontSize="15"
+                                BackgroundColor="Transparent"
+                                TextColor="#2E7D32"
+                                BorderColor="#775b46"
+                                BorderWidth="1.5"
+                                CornerRadius="12"
+                                HeightRequest="48"
+                                Clicked="OnOpenGalleryClicked" />
+                    </Grid>
+
+                    <!-- Botão Analisar (habilitado após captura) -->
+                    <Button x:Name="AnalyzeButton"
+                            Text="Analisar com IA"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            BorderWidth="1.5"
+                            BorderColor="#775b46"
+                            BackgroundColor="#2E7D32"
+                            TextColor="White"
+                            CornerRadius="12"
+                            HeightRequest="52"
+                            IsEnabled="False"
+                            IsVisible="False"
+                            Clicked="OnAnalyzeClicked"
+                            Margin="0,4,0,0" />
+                </VerticalStackLayout>
+
+                <!-- ===== PAINEL DE ANÁLISE EM ANDAMENTO ===== -->
+                <VerticalStackLayout x:Name="AnalyzingPanel"
+                                  IsVisible="False"
+                                  Spacing="12"
+                                  HorizontalOptions="Center">
+
+                    <ActivityIndicator IsRunning="True"
+                                    Color="#2E7D32"
+                                    HeightRequest="40"
+                                    WidthRequest="40"
+                                    HorizontalOptions="Center" />
+
+                    <Label Text="Analisando sua planta..."
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="#2E7D32"
+                           HorizontalOptions="Center" />
+
+                    <Label Text="A IA está processando a imagem. Isso pode levar alguns segundos."
+                       FontSize="13"
+                       TextColor="#5C715E"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+
+                <!-- ===== PAINEL DE RESULTADO ===== -->
+                <VerticalStackLayout x:Name="ResultPanel"
+                                  IsVisible="False"
+                                  Spacing="16">
+
+                    <!-- Resultado: saudável -->
+                    <Border x:Name="HealthyResultCard"
+                        IsVisible="False"
+                        BackgroundColor="#EAF5EA"
+                        Stroke="#A5D6A7"
+                        StrokeShape="RoundRectangle 14"
+                        Padding="16">
+                        <VerticalStackLayout Spacing="6" HorizontalOptions="Center">
+                            <Label Text="✅" FontSize="32" HorizontalOptions="Center" />
+                            <Label Text="Planta saudável!"
+                               FontSize="17" FontAttributes="Bold"
+                               TextColor="#2E7D32" HorizontalOptions="Center" />
+                            <Label x:Name="HealthyObservationLabel"
+                               FontSize="13" TextColor="#5C715E"
+                               HorizontalOptions="Center" HorizontalTextAlignment="Center" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Resultado: problemas encontrados -->
+                    <VerticalStackLayout x:Name="IssuesResultSection"
+                                      IsVisible="False"
+                                      Spacing="12">
+
+                        <Label x:Name="OverallObservationLabel"
+                           FontSize="13"
+                           TextColor="#5C715E" />
+
+                        <Label Text="Possíveis problemas identificados"
+                           FontSize="15"
+                           FontAttributes="Bold"
+                           TextColor="#2E7D32" />
+
+                        <CollectionView x:Name="IssuesCollectionView"
+                                    SelectionMode="None">
+                            <CollectionView.ItemsLayout>
+                                <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+                            </CollectionView.ItemsLayout>
+
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:DiagnosisIssue">
+                                    <Border BackgroundColor="White"
+                                        Stroke="#775b46"
+                                        StrokeShape="RoundRectangle 14"
+                                        Padding="14">
+                                        <VerticalStackLayout Spacing="10">
+
+                                            <!-- Nome + confiança -->
+                                            <Grid ColumnDefinitions="*, Auto">
+                                                <Label Grid.Column="0"
+                                                       Text="{Binding Name}"
+                                                       FontSize="15"
+                                                       FontAttributes="Bold"
+                                                       TextColor="#2E7D32"
+                                                       VerticalOptions="Center" />
+
+                                                <Border Grid.Column="1"
+                                                        Padding="8,3"
+                                                        Stroke="#775b46"
+                                                        StrokeShape="RoundRectangle 8"
+                                                        BackgroundColor="#EAF5EA">
+                                                    <Label Text="{Binding ConfidencePercent, StringFormat='{0}% confiança'}"
+                                                           FontSize="11"
+                                                           FontAttributes="Bold"
+                                                           TextColor="#2E7D32" />
+                                                </Border>
+                                            </Grid>
+
+                                            <!-- Descrição -->
+                                            <Label Text="{Binding Description}"
+                                                   FontSize="13"
+                                                   TextColor="#5C715E" />
+
+                                            <!-- Recomendações -->
+                                            <VerticalStackLayout Spacing="4">
+                                                <Label Text="Recomendações:"
+                                                       FontSize="12"
+                                                       FontAttributes="Bold"
+                                                       TextColor="#2E4A30" />
+
+                                                <CollectionView ItemsSource="{Binding Recommendations}"
+                                                            SelectionMode="None">
+                                                    <CollectionView.ItemTemplate>
+                                                        <DataTemplate x:DataType="x:String">
+                                                            <HorizontalStackLayout Spacing="6" Margin="0,2,0,0">
+                                                                <Label Text="•" FontSize="13" TextColor="#2E7D32" />
+                                                                <Label Text="{Binding .}"
+                                                                       FontSize="12"
+                                                                       TextColor="#5C715E" />
+                                                            </HorizontalStackLayout>
+                                                        </DataTemplate>
+                                                    </CollectionView.ItemTemplate>
+                                                </CollectionView>
+                                            </VerticalStackLayout>
+
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+
+                    <!-- Nova análise -->
+                    <Button Text="Fazer nova análise"
+                            FontAttributes="Bold"
+                            FontSize="15"
+                            BackgroundColor="Transparent"
+                            TextColor="#2E7D32"
+                            BorderColor="#775b46"
+                            BorderWidth="1.5"
+                            CornerRadius="12"
+                            HeightRequest="48"
+                            Clicked="OnNewAnalysisClicked"
+                            Margin="0,4,0,0" />
+                </VerticalStackLayout>
+
+                <!-- ===== HISTÓRICO DE DIAGNÓSTICOS ===== -->
+                <VerticalStackLayout x:Name="HistorySection"
+                                  IsVisible="False"
+                                  Spacing="12">
+
+                    <Label Text="Histórico de diagnósticos"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       TextColor="#2E7D32" />
+
+                    <CollectionView x:Name="HistoryCollectionView"
+                                SelectionMode="Single">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="8" />
+                        </CollectionView.ItemsLayout>
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:DiagnosisResult">
+                                <Border BackgroundColor="White"
+                                        Stroke="#775b46"
+                                        StrokeShape="RoundRectangle 14"
+                                        Padding="12">
+
+                                    <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="10">
+
+                                        <Label Grid.Column="0"
+                                           FontSize="20"
+                                           VerticalOptions="Center"
+                                           Text="{Binding IsHealthy, Converter={StaticResource DiagnosisStatusIconConverter}}" />
+
+                                        <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                            <Label Text="{Binding PerformedAt, StringFormat='{0:dd/MM/yyyy HH:mm}'}"
+                                               FontSize="13" FontAttributes="Bold" TextColor="#2E4A30" />
+                                            <Label Text="{Binding OverallObservation}"
+                                               FontSize="12" TextColor="#5C715E"
+                                               LineBreakMode="TailTruncation" MaxLines="1" />
+                                        </VerticalStackLayout>
+
+                                        
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+
+                <!-- Erro de análise -->
+                <Border x:Name="AnalysisErrorBorder"
+                        IsVisible="False"
+                        BackgroundColor="#FDECEA"
+                        Stroke="#F5C2C0"
+                        StrokeShape="RoundRectangle 10"
+                        Padding="12,8">
+                        <Label x:Name="AnalysisErrorLabel"
+                               TextColor="#C62828"
+                               FontSize="13" />
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+    </Grid>
+</ContentPage>

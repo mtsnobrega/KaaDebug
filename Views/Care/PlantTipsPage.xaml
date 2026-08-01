@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KaaDebug.Views.Care.PlantTipsPage"
+             xmlns:models="clr-namespace:KaaDebug.Core.Models.Plants"
+             BackgroundColor="#F4F7F4"
+             Shell.NavBarIsVisible="False"
+             Title="PlantTipsPage">
+
+    <Grid RowDefinitions="Auto, *">
+
+        <!-- Barra superior -->
+        <Grid Grid.Row="0"
+              ColumnDefinitions="Auto, *, Auto"
+              Padding="20,24,20,8">
+
+            <ImageButton Grid.Column="0"
+                         Source="go_back.png"
+                         BackgroundColor="Transparent"
+                         WidthRequest="40"
+                         HeightRequest="40"
+                         Clicked="OnBackClicked"
+                         SemanticProperties.Description="Voltar" />
+
+            <Label Grid.Column="1"
+                   Text="Dicas de cuidados"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   TextColor="#2E7D32"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center" />
+            <BoxView
+                    Grid.Column="2"
+                    WidthRequest="40"
+                    Opacity="0"/>
+        </Grid>
+
+        <ScrollView Grid.Row="1">
+            <Grid Padding="20,8,20,24">
+
+                <!-- Estado: carregando -->
+                <VerticalStackLayout x:Name="LoadingStateLayout"
+                                  Spacing="12"
+                                  VerticalOptions="Center"
+                                  HorizontalOptions="Center"
+                                  IsVisible="True"
+                                  HeightRequest="300">
+                    <ActivityIndicator IsRunning="True" Color="#2E7D32" HeightRequest="36" WidthRequest="36" />
+                    <Label Text="Carregando dicas..." FontSize="14" TextColor="#5C715E" />
+                </VerticalStackLayout>
+
+                <!-- Estado: erro -->
+                <VerticalStackLayout x:Name="ErrorStateLayout"
+                                  Spacing="12"
+                                  VerticalOptions="Center"
+                                  HorizontalOptions="Center"
+                                  IsVisible="False"
+                                  HeightRequest="300"
+                                  Padding="24">
+                    <Image Source="error_icon.png" HeightRequest="64" WidthRequest="64" Aspect="AspectFit" />
+                    <Label Text="Não foi possível carregar as dicas"
+                       FontSize="15" FontAttributes="Bold"
+                       TextColor="#2E7D32" HorizontalOptions="Center" />
+                    <Button Text="Tentar novamente"
+                        FontAttributes="Bold" BackgroundColor="#2E7D32" TextColor="White"
+                        CornerRadius="12" HeightRequest="48" WidthRequest="200"
+                        Clicked="OnRetryClicked" />
+                </VerticalStackLayout>
+
+                <!-- Conteúdo -->
+                <VerticalStackLayout x:Name="ContentLayout"
+                                  Spacing="16"
+                                  IsVisible="False">
+
+                    <!-- Cabeçalho da espécie -->
+                    <Border BackgroundColor="#2E7D32"
+                            StrokeThickness="0"
+                            StrokeShape="RoundRectangle 16"
+                            Padding="16">
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="🌱" FontSize="28" HorizontalOptions="Center" />
+                            <Label x:Name="SpeciesNameLabel"
+                               Text="Suculenta"
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               TextColor="White"
+                               HorizontalOptions="Center" />
+                            <Label x:Name="SpeciesSummaryLabel"
+                               Text="—"
+                               FontSize="13"
+                               TextColor="#C8E6C9"
+                               HorizontalOptions="Center"
+                               HorizontalTextAlignment="Center" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Curiosidade -->
+                    <Border x:Name="CuriosityCard"
+                            Margin="0,10,0,20"
+                        BackgroundColor="#EAF5EA"
+                        Stroke="#775b46"
+                        StrokeShape="RoundRectangle 14"
+                        Padding="14"
+                        IsVisible="False">
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="💡 Você sabia?"
+                               FontSize="13"
+                               FontAttributes="Bold"
+                               TextColor="#2E7D32" />
+                            <Label x:Name="CuriosityLabel"
+                               FontSize="13"
+                               TextColor="#3E4A40" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- Dicas -->
+                    <Label Text="Guia de cuidados"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="#2E7D32" />
+
+                    <CollectionView x:Name="TipsCollectionView"
+                                SelectionMode="None">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+                        </CollectionView.ItemsLayout>
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:CareTip">
+                                <Border BackgroundColor="White"
+                                    Stroke="#775b46"
+                                    StrokeShape="RoundRectangle 14"
+                                    Padding="14">
+
+                                    <Grid ColumnDefinitions="Auto, *" ColumnSpacing="12">
+
+                                        <Border Grid.Column="0"
+                                                Stroke="#775b46"
+                                                BackgroundColor="#EAF5EA"
+                                                StrokeThickness="0"
+                                                StrokeShape="RoundRectangle 10"
+                                                WidthRequest="44"
+                                                HeightRequest="44"
+                                                Padding="0">
+                                            <Label Text="{Binding Icon}"
+                                               FontSize="20"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center" />
+                                        </Border>
+
+                                        <VerticalStackLayout Grid.Column="1"
+                                                          Spacing="4"
+                                                          VerticalOptions="Center">
+                                            <Label Text="{Binding Title}"
+                                               FontSize="14"
+                                               FontAttributes="Bold"
+                                               TextColor="#2E4A30" />
+                                            <Label Text="{Binding Description}"
+                                               FontSize="13"
+                                               TextColor="#5C715E" />
+                                        </VerticalStackLayout>
+
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Grid>
+        </ScrollView>
+    </Grid>
+</ContentPage>

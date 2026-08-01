@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KaaDebug.Views.Auth.RegisterPage"
+              BackgroundColor="#F4F7F4"
+             Shell.NavBarIsVisible="False">
+    <ScrollView>
+        <Grid RowDefinitions="Auto, Auto, Auto"
+          Padding="24,24,24,24"
+          RowSpacing="24">
+
+            <!-- Barra superior: voltar + título -->
+            <Grid Grid.Row="0"
+                  ColumnDefinitions="*, Auto,* ">
+
+                <ImageButton Grid.Column="0"
+                             Margin="0,0,50,0"
+                             Source="go_back.png"
+                             BackgroundColor="Transparent"
+                             WidthRequest="40"
+                             HeightRequest="40"
+                             Clicked="OnBackClicked"
+                             SemanticProperties.Description="Voltar" />
+
+                <Label Grid.Column="1"
+                       Text="Criar conta"
+                       FontSize="22"
+                       FontAttributes="Bold"
+                       TextColor="#2E7D32"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" />
+            </Grid>
+
+            <!-- Cabeçalho -->
+            <VerticalStackLayout Grid.Row="1"
+                              Spacing="4">
+
+                <Label Text="Vamos começar"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   TextColor="#2E7D32" />
+
+                <Label Text="Crie sua conta para monitorar suas plantas com inteligência"
+                   FontSize="14"
+                   TextColor="#5C715E" />
+            </VerticalStackLayout>
+
+            <!-- Formulário -->
+            <VerticalStackLayout Grid.Row="2"
+                              Spacing="16">
+
+                <!-- Nome completo -->
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Nome completo"
+                       FontSize="13"
+                       TextColor="#775b46"
+                       FontAttributes="Bold" />
+
+                    <Border Stroke="#775b46"
+                            StrokeShape="RoundRectangle 12"
+                            BackgroundColor="#fff">
+                        <Entry x:Name="NameEntry"
+                               ReturnType="Next"
+                               TextChanged="OnAnyFieldChanged"
+                               BackgroundColor="Transparent"
+                               Margin="10,0,0,0"
+                               TextColor="#5C715E"
+                               HeightRequest="48" />
+                    </Border>
+
+                    <Label x:Name="NameErrorLabel"
+                       Text="Informe seu nome completo"
+                       FontSize="12"
+                       TextColor="#C62828"
+                       IsVisible="False" />
+                </VerticalStackLayout>
+
+                <!-- E-mail -->
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="E-mail"
+                       FontSize="13"
+                       TextColor="#775b46"
+                       FontAttributes="Bold" />
+
+                    <Border Stroke="#775b46"
+                        StrokeShape="RoundRectangle 12"
+                        BackgroundColor="#fff">
+                        <Entry x:Name="EmailEntry"
+                           Keyboard="Email"
+                           ReturnType="Next"
+                           TextChanged="OnAnyFieldChanged"
+                           BackgroundColor="Transparent"
+                           TextColor="#5C715E"
+                           Margin="10,0,0,0"
+                           HeightRequest="48" />
+                    </Border>
+
+                    <Label x:Name="EmailErrorLabel"
+                       Text="Informe um e-mail válido"
+                       FontSize="12"
+                       TextColor="#C62828"
+                       IsVisible="False" />
+                </VerticalStackLayout>
+
+                <!-- Senha -->
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Senha"
+                       FontSize="13"
+                       TextColor="#775b46"
+                       FontAttributes="Bold" />
+
+                    <Border Stroke="#775b46"
+                        StrokeShape="RoundRectangle 12"
+                        BackgroundColor="#fff">
+                        <Grid ColumnDefinitions="*, Auto" Margin="0,0,5,0">
+                            <Entry x:Name="PasswordEntry"
+                                   Grid.Column="0"
+                                   Margin="10,0,0,0"
+                                   IsPassword="True"
+                                   ReturnType="Next"
+                                   TextChanged="OnAnyFieldChanged"
+                                   BackgroundColor="Transparent"
+                                   TextColor="#5C715E"
+                                   HeightRequest="48" />
+
+                            <ImageButton x:Name="TogglePasswordButton"
+                                     Grid.Column="1"
+                                     Source="eye_black.png"
+                                     WidthRequest="32"
+                                     HeightRequest="32"
+                                     Clicked="OnTogglePasswordClicked"
+                                     SemanticProperties.Description="Mostrar ou ocultar senha" />
+                        </Grid>
+                    </Border>
+
+                    <Label x:Name="PasswordErrorLabel"
+                       Text="A senha deve ter pelo menos 6 caracteres"
+                       FontSize="12"
+                       TextColor="#C62828"
+                       IsVisible="False" />
+                </VerticalStackLayout>
+
+                <!-- Confirmar senha -->
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Confirmar senha"
+                       FontSize="13"
+                       TextColor="#775b46"
+                       FontAttributes="Bold" />
+
+                    <Border Stroke="#775b46"
+                        StrokeShape="RoundRectangle 12"
+                        BackgroundColor="#fff">
+                        <Entry x:Name="ConfirmPasswordEntry"
+                               Margin="10,0,0,0"
+                               IsPassword="True"
+                               ReturnType="Done"
+                               TextChanged="OnAnyFieldChanged"
+                               Completed="OnRegisterClicked"
+                               BackgroundColor="Transparent"
+                               TextColor="#fff"
+                               HeightRequest="48" />
+                    </Border>
+
+                    <Label x:Name="ConfirmPasswordErrorLabel"
+                           Text="As senhas não coincidem"
+                           FontSize="12"
+                           TextColor="#C62828"
+                           IsVisible="False" />
+                </VerticalStackLayout>
+
+                <!-- Aceite dos termos -->
+                <Grid ColumnDefinitions="Auto, *" ColumnSpacing="0" Margin="0,20,0,0">
+                    <CheckBox x:Name="TermsCheckBox"
+                              Grid.Column="0"
+                              Color="#775b46"
+                              CheckedChanged="OnTermsCheckedChanged"
+                              VerticalOptions="Start" />
+
+                    <Label Grid.Column="1"
+                           FontSize="13" 
+                           TextColor="#5C715E" 
+                           VerticalOptions="Start" 
+                           VerticalTextAlignment="Start"
+                           LineBreakMode="WordWrap">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Li e aceito os " />
+                                <Span Text="Termos de Uso" TextColor="#775b46" FontAttributes="Bold" />
+                                <Span Text=" e a " />
+                                <Span Text="Política de Privacidade" TextColor="#775b46" FontAttributes="Bold" />
+                            </FormattedString>
+                        </Label.FormattedText>
+
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnTermsLabelTapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Grid>
+
+                <Label x:Name="TermsErrorLabel"
+                   Text="É necessário aceitar os termos para continuar"
+                   FontSize="12"
+                   TextColor="#C62828"
+                   IsVisible="False" />
+
+                <!-- Erro geral (ex: e-mail já cadastrado) -->
+                <Border x:Name="GeneralErrorBorder"
+                    IsVisible="False"
+                    BackgroundColor="#FDECEA"
+                    Stroke="#F5C2C0"
+                    StrokeShape="RoundRectangle 10"
+                    Padding="12,8">
+                    <Label x:Name="GeneralErrorLabel"
+                       TextColor="#C62828"
+                       FontSize="13" />
+                </Border>
+
+                <!-- Botão Criar conta -->
+                <Button x:Name="RegisterButton"
+                    Text="Criar conta"
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    BackgroundColor="#2E7D32"
+                    TextColor="White"
+                    CornerRadius="12"
+                    HeightRequest="52"
+                    Clicked="OnRegisterClicked"
+                    Margin="0,8,0,0" />
+
+                <ActivityIndicator x:Name="RegisterLoadingIndicator"
+                                IsRunning="False"
+                                IsVisible="False"
+                                Color="#2E7D32" />
+
+                <!-- Rodapé: ir para login -->
+                <HorizontalStackLayout Spacing="4"
+                                    HorizontalOptions="Center"
+                                    Margin="0,8,0,16">
+
+                    <Label Text="Já tem uma conta?"
+                       FontSize="14"
+                       TextColor="#5C715E" />
+
+                    <Label Text="Entrar"
+                       FontSize="14"
+                       FontAttributes="Bold"
+                       TextColor="#775b46">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnLoginTapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </HorizontalStackLayout>
+
+            </VerticalStackLayout>
+
+        </Grid>
+    </ScrollView>
+
+</ContentPage>

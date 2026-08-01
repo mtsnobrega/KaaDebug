@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KaaDebug.Views.Auth.LoginPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#F4F7F4">
+    <Grid RowDefinitions="Auto, *">
+        
+        <!-- Cabeçalho -->
+        <VerticalStackLayout Grid.Row="0" 
+         Padding="10, 0, 10, 10" 
+         Spacing="4"
+         BackgroundColor="#fff">
+            <Image Source="kaa.png" HeightRequest="160" WidthRequest="160" Aspect="AspectFit"/>
+            <Label Text="Bem-vindo de volta" FontSize="20" FontAttributes="Bold" TextColor="#004D00" HorizontalOptions="Center" />
+            <Label Text="Acesse para continuar cuidando das suas plantas" FontSize="14" TextColor="#1A331A" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
+        </VerticalStackLayout>
+
+
+        <!-- Area do Login -->
+        <Border Grid.Row="1"
+                StrokeThickness="0"
+                StrokeShape="RoundRectangle 32, 32, 0, 0"
+                Margin="0"
+                Padding="0">
+
+            <Border.Shadow>
+                <Shadow Brush="Black" Offset="0, -5" Radius="15" Opacity="0.1" />
+            </Border.Shadow>
+
+            <Grid >
+                <Image Source="login_form.jpg" Aspect="Fill" />
+
+
+
+                <Border Stroke="#775b46"
+                        StrokeLineJoin="Miter"
+                        StrokeThickness="3"
+                        StrokeShape="RoundRectangle 32, 32, 0, 0"
+                        Padding="0">
+
+                    <ScrollView >
+                        <!-- Fomrulário Login -->
+                        <VerticalStackLayout Padding="20, 40, 20, 0" Spacing="20">
+                            <VerticalStackLayout Spacing="30">
+
+                                <!-- Email -->
+                                <VerticalStackLayout Spacing="5">
+                                    <Label Text="E-mail" FontSize="13" TextColor="White" FontAttributes="Bold" />
+                                    <Border Stroke="#40FFFFFF" StrokeShape="RoundRectangle 12" BackgroundColor="#20FFFFFF">
+                                        <Entry x:Name="EmailEntry" Placeholder="seuemail@exemplo.com" PlaceholderColor="#A0FFFFFF" BackgroundColor="Transparent" Margin="10,0,0,0" TextColor="White" HeightRequest="48" />
+                                    </Border>
+                                    <Label x:Name="EmailErrorLabel"
+                                           Text="E-mail inválido"
+                                           FontSize="12"
+                                           TextColor="#C62828"
+                                           IsVisible="False" />
+                                </VerticalStackLayout>
+
+                                <!-- Senha -->
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="Senha" FontSize="13" TextColor="White" FontAttributes="Bold" />
+                                    <Border Stroke="#40FFFFFF" StrokeShape="RoundRectangle 12" BackgroundColor="#20FFFFFF">
+                                        <Grid ColumnDefinitions="*, Auto" Margin="0">
+                                            <Entry x:Name="PasswordEntry" Grid.Column="0" Placeholder="Sua senha" PlaceholderColor="#A0FFFFFF" IsPassword="True" BackgroundColor="Transparent" TextColor="White" HeightRequest="48" Margin="10,0,0,0"/>
+                                            <ImageButton x:Name="TogglePasswordButton"
+                                                         Grid.Column="1"
+                                                         Source="eye.png"
+                                                         BackgroundColor="Transparent"
+                                                         WidthRequest="30"
+                                                         HeightRequest="30"
+                                                         Clicked="OnTogglePasswordClicked"
+                                                         SemanticProperties.Description="Mostrar ou ocultar senha" />
+                                        </Grid>
+                                    </Border>
+                                    <Label x:Name="PasswordErrorLabel"
+                                           Text="A senha é obrigatória"
+                                           FontSize="12"
+                                           TextColor="#C62828"
+                                           IsVisible="False" />
+                                </VerticalStackLayout>
+
+                                <!-- Esqueci a senha -->
+                                <Label Text="Esqueci minha senha" FontSize="13" TextColor="#81C784" FontAttributes="Bold" HorizontalOptions="End">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnForgotPasswordTapped" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+
+                                <!-- Mensagem de erro geral (ex: credenciais inválidas, sem internet) -->
+                                <Border x:Name="GeneralErrorBorder"
+                                        IsVisible="False"
+                                        BackgroundColor="#FDECEA"
+                                        Stroke="#F5C2C0"
+                                        StrokeShape="RoundRectangle 10"
+                                        Padding="12,8">
+                                    <Label x:Name="GeneralErrorLabel"
+                                           TextColor="#C62828"
+                                           FontSize="13" />
+                                </Border>
+
+                                <!-- Botão Entrar -->
+                                <Button x:Name="LoginButton" Text="Entrar" FontAttributes="Bold" FontSize="16" BackgroundColor="#2E7D32" TextColor="White" CornerRadius="12" HeightRequest="52" Margin="0,20,0,0" Clicked="OnLoginClicked"/>
+                                <ActivityIndicator x:Name="LoginLoadingIndicator"
+                                                   IsRunning="False"
+                                                   IsVisible="False"
+                                                   Color="#2E7D32"
+                                                   HeightRequest="24" />
+                            </VerticalStackLayout>
+
+                            <!-- Rodapé: ir para cadastro -->
+                            <HorizontalStackLayout Spacing="4" HorizontalOptions="Center" Margin="0,0,0,20">
+                                <Label Text="Ainda não tem conta?" FontSize="14" TextColor="#E0E0E0" />
+                                <Label Text="Cadastre-se" FontSize="14" FontAttributes="Bold" TextColor="#81C784" >
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnRegisterTapped" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+
+                            </HorizontalStackLayout>
+
+                        </VerticalStackLayout>
+                    </ScrollView>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,32 @@
+﻿<?xml version = "1.0" encoding = "UTF-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:KaaDebug"
+             xmlns:converters="clr-namespace:KaaDebug.Converters"
+
+             x:Class="KaaDebug.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Dashboard -->
+            <converters:HealthStatusToColorConverter x:Key="HealthStatusToColorConverter" />
+            <converters:HealthStatusToTextConverter x:Key="HealthStatusToTextConverter" />
+            <converters:PriorityToColorConverter x:Key="PriorityToColorConverter" />
+            <converters:StringNotEmptyConverter x:Key="StringNotEmptyConverter" />
+
+            <!-- Notificações -->
+            <converters:BoolToNotificationBgConverter x:Key="BoolToNotificationBgConverter" />
+            <converters:BoolToNotificationStrokeConverter x:Key="BoolToNotificationStrokeConverter" />
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <converters:DateToRelativeTimeConverter x:Key="DateToRelativeTimeConverter" />
+
+            <!-- Diagnóstico -->
+            <converters:DiagnosisStatusIconConverter x:Key="DiagnosisStatusIconConverter" />
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

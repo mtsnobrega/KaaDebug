@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KaaDebug.Views.Plants.PlantsListPage"
+             xmlns:models="clr-namespace:KaaDebug.Core.Models.Dashboard"
+             BackgroundColor="#F4F7F4"
+             Shell.NavBarIsVisible="False"
+             Title="PlantsListPage">
+
+    <Grid RowDefinitions="Auto, Auto, Auto, *">
+
+        <!-- Barra superior -->
+        <Grid Grid.Row="0"
+              ColumnDefinitions="Auto, *, Auto"
+              Padding="20,24,20,8">
+
+            <ImageButton Grid.Column="0"
+                     Source="go_back.png"
+                     BackgroundColor="Transparent"
+                     WidthRequest="40"
+                     HeightRequest="40"
+                     Clicked="OnBackClicked"
+                     SemanticProperties.Description="Voltar" />
+
+            <Label Grid.Column="1"
+               Text="Minhas plantas"
+               FontSize="18"
+               FontAttributes="Bold"
+               TextColor="#2E7D32"
+               HorizontalOptions="Center"
+               VerticalOptions="Center" />
+
+            <ImageButton Grid.Column="2"
+                     Source="add_plant.PNG"
+                     BackgroundColor="Transparent"
+                     WidthRequest="40"
+                     HeightRequest="40"
+                     Clicked="OnAddPlantClicked"
+                     SemanticProperties.Description="Cadastrar nova planta" />
+        </Grid >
+
+        <!-- Busca -->
+        <Border Grid.Row="1"
+                Padding="0,0,-40,0" 
+                Margin="20,8,20,0"
+                Stroke="#775b46"
+                StrokeShape="RoundRectangle 12"
+                BackgroundColor="White">
+            <SearchBar x:Name="SearchBarControl"
+                       Margin="0"
+                       Placeholder="Buscar planta pelo nome"
+                       TextColor="#5C715E"
+                       BackgroundColor="Transparent"
+                       TextChanged="OnSearchTextChanged" />
+        </Border>
+
+        <!-- Filtros por status -->
+        <ScrollView Grid.Row="2"
+                Orientation="Horizontal"
+                Margin="20,12,20,0"
+                HorizontalScrollBarVisibility="Never">
+
+            <HorizontalStackLayout Spacing="8">
+
+                <Border x:Name="FilterAllBorder"
+                    StrokeShape="RoundRectangle 20"
+                    Stroke="#D7E5D9"
+                    BackgroundColor="#2E7D32"
+                    Padding="16,8">
+                    <Label x:Name="FilterAllLabel" Text="Todas" FontSize="13" FontAttributes="Bold" TextColor="White" />
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnFilterAllTapped" />
+                    </Border.GestureRecognizers>
+                </Border>
+
+                <Border x:Name="FilterHealthyBorder"
+                    StrokeShape="RoundRectangle 20"
+                    Stroke="#D7E5D9"
+                    BackgroundColor="White"
+                    Padding="16,8">
+                    <Label x:Name="FilterHealthyLabel" Text="Saudáveis" FontSize="13" FontAttributes="Bold" TextColor="#5C715E" />
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnFilterHealthyTapped" />
+                    </Border.GestureRecognizers>
+                </Border>
+
+                <Border x:Name="FilterAttentionBorder"
+                    StrokeShape="RoundRectangle 20"
+                    Stroke="#D7E5D9"
+                    BackgroundColor="White"
+                    Padding="16,8">
+                    <Label x:Name="FilterAttentionLabel" Text="Atenção" FontSize="13" FontAttributes="Bold" TextColor="#5C715E" />
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnFilterAttentionTapped" />
+                    </Border.GestureRecognizers>
+                </Border>
+
+                <Border x:Name="FilterCriticalBorder"
+                    StrokeShape="RoundRectangle 20"
+                    Stroke="#D7E5D9"
+                    BackgroundColor="White"
+                    Padding="16,8">
+                    <Label x:Name="FilterCriticalLabel" Text="Críticas" FontSize="13" FontAttributes="Bold" TextColor="#5C715E" />
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnFilterCriticalTapped" />
+                    </Border.GestureRecognizers>
+                </Border>
+
+            </HorizontalStackLayout>
+        </ScrollView>
+
+        <!-- Conteúdo principal -->
+        <RefreshView x:Name="PlantsRefreshView"
+                 Grid.Row="3"
+                 RefreshColor="#2E7D32"
+                 Refreshing="OnRefreshing"
+                 Margin="0,12,0,0">
+
+            <Grid>
+
+                <!-- Estado: carregando -->
+                <VerticalStackLayout x:Name="LoadingStateLayout"
+                                  Spacing="12"
+                                  VerticalOptions="Center"
+                                  HorizontalOptions="Center"
+                                  IsVisible="True">
+
+                    <ActivityIndicator IsRunning="True" Color="#2E7D32" HeightRequest="36" WidthRequest="36" />
+                    <Label Text="Carregando suas plantas..."
+                       FontSize="14"
+                       TextColor="#5C715E"
+                       HorizontalOptions="Center" />
+                </VerticalStackLayout>
+
+                <!-- Estado: erro -->
+                <VerticalStackLayout x:Name="ErrorStateLayout"
+                                  Spacing="12"
+                                  VerticalOptions="Center"
+                                  HorizontalOptions="Center"
+                                  IsVisible="False"
+                                  Padding="24">
+
+                    <Image Source="error_icon.png" HeightRequest="64" WidthRequest="64" Aspect="AspectFit" />
+
+                    <Label Text="Não foi possível carregar"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="#2E7D32"
+                       HorizontalOptions="Center" />
+
+                    <Label x:Name="ErrorMessageLabel"
+                       Text="Verifique sua conexão e tente novamente."
+                       FontSize="14"
+                       TextColor="#5C715E"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+
+                    <Button Text="Tentar novamente"
+                        FontAttributes="Bold"
+                        BackgroundColor="#2E7D32"
+                        TextColor="White"
+                        CornerRadius="12"
+                        HeightRequest="48"
+                        WidthRequest="200"
+                        Clicked="OnRetryClicked"
+                        Margin="0,8,0,0" />
+                </VerticalStackLayout>
+
+                <!-- Estado: vazio (sem plantas cadastradas) -->
+                <VerticalStackLayout x:Name="EmptyStateLayout"
+                                  Spacing="10"
+                                  VerticalOptions="Center"
+                                  HorizontalOptions="Center"
+                                  IsVisible="False"
+                                  Padding="24">
+
+                    <Label Text="🌿" FontSize="40" HorizontalOptions="Center" />
+
+                    <Label Text="Você ainda não tem plantas cadastradas"
+                       FontSize="15"
+                       FontAttributes="Bold"
+                       TextColor="#2E4A30"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+
+                    <Label Text="Cadastre sua primeira planta para começar o monitoramento"
+                       FontSize="13"
+                       TextColor="#5C715E"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+
+                    <Button Text="Cadastrar planta"
+                        FontAttributes="Bold"
+                        BackgroundColor="#2E7D32"
+                        TextColor="White"
+                        CornerRadius="12"
+                        HeightRequest="48"
+                        Clicked="OnAddPlantClicked"
+                        Margin="0,8,0,0" />
+                </VerticalStackLayout>
+
+                <!-- Estado: nenhum resultado para a busca/filtro atual -->
+                <VerticalStackLayout x:Name="NoResultsStateLayout"
+                                      Spacing="8"
+                                      Margin="20"
+                                      VerticalOptions="Start"
+                                      HorizontalOptions="Center"
+                                      IsVisible="False"
+                                      Padding="0">
+
+                    <Label Text="🔍" FontSize="36" HorizontalOptions="Center" />
+
+                    <Label Text="Nenhuma planta encontrada"
+                       FontSize="15"
+                       FontAttributes="Bold"
+                       TextColor="#2E4A30"
+                       HorizontalOptions="Center" />
+
+                    <Label Text="Tente buscar por outro nome ou mudar o filtro"
+                       FontSize="13"
+                       TextColor="#5C715E"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+
+                <!-- Lista de plantas -->
+                <CollectionView x:Name="PlantsCollectionView"
+                            IsVisible="False"
+                            SelectionMode="Single"
+                            SelectionChanged="OnPlantSelected"
+                            Margin="20,0,20,16">
+
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:PlantSummary">
+                            <Border BackgroundColor="White"
+                                    Stroke="#775b46"
+                                    StrokeShape="RoundRectangle 16"
+                                    Padding="12">
+
+                                <Grid ColumnDefinitions="Auto, *, Auto"
+                                  ColumnSpacing="12">
+
+                                    <Border Grid.Column="0"
+                                        StrokeShape="RoundRectangle 12"
+                                        WidthRequest="56"
+                                        HeightRequest="56"
+                                        Padding="0">
+                                        <Image Source="{Binding PhotoUrl}"
+                                           Aspect="AspectFill"
+                                           WidthRequest="56"
+                                           HeightRequest="56" />
+                                    </Border>
+
+                                    <VerticalStackLayout Grid.Column="1"
+                                                      Spacing="2"
+                                                      VerticalOptions="Center">
+                                        <Label Text="{Binding Name}"
+                                           FontSize="15"
+                                           FontAttributes="Bold"
+                                           TextColor="#2E4A30" />
+
+                                        <Label Text="{Binding Species}"
+                                           FontSize="12"
+                                           TextColor="#8A9A8C" />
+
+                                        <Label Text="{Binding StatusReason}"
+                                           FontSize="12"
+                                           TextColor="#C62828"
+                                           IsVisible="{Binding StatusReason, Converter={StaticResource StringNotEmptyConverter}}" />
+                                    </VerticalStackLayout>
+
+                                    <Border Grid.Column="2"
+                                            VerticalOptions="Start"
+                                            Padding="8,4"
+                                            StrokeShape="RoundRectangle 8"
+                                            BackgroundColor="{Binding HealthStatus, Converter={StaticResource HealthStatusToColorConverter}}">
+                                        <Label Text="{Binding HealthStatus, Converter={StaticResource HealthStatusToTextConverter}}"
+                                               FontSize="11"
+                                               FontAttributes="Bold"
+                                               TextColor="White" 
+                                               WidthRequest="50"
+                                               HeightRequest="14"
+                                               HorizontalTextAlignment="Center"
+                                               VerticalTextAlignment="Center"/>
+                                    </Border>
+
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </Grid>
+        </RefreshView>
+
+    </Grid>
+
+</ContentPage>

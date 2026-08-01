@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KaaDebug.Views.Plants.RegisterPlantPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#F4F7F4"
+             Title="RegisterPlantPage">
+
+    <ScrollView>
+        <Grid RowDefinitions="Auto, Auto"
+          Padding="20,24,20,24"
+          RowSpacing="24">
+
+                <!-- Barra superior -->
+                <Grid ColumnDefinitions="Auto,*,Auto"
+                      Padding="0,0,30,0"
+                      Grid.Row="0">
+
+                    <ImageButton Grid.Column="0"
+                                 Source="go_back.png"
+                                 BackgroundColor="Transparent"
+                                 WidthRequest="40"
+                                 HeightRequest="40"
+                                 Clicked="OnBackClicked"
+                                 SemanticProperties.Description="Voltar" />
+
+                    <Label Grid.Column="1"
+                           Text="Cadastrar planta"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="#2E7D32"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+                </Grid>
+
+            <!-- Formulário -->
+            <VerticalStackLayout Grid.Row="1"
+                              Spacing="20">
+
+                <!-- ===== 1. Selecionar Espécie ===== -->
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Espécie"
+                       FontSize="13"
+                       TextColor="#2E4A30"
+                       FontAttributes="Bold" />
+
+                    <Border Stroke="#775b46"
+                        StrokeShape="RoundRectangle 12"
+                        BackgroundColor="White">
+                        <Grid ColumnDefinitions="*, Auto"
+                          Padding="12,0"
+                          HeightRequest="52">
+
+                            <Label x:Name="SelectedSpeciesLabel"
+                               Grid.Column="0"
+                               Text="Selecionar espécie"
+                               FontSize="15"
+                               TextColor="#8A9A8C"
+                               VerticalOptions="Center" />
+
+                            <Label Grid.Column="1"
+                               Text="▾"
+                               FontSize="18"
+                               TextColor="#5C715E"
+                               VerticalOptions="Center" />
+
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnSelectSpeciesTapped" />
+                            </Grid.GestureRecognizers>
+                        </Grid>
+                    </Border>
+
+                    <Label x:Name="SpeciesErrorLabel"
+                       Text="Selecione a espécie da planta"
+                       FontSize="12"
+                       TextColor="#C62828"
+                       IsVisible="False" />
+                </VerticalStackLayout>
+
+                <!-- Card de parâmetros ideais (visível somente após selecionar espécie) -->
+                <Border x:Name="IdealParametersCard"
+                    IsVisible="False"
+                    BackgroundColor="#EAF5EA"
+                    Stroke="#775b46"
+                    StrokeShape="RoundRectangle 14"
+                    Padding="14">
+
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="Parâmetros ideais carregados automaticamente"
+                           FontSize="13"
+                           FontAttributes="Bold"
+                           TextColor="#2E7D32" />
+
+                        <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, Auto" RowSpacing="10" ColumnSpacing="10">
+
+                            <VerticalStackLayout Grid.Row="0" Grid.Column="0" Spacing="2">
+                                <Label Text="💧 Umidade do solo" FontSize="11" TextColor="#5C715E" />
+                                <Label x:Name="SoilMoistureRangeLabel" Text="—" FontSize="14" FontAttributes="Bold" TextColor="#2E4A30" />
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Row="0" Grid.Column="1" Spacing="2">
+                                <Label Text="🌫️ Umidade do ar" FontSize="11" TextColor="#5C715E" />
+                                <Label x:Name="AirHumidityRangeLabel" Text="—" FontSize="14" FontAttributes="Bold" TextColor="#2E4A30" />
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Row="1" Grid.Column="0" Spacing="2">
+                                <Label Text="🌡️ Temperatura" FontSize="11" TextColor="#5C715E" />
+                                <Label x:Name="TemperatureRangeLabel" Text="—" FontSize="14" FontAttributes="Bold" TextColor="#2E4A30" />
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Row="1" Grid.Column="1" Spacing="2">
+                                <Label Text="☀️ Luminosidade" FontSize="11" TextColor="#5C715E" />
+                                <Label x:Name="LuminosityRangeLabel" Text="—" FontSize="14" FontAttributes="Bold" TextColor="#2E4A30" />
+                            </VerticalStackLayout>
+
+                        </Grid>
+
+                        <Label Text="Esses valores serão usados como referência para gerar alertas automáticos."
+                           FontSize="11"
+                           TextColor="#5C715E"
+                           Margin="0,4,0,0" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- ===== 2. Nome da Planta ===== -->
+                <VerticalStackLayout Margin="0,0,0,0" Spacing="4">
+                    <Label Text="Nome da planta"
+                           FontSize="13"
+                           TextColor="#2E4A30"
+                           FontAttributes="Bold" />
+
+                    <Border Stroke="#775b46"
+                            StrokeShape="RoundRectangle 12"
+                            BackgroundColor="White">
+                        <Entry x:Name="PlantNameEntry"
+                               Placeholder="Ex: Samambaia da Sala"
+                               ReturnType="Done"
+                               TextChanged="OnPlantNameChanged"
+                               BackgroundColor="Transparent"
+                               TextColor="#5C715E"
+                               Margin="12,0"
+                               HeightRequest="48" />
+                    </Border>
+
+                    <Grid MaximumWidthRequest="450"
+                          HorizontalOptions="Start"
+                          ColumnDefinitions="*,80"
+                          ColumnSpacing="10"
+                          VerticalOptions="Center">
+                        <Label Grid.Column="0"
+                               Text="Tenho um dispositivo para associar agora"
+                               FontSize="12"
+                               TextColor="#2E4A30"
+                               VerticalOptions="Center"
+                        
+                        />
+                        <Switch Grid.Column="1"
+                                x:Name="AssociateDeviceSwitch"
+                                OnColor="#A5D6A7"
+                                ThumbColor="#2E7D32"
+                                Toggled="OnAssociateDeviceToggled"
+                                VerticalOptions="Center"
+                                HorizontalOptions="Fill"
+                        />
+                    </Grid>
+
+                    <Label x:Name="PlantNameErrorLabel"
+                       Text="Informe um nome para a planta"
+                       FontSize="12"
+                       TextColor="#C62828"
+                       IsVisible="False" />
+                </VerticalStackLayout>
+
+                <!-- ===== 3. Associar Dispositivo (opcional) ===== -->
+                <VerticalStackLayout Spacing="20">
+                    <VerticalStackLayout x:Name="DeviceCodeSection"
+                                      IsVisible="False"
+                                      Spacing="4">
+
+                        <Label Text="Código do dispositivo (ESP32)"
+                               FontSize="13"
+                               TextColor="#2E4A30"
+                               FontAttributes="Bold" />
+
+                        <Border Stroke="#775b46"
+                            StrokeShape="RoundRectangle 12"
+                            BackgroundColor="White">
+                            <Entry x:Name="DeviceCodeEntry"
+                               Placeholder="Ex: ESP32-0001"
+                               ReturnType="Done"
+                               TextChanged="OnDeviceCodeChanged"
+                               BackgroundColor="Transparent"
+                               TextColor="#5C715E"
+                               Margin="12,0"
+                               HeightRequest="48" />
+                        </Border>
+
+                        <Label Text="O código está impresso na etiqueta do seu dispositivo."
+                               FontSize="11"
+                               TextColor="#2E4A30" />
+
+                        <Label x:Name="DeviceCodeErrorLabel"
+                               Text="Informe o código do dispositivo"
+                               FontSize="12"
+                               TextColor="#C62828"
+                               IsVisible="False" />
+                    </VerticalStackLayout>
+
+                    <Label Text="Você também pode associar um dispositivo depois, na tela de detalhes da planta."
+                           FontSize="12"
+                           TextColor="#2E4A30" />
+
+                </VerticalStackLayout>
+
+                <!-- Erro geral -->
+                <Border x:Name="GeneralErrorBorder"
+                        IsVisible="False"
+                        BackgroundColor="#FDECEA"
+                        Stroke="#F5C2C0"
+                        StrokeShape="RoundRectangle 10"
+                        Padding="12,8">
+                    <Label x:Name="GeneralErrorLabel"
+                           TextColor="#C62828"
+                           FontSize="13" />
+                </Border>
+
+                <!-- Botão Salvar -->
+                <Button x:Name="SaveButton"
+                    Text="Salvar"
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    BackgroundColor="#2E7D32"
+                    TextColor="White"
+                    CornerRadius="12"
+                    HeightRequest="52"
+                    Clicked="OnSaveClicked"
+                    Margin="0,8,0,0" />
+
+                <ActivityIndicator x:Name="SaveLoadingIndicator"
+                                IsRunning="False"
+                                IsVisible="False"
+                                Color="#2E7D32" />
+
+            </VerticalStackLayout>
+
+        </Grid>
+    </ScrollView>
+</ContentPage>

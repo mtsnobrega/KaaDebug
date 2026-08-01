@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KaaDebug.Views.Dashboard.DashboardPage"
+             xmlns:models="clr-namespace:KaaDebug.Core.Models.Dashboard"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#F4F7F4">
+    <Grid RowDefinitions="*, Auto">
+
+        <!-- ===================== CONTEÚDO PRINCIPAL ===================== -->
+        <RefreshView x:Name="DashboardRefreshView"
+                 Grid.Row="0"
+                 RefreshColor="#2E7D32"
+                 Refreshing="OnRefreshing">
+
+            <ScrollView>
+                <Grid RowDefinitions="Auto, Auto, Auto"
+                  Padding="20,24,20,16"
+                  RowSpacing="24">
+
+                    <!--  ESTADO: CARREGANDO (primeira carga)  -->
+                    <VerticalStackLayout x:Name="LoadingStateLayout"
+                                      Grid.Row="0"
+                                      Grid.RowSpan="3"
+                                      Spacing="12"
+                                      VerticalOptions="Center"
+                                      HorizontalOptions="Center"
+                                      IsVisible="True">
+
+                        <ActivityIndicator IsRunning="True" Color="#2E7D32" HeightRequest="36" WidthRequest="36" />
+                        <Label Text="Carregando seus dados..."
+                           FontSize="14"
+                           TextColor="#5C715E"
+                           HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+
+                    <!--  ESTADO: ERRO  -->
+                    <VerticalStackLayout x:Name="ErrorStateLayout"
+                                      Grid.Row="0"
+                                      Grid.RowSpan="3"
+                                      Spacing="12"
+                                      VerticalOptions="Center"
+                                      HorizontalOptions="Center"
+                                      IsVisible="False"
+                                      Padding="24">
+
+                        <Image Source="error_icon.png" HeightRequest="64" WidthRequest="64" Aspect="AspectFit" />
+
+                        <Label Text="Não foi possível carregar"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="#2E7D32"
+                           HorizontalOptions="Center" />
+
+                        <Label x:Name="ErrorMessageLabel"
+                           Text="Verifique sua conexão e tente novamente."
+                           FontSize="14"
+                           TextColor="#5C715E"
+                           HorizontalOptions="Center"
+                           HorizontalTextAlignment="Center" />
+
+                        <Button Text="Tentar novamente"
+                            FontAttributes="Bold"
+                            BackgroundColor="#2E7D32"
+                            TextColor="White"
+                            CornerRadius="12"
+                            HeightRequest="48"
+                            WidthRequest="200"
+                            Clicked="OnRetryClicked"
+                            Margin="0,8,0,0" />
+                    </VerticalStackLayout>
+
+                    <!-- CONTEÚDO REAL (visível após carga com sucesso) -->
+                    <VerticalStackLayout x:Name="ContentLayout"
+                                      Grid.Row="0"
+                                      Spacing="24"
+                                      IsVisible="False">
+
+                        <!-- Saudação -->
+                        <VerticalStackLayout Spacing="2">
+                            <Label x:Name="GreetingLabel"
+                               Text="Olá, Maria 👋"
+                               FontSize="22"
+                               FontAttributes="Bold"
+                               TextColor="#2E7D32" />
+
+                            <Label Text="Veja como suas plantas estão hoje"
+                               FontSize="14"
+                               TextColor="#5C715E" />
+                        </VerticalStackLayout>
+
+                        <!-- Cards de resumo -->
+                        <Grid ColumnDefinitions="*, *" ColumnSpacing="12">
+
+                            <Border Grid.Column="0"
+                                BackgroundColor="White"
+                                Stroke="#775b46"
+                                StrokeShape="RoundRectangle 16"
+                                Padding="16">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="🌱" FontSize="22" />
+                                    <Label x:Name="TotalPlantsLabel"
+                                       Text="5"
+                                       FontSize="26"
+                                       FontAttributes="Bold"
+                                       TextColor="#2E7D32" />
+                                    <Label Text="Plantas cadastradas"
+                                       FontSize="12"
+                                           VerticalTextAlignment="Center"
+                                       TextColor="#5C715E" />
+                                </VerticalStackLayout>
+                            </Border>
+
+                            <Border Grid.Column="1"
+                                BackgroundColor="White"
+                                Stroke="#775b46"
+                                StrokeShape="RoundRectangle 16"
+                                Padding="16">
+                                <VerticalStackLayout Spacing="4">
+                                    <Label Text="⚠️" FontSize="22" />
+                                    <Label x:Name="ActiveAlertsLabel"
+                                       Text="2"
+                                       FontSize="26"
+                                       FontAttributes="Bold"
+                                       TextColor="#C62828" />
+                                    <Label Text="Alertas ativos"
+                                       FontSize="12"
+                                       TextColor="#5C715E" />
+                                </VerticalStackLayout>
+                            </Border>
+
+                        </Grid>
+
+                        <!-- Seção: Minhas plantas -->
+                        <VerticalStackLayout Spacing="12">
+
+                            <Grid ColumnDefinitions="*, Auto">
+                                <Label Grid.Column="0"
+                                   Text="Minhas plantas"
+                                   FontSize="17"
+                                   FontAttributes="Bold"
+                                   TextColor="#2E7D32"
+                                   VerticalOptions="Center" />
+
+                                <Label Grid.Column="1"
+                                   Text="Ver todas"
+                                   FontSize="13"
+                                   FontAttributes="Bold"
+                                   TextColor="#2E7D32"
+                                   VerticalOptions="Center">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnViewAllPlantsTapped" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </Grid>
+
+                            <!-- Lista de até 3 plantas recentes -->
+                            <CollectionView x:Name="PlantsCollectionView"
+                                            ItemsSource="{Binding}"
+                                            SelectionMode="Single"
+                                            SelectionChanged="OnPlantSelected">
+                                <CollectionView.ItemsLayout>
+                                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+                                </CollectionView.ItemsLayout>
+
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="models:PlantSummary">
+                                        <Border BackgroundColor="White"
+                                                Stroke="#775b46"
+                                                StrokeShape="RoundRectangle 16"
+                                                Padding="12">
+
+                                            <Grid ColumnDefinitions="Auto, *, Auto"
+                                              ColumnSpacing="12">
+
+                                                <!-- Foto da planta -->
+                                                <Border Grid.Column="0"
+                                                    StrokeShape="RoundRectangle 12"
+                                                    WidthRequest="60"
+                                                    HeightRequest="60"
+                                                    Stroke="#775b46"
+                                                    Padding="0">
+                                                    <Image Source="{Binding PhotoUrl}"
+                                                       Aspect="AspectFill"
+                                                       WidthRequest="56"
+                                                       HeightRequest="56" />
+                                                </Border>
+
+                                                <!-- Nome + espécie + motivo (se houver) -->
+                                                <VerticalStackLayout Grid.Column="1"
+                                                                  Spacing="2"
+                                                                  VerticalOptions="Center">
+                                                    <Label Text="{Binding Name}"
+                                                           FontSize="15"
+                                                           FontAttributes="Bold"
+                                                           TextColor="#2E4A30" />
+
+                                                    <Label Text="{Binding Species}"
+                                                           FontSize="12"
+                                                           TextColor="#8A9A8C" />
+
+                                                    <Label Text="{Binding StatusReason}"
+                                                           FontSize="12"
+                                                           TextColor="#C62828"
+                                                           IsVisible="{Binding StatusReason, Converter={StaticResource StringNotEmptyConverter}}" />
+                                                </VerticalStackLayout>
+
+                                                <!-- Badge de status -->
+                                                <Border Grid.Column="2"
+                                                        VerticalOptions="Start"
+                                                        Padding="8,4"
+                                                        StrokeShape="RoundRectangle 8"
+                                                        BackgroundColor="{Binding HealthStatus, Converter={StaticResource HealthStatusToColorConverter}}">
+                                                    <Label Text="{Binding HealthStatus, Converter={StaticResource HealthStatusToTextConverter}}"
+                                                           FontSize="10"
+                                                           WidthRequest="50"
+                                                           HeightRequest="14"
+                                                           FontAttributes="Bold"
+                                                           TextColor="White"
+                                                           HorizontalTextAlignment="Center"
+                                                           VerticalTextAlignment="Center"/>
+                                                </Border>
+
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+
+                            <!-- Estado vazio: nenhuma planta cadastrada -->
+                            <VerticalStackLayout x:Name="EmptyPlantsLayout"
+                                              IsVisible="False"
+                                              Spacing="10"
+                                              Padding="16,24"
+                                              HorizontalOptions="Center">
+
+                                <Label Text="🌿" FontSize="36" HorizontalOptions="Center" />
+
+                                <Label Text="Você ainda não tem plantas cadastradas"
+                                   FontSize="14"
+                                   FontAttributes="Bold"
+                                   TextColor="#2E4A30"
+                                   HorizontalOptions="Center"
+                                   HorizontalTextAlignment="Center" />
+
+                                <Label Text="Cadastre sua primeira planta para começar o monitoramento"
+                                   FontSize="13"
+                                   TextColor="#5C715E"
+                                   HorizontalOptions="Center"
+                                   HorizontalTextAlignment="Center" />
+
+                                <Button Text="Cadastrar planta"
+                                    FontAttributes="Bold"
+                                    BackgroundColor="#2E7D32"
+                                    TextColor="White"
+                                    CornerRadius="12"
+                                    HeightRequest="48"
+                                    Clicked="OnAddPlantClicked"
+                                    Margin="0,8,0,0" />
+                            </VerticalStackLayout>
+
+                        </VerticalStackLayout>
+
+                        <!-- Seção: Notificações recentes -->
+                        <VerticalStackLayout x:Name="NotificationsSection"
+                                          Spacing="12">
+
+                            <Grid ColumnDefinitions="*, Auto">
+                                <Label Grid.Column="0"
+                                   Text="Notificações recentes"
+                                   FontSize="17"
+                                   FontAttributes="Bold"
+                                   TextColor="#2E7D32"
+                                   VerticalOptions="Center" />
+
+                                <Label Grid.Column="1"
+                                   Text="Ver todas"
+                                   FontSize="13"
+                                   FontAttributes="Bold"
+                                   TextColor="#2E7D32"
+                                   VerticalOptions="Center">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnViewAllNotificationsTapped" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </Grid>
+
+                            <CollectionView x:Name="NotificationsCollectionView"
+                                        ItemsSource="{Binding}"
+                                        SelectionMode="None"
+                                        SelectionChanged="OnNotificationSelected">
+                                <CollectionView.ItemsLayout>
+                                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="8" />
+                                </CollectionView.ItemsLayout>
+
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="models:NotificationSummary">
+                                        <Border BackgroundColor="White"
+                                            Stroke="#775b46"
+                                            StrokeShape="RoundRectangle 14"
+                                            Padding="12,10">
+
+                                            <Grid ColumnDefinitions="Auto, *"
+                                              ColumnSpacing="10">
+
+                                                <BoxView Grid.Column="0"
+                                                     WidthRequest="8"
+                                                     HeightRequest="8"
+                                                     CornerRadius="4"
+                                                     VerticalOptions="Start"
+                                                     Margin="0,5,0,0"
+                                                     Color="{Binding Priority, Converter={StaticResource PriorityToColorConverter}}" />
+
+                                                <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                                    <Label Text="{Binding PlantName}"
+                                                       FontSize="13"
+                                                       FontAttributes="Bold"
+                                                       TextColor="#2E4A30" />
+
+                                                    <Label Text="{Binding Message}"
+                                                       FontSize="13"
+                                                       TextColor="#5C715E" />
+                                                </VerticalStackLayout>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+
+                            <!-- Estado vazio: sem notificações -->
+                            <Label x:Name="EmptyNotificationsLabel"
+                               Text="Nenhuma notificação por aqui. Tudo tranquilo! 🌿"
+                               FontSize="13"
+                               TextColor="#8A9A8C"
+                               IsVisible="False"
+                               HorizontalOptions="Center"
+                               Margin="0,8,0,0" />
+
+                        </VerticalStackLayout>
+
+                    </VerticalStackLayout>
+
+                </Grid>
+            </ScrollView>
+        </RefreshView>
+
+        <!-- ===================== BOTTOM NAVIGATION ===================== -->
+        <Border Grid.Row="1"
+            BackgroundColor="White"
+            StrokeThickness="0"
+            Padding="0,10,0,10">
+            <Border.Shadow>
+                <Shadow Brush="#000000" Opacity="0.08" Radius="12" Offset="0,-2" />
+            </Border.Shadow>
+
+            <Grid ColumnDefinitions="*, *, *, *">
+
+                <VerticalStackLayout Grid.Column="0" Spacing="2" HorizontalOptions="Center">
+                    <Label Text="🏠" FontSize="20" HorizontalOptions="Center" />
+                    <Label Text="Início" FontSize="11" TextColor="#2E7D32" FontAttributes="Bold" HorizontalOptions="Center" />
+                    <VerticalStackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnNavDashboardTapped" />
+                    </VerticalStackLayout.GestureRecognizers>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="1" Spacing="2" HorizontalOptions="Center">
+                    <Label Text="🌿" FontSize="20" HorizontalOptions="Center" />
+                    <Label Text="Plantas" FontSize="11" TextColor="#8A9A8C" HorizontalOptions="Center" />
+                    <VerticalStackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnNavPlantsTapped" />
+                    </VerticalStackLayout.GestureRecognizers>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="2" Spacing="2" HorizontalOptions="Center">
+                    <Label Text="🔔" FontSize="20" HorizontalOptions="Center" />
+                    <Label Text="Alertas" FontSize="11" TextColor="#8A9A8C" HorizontalOptions="Center" />
+                    <VerticalStackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnNavNotificationsTapped" />
+                    </VerticalStackLayout.GestureRecognizers>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Column="3" Spacing="2" HorizontalOptions="Center">
+                    <Label Text="👤" FontSize="20" HorizontalOptions="Center" />
+                    <Label Text="Perfil" FontSize="11" TextColor="#8A9A8C" HorizontalOptions="Center" />
+                    <VerticalStackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnNavProfileTapped" />
+                    </VerticalStackLayout.GestureRecognizers>
+                </VerticalStackLayout>
+
+            </Grid>
+        </Border>
+
+    </Grid>
+</ContentPage>

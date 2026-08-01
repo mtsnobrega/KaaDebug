@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KaaDebug.Views.Notifications.NotificationsPage"
+             xmlns:models="clr-namespace:KaaDebug.Core.Models.Dashboard"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#F4F7F4"
+             Title="NotificationsPage">
+
+    <Grid RowDefinitions="Auto, *">
+
+        <!-- Barra superior -->
+        <Grid Grid.Row="0"
+          ColumnDefinitions="Auto, *, Auto"
+          Padding="15,24,20,8">
+
+            <ImageButton Grid.Column="0"
+                         Source="go_back.png"
+                         BackgroundColor="Transparent"
+                         WidthRequest="40"
+                         HeightRequest="40"
+                         Clicked="OnBackClicked"
+                         SemanticProperties.Description="Voltar" />
+
+            <VerticalStackLayout Grid.Column="1"
+                                 Spacing="0"
+                                 HorizontalOptions="Center">
+                <Label Text="Notificações"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="#2E7D32"
+                       HorizontalOptions="Center" />
+
+                <!-- Badge de não lidas (oculto quando zero) -->
+                <Label x:Name="UnreadBadgeLabel"
+                       FontSize="13"
+                       TextColor="#F0A93B"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       IsVisible="False" />
+            </VerticalStackLayout>
+
+            <!-- Limpar todas -->
+            <Label Grid.Column="2"
+                   x:Name="ClearAllLabel"
+                   Text="Limpar"
+                   FontSize="13"
+                   FontAttributes="Bold"
+                   TextColor="#C62828"
+                   VerticalOptions="Center"
+                   IsVisible="False">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnClearAllTapped" />
+                </Label.GestureRecognizers>
+            </Label>
+        </Grid>
+
+        <!-- Conteúdo -->
+        <RefreshView x:Name="NotificationsRefreshView"
+                     Grid.Row="1"
+                     RefreshColor="#2E7D32"
+                     Refreshing="OnRefreshing">
+            <Grid>
+
+                <!-- Estado: carregando -->
+                <VerticalStackLayout x:Name="LoadingStateLayout"
+                                      Spacing="12"
+                                      VerticalOptions="Center"
+                                      HorizontalOptions="Center"
+                                      IsVisible="True">
+                    <ActivityIndicator IsRunning="True" Color="#2E7D32" HeightRequest="36" WidthRequest="36" />
+                    <Label Text="Carregando notificações..." FontSize="14" TextColor="#5C715E" />
+                </VerticalStackLayout>
+
+                <!-- Estado: erro -->
+                <VerticalStackLayout x:Name="ErrorStateLayout"
+                                      Spacing="12"
+                                      VerticalOptions="Center"
+                                      HorizontalOptions="Center"
+                                      IsVisible="False"
+                                      Padding="24">
+                    <Image Source="error_icon.png" HeightRequest="64" WidthRequest="64" Aspect="AspectFit" />
+                    <Label Text="Não foi possível carregar"
+                       FontSize="18" FontAttributes="Bold"
+                       TextColor="#2E7D32" HorizontalOptions="Center" />
+                    <Button Text="Tentar novamente"
+                        FontAttributes="Bold"
+                        BackgroundColor="#2E7D32" TextColor="White"
+                        CornerRadius="12" HeightRequest="48" WidthRequest="200"
+                        Clicked="OnRetryClicked" />
+                </VerticalStackLayout>
+
+                <!-- Estado: vazio -->
+                <VerticalStackLayout x:Name="EmptyStateLayout"
+                                  Spacing="10"
+                                  VerticalOptions="Center"
+                                  HorizontalOptions="Center"
+                                  IsVisible="False">
+                    <Label Text="🔔" FontSize="40" HorizontalOptions="Center" />
+                    <Label Text="Nenhuma notificação"
+                       FontSize="16" FontAttributes="Bold"
+                       TextColor="#2E7D32" HorizontalOptions="Center" />
+                    <Label Text="Tudo tranquilo! Suas plantas estão sendo monitoradas."
+                       FontSize="13" TextColor="#2E4A30"
+                       HorizontalOptions="Center" HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+
+                <!-- Lista de notificações -->
+                <CollectionView x:Name="NotificationsCollectionView"
+                            IsVisible="False"
+                            SelectionMode="None"
+                            SelectionChanged="OnNotificationSelected"
+                            Margin="20,8,20,16">
+
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="8" />
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.GroupHeaderTemplate>
+                        <DataTemplate>
+                            <Label Text="{Binding Key}"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   TextColor="#2E7D32"
+                                   Margin="0,8,0,4" />
+                        </DataTemplate>
+                    </CollectionView.GroupHeaderTemplate>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:NotificationSummary">
+                            <Border StrokeShape="RoundRectangle 14"
+                                Padding="12,10">
+
+                                <!-- Fundo: ligeiramente diferente para não lidas -->
+                                <Border.BackgroundColor>
+                                    <Binding Path="IsRead"
+                                         Converter="{StaticResource BoolToNotificationBgConverter}" />
+                                </Border.BackgroundColor>
+
+                                <Border.Stroke>
+                                    <Binding Path="IsRead"
+                                         Converter="{StaticResource BoolToNotificationStrokeConverter}" />
+                                </Border.Stroke>
+
+                                <Grid ColumnDefinitions="Auto, *, Auto"
+                                  ColumnSpacing="10">
+
+                                    <!-- Indicador de prioridade -->
+                                    <BoxView Grid.Column="0"
+                                         WidthRequest="4"
+                                         HeightRequest="40"
+                                         CornerRadius="2"
+                                         VerticalOptions="Center"
+                                         Color="{Binding Priority, Converter={StaticResource PriorityToColorConverter}}" />
+
+                                    <!-- Conteúdo -->
+                                    <VerticalStackLayout Grid.Column="1"
+                                                      Spacing="2"
+                                                      VerticalOptions="Center">
+                                        <Label Text="{Binding PlantName}"
+                                               FontSize="13"
+                                               FontAttributes="Bold"
+                                               TextColor="#2E4A30" />
+                                        <Label Text="{Binding Message}"
+                                               FontSize="14"
+                                               TextColor="#3E4A40" />
+                                        <Label Text="{Binding CreatedAt, Converter={StaticResource DateToRelativeTimeConverter}}"
+                                               FontSize="12"
+                                               TextColor="#8A9A8C" />
+                                    </VerticalStackLayout>
+
+                                    <!-- Bolinha: não lida -->
+                                    <BoxView Grid.Column="2"
+                                             WidthRequest="8"
+                                             HeightRequest="8"
+                                             CornerRadius="4"
+                                             BackgroundColor="#2E7D32"
+                                             VerticalOptions="Center"
+                                             IsVisible="{Binding IsRead, Converter={StaticResource InverseBoolConverter}}" />
+
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </Grid>
+        </RefreshView>
+
+    </Grid>
+</ContentPage>

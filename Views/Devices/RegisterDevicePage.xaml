@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KaaDebug.Views.Devices.RegisterDevicePage"
+             BackgroundColor="#F4F7F4"
+             Shell.NavBarIsVisible="False"
+             Title="RegisterDevicePage">
+    <ScrollView>
+        <Grid RowDefinitions="Auto, Auto"
+              Padding="20,24,20,24"
+              RowSpacing="24">
+
+            <!-- Barra superior -->
+            <Grid Grid.Row="0"
+              ColumnDefinitions="Auto, *">
+
+                <ImageButton Grid.Column="0"
+                             Source="go_back.png"
+                             BackgroundColor="Transparent"
+                             WidthRequest="40"
+                             HeightRequest="40"
+                             Clicked="OnBackClicked"
+                             SemanticProperties.Description="Voltar" />
+
+                <Label Grid.Column="1"
+                       Text="Associar dispositivo"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="#2E7D32"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" />
+            </Grid>
+
+            <!-- Conteúdo -->
+            <VerticalStackLayout Grid.Row="1"
+                                 Spacing="20">
+
+                <!-- Cabeçalho explicativo -->
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Conecte seu ESP32"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="#2E7D32" />
+
+                    <Label Text="O dispositivo coletará temperatura, umidade do solo, umidade do ar e luminosidade da sua planta em tempo real."
+                           FontSize="14"
+                           TextColor="#5C715E" />
+                </VerticalStackLayout>
+
+                <!-- Instruções visuais: onde encontrar o código -->
+                <Border BackgroundColor="#EAF5EA"
+                        Stroke="#775b46"
+                        StrokeShape="RoundRectangle 14"
+                        Padding="14">
+
+                    <VerticalStackLayout Spacing="10">
+
+                        <Label Text="Como encontrar o código?"
+                               FontSize="13"
+                               FontAttributes="Bold"
+                               TextColor="#2E4A30" />
+
+                        <Grid ColumnDefinitions="Auto, *" ColumnSpacing="10" RowDefinitions="Auto, Auto, Auto" RowSpacing="8">
+
+                            <Label Grid.Row="0" Grid.Column="0" Text="🔍" FontSize="16" TextColor="#2E7D32"/>
+                            <Label Grid.Row="0" Grid.Column="1"
+                                   Text="Localize a etiqueta adesiva colada na parte inferior do dispositivo"
+                                   FontSize="13" TextColor="#5C715E" />
+
+                            <Label Grid.Row="1" Grid.Column="0" Text="📌" FontSize="16" />
+                            <Label Grid.Row="1" Grid.Column="1"
+                                   Text="O código começa com &quot;ESP32-&quot; seguido de 4 caracteres"
+                                   FontSize="13" TextColor="#5C715E" />
+
+                            <Label Grid.Row="2" Grid.Column="0" Text="📡" FontSize="16" />
+                            <Label Grid.Row="2" Grid.Column="1"
+                                   Text="Certifique-se de que o dispositivo está ligado e conectado à rede Wi-Fi"
+                                   FontSize="13" TextColor="#5C715E" />
+                        </Grid>
+
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Campo de código -->
+                <VerticalStackLayout Spacing="4">
+
+                    <Label Text="Código do dispositivo"
+                       FontSize="13"
+                       TextColor="#2E7D32"
+                       FontAttributes="Bold" />
+
+                    <Border Stroke="#775b46"
+                        StrokeShape="RoundRectangle 12"
+                        BackgroundColor="White">
+                        <Grid ColumnDefinitions="Auto, *"
+                          Padding="12,0">
+
+                            <!-- Prefixo fixo visual -->
+                            <Label Grid.Column="0"
+                               Text="ESP32-"
+                               FontSize="15"
+                               TextColor="#5C715E"
+                               FontAttributes="Bold"
+                               VerticalOptions="Center" />
+
+                            <Entry x:Name="DeviceCodeSuffixEntry"
+                                   Grid.Column="1"
+                                   Placeholder="0001"
+                                   MaxLength="4"
+                                   Keyboard="Text"
+                                   TextColor="#5C715E"
+                                   ReturnType="Done"
+                                   TextChanged="OnDeviceCodeChanged"
+                                   Completed="OnAssociateClicked"
+                                   BackgroundColor="Transparent"
+                                   HeightRequest="52" />
+                        </Grid>
+                    </Border>
+
+                    <Label Text="Digite apenas os 4 caracteres após o &quot;ESP32-&quot;"
+                       FontSize="11"
+                       TextColor="#8A9A8C" />
+
+                    <Label x:Name="CodeErrorLabel"
+                       FontSize="12"
+                       TextColor="#C62828"
+                       IsVisible="False" />
+                </VerticalStackLayout>
+
+                <!-- Card de status de verificação (oculto até associar) -->
+                <Border x:Name="StatusCard"
+                        IsVisible="False"
+                        StrokeShape="RoundRectangle 14"
+                        Padding="14">
+
+                    <Grid ColumnDefinitions="Auto, *" ColumnSpacing="12">
+
+                        <!-- Ícone/indicador de status -->
+                        <Grid Grid.Column="0" WidthRequest="40" HeightRequest="40">
+
+                            <ActivityIndicator x:Name="StatusCheckingIndicator"
+                                                IsRunning="False"
+                                                IsVisible="False"
+                                                Color="#2E7D32"
+                                                WidthRequest="24"
+                                                HeightRequest="24"
+                                                HorizontalOptions="Center"
+                                                VerticalOptions="Center" />
+
+                            <Label x:Name="StatusIconLabel"
+                                   IsVisible="False"
+                                   FontSize="22"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center" />
+                        </Grid>
+
+                        <!-- Texto de status -->
+                        <VerticalStackLayout Grid.Column="1"
+                                              Spacing="2"
+                                              VerticalOptions="Center">
+                            <Label x:Name="StatusTitleLabel"
+                                   FontSize="14"
+                                   FontAttributes="Bold"
+                                   TextColor="#2E4A30" />
+                            <Label x:Name="StatusSubtitleLabel"
+                                   FontSize="12"
+                                   TextColor="#5C715E" />
+                        </VerticalStackLayout>
+
+                    </Grid>
+                </Border>
+
+                <!-- Erro geral -->
+                <Border x:Name="GeneralErrorBorder"
+                        IsVisible="False"
+                        BackgroundColor="#FDECEA"
+                        Stroke="#F5C2C0"
+                        StrokeShape="RoundRectangle 10"
+                        Padding="12,8">
+                    <Label x:Name="GeneralErrorLabel"
+                       TextColor="#C62828"
+                       FontSize="13" />
+                </Border>
+
+                <!-- Botão Associar -->
+                <Button x:Name="AssociateButton"
+                        Text="Associar dispositivo"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        BackgroundColor="#2E7D32"
+                        TextColor="White"
+                        CornerRadius="12"
+                        HeightRequest="52"
+                        IsEnabled="False"
+                        Clicked="OnAssociateClicked"
+                        Margin="0,8,0,0" />
+
+                <ActivityIndicator x:Name="AssociateLoadingIndicator"
+                                    IsRunning="False"
+                                    IsVisible="False"
+                                    Color="#2E7D32" />
+
+                <!-- Botão Concluir (visível somente após associação bem-sucedida) -->
+                <Button x:Name="DoneButton"
+                        Text="Concluir"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        BackgroundColor="#2E7D32"
+                        TextColor="White"
+                        CornerRadius="12"
+                        HeightRequest="52"
+                        IsVisible="False"
+                        Clicked="OnDoneClicked" />
+
+            </VerticalStackLayout>
+
+        </Grid>
+    </ScrollView>
+</ContentPage>

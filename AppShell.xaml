@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="KaaDebug.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:Auth="clr-namespace:KaaDebug.Views.Auth"
+    xmlns:Dashboard="clr-namespace:KaaDebug.Views.Dashboard"
+    xmlns:PlantsList="clr-namespace:KaaDebug.Views.Plants"
+    xmlns:Notifications="clr-namespace:KaaDebug.Views.Notifications"
+    xmlns:Profile="clr-namespace:KaaDebug.Views.Profile"
+    Title="KaaDebug">
+    <!--
+    <ShellContent Title="Home" ContentTemplate="{DataTemplate local:MainPage}" Route="MainPage" />
+-->
+    <!-- Telas de autenticação: navegação direta -->
+    <ShellContent Route="MainPage" ContentTemplate="{DataTemplate Auth:SplashPage}" />
+    <ShellContent Route="Login" ContentTemplate="{DataTemplate Auth:LoginPage}" />
+    <ShellContent Route="Register" ContentTemplate="{DataTemplate Auth:RegisterPage}" />
+    <ShellContent Route="PasswordRecovery" ContentTemplate="{DataTemplate Auth:PasswordRecoveryPage}" />
+
+    <!-- Telas principais (pós-login) -->
+    <ShellContent Route="Dashboard" ContentTemplate="{DataTemplate Dashboard:DashboardPage}" />
+    <ShellContent Route="PlantsList" ContentTemplate="{DataTemplate PlantsList:PlantsListPage}" />
+    <ShellContent Route="RegisterPlant" ContentTemplate="{DataTemplate PlantsList:RegisterPlantPage}" />
+    <ShellContent Route="Notifications" ContentTemplate="{DataTemplate Notifications:NotificationsPage}" />
+    <ShellContent Route="Profile" ContentTemplate="{DataTemplate Profile:ProfilePage}" />
+
+</Shell>

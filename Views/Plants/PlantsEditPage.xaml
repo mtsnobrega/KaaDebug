@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KaaDebug.Views.Plants.PlantsEditPage"
+             BackgroundColor="#F4F7F4"
+             Shell.NavBarIsVisible="False"
+             Title="PlantEditPage">
+
+    <ScrollView>
+        <Grid RowDefinitions="Auto, Auto"
+          Padding="20,24,20,24"
+          RowSpacing="24">
+
+            <!-- Barra superior -->
+            <Grid Grid.Row="0"
+              ColumnDefinitions="Auto, *, Auto">
+
+                <ImageButton Grid.Column="0"
+                             Source="go_back.png"
+                             BackgroundColor="Transparent"
+                             WidthRequest="40"
+                             HeightRequest="40"
+                             Clicked="OnBackClicked"
+                             SemanticProperties.Description="Voltar" />
+
+                <Label Grid.Column="1"
+                   Text="Editar planta"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   TextColor="#2E7D32"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center" />
+                <BoxView
+                        Grid.Column="2"
+                        WidthRequest="40"
+                        Opacity="0"/>
+            </Grid>
+
+            <!-- Formulário -->
+            <VerticalStackLayout Grid.Row="1"
+                              Spacing="20">
+
+                <!-- Estado: carregando dados para pré-preencher -->
+                <VerticalStackLayout x:Name="LoadingStateLayout"
+                                  Spacing="12"
+                                  HorizontalOptions="Center"
+                                  IsVisible="True"
+                                  Margin="0,40,0,0">
+
+                    <ActivityIndicator IsRunning="True" Color="#2E7D32" HeightRequest="36" WidthRequest="36" />
+                    <Label Text="Carregando dados..." FontSize="14" TextColor="#5C715E" HorizontalOptions="Center" />
+                </VerticalStackLayout>
+
+                <!-- Estado: erro ao carregar -->
+                <VerticalStackLayout x:Name="ErrorStateLayout"
+                                  Spacing="12"
+                                  HorizontalOptions="Center"
+                                  IsVisible="False"
+                                  Margin="0,40,0,0"
+                                  Padding="24">
+
+                    <Image Source="error_icon.png" HeightRequest="64" WidthRequest="64" Aspect="AspectFit" />
+
+                    <Label Text="Não foi possível carregar os dados da planta."
+                       FontSize="14"
+                       TextColor="#5C715E"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center" />
+
+                    <Button Text="Tentar novamente"
+                        FontAttributes="Bold"
+                        BackgroundColor="#2E7D32"
+                        TextColor="White"
+                        CornerRadius="12"
+                        HeightRequest="48"
+                        WidthRequest="200"
+                        Clicked="OnRetryClicked" />
+                </VerticalStackLayout>
+
+                <!-- Conteúdo do formulário -->
+                <VerticalStackLayout x:Name="FormLayout"
+                                  Spacing="20"
+                                  IsVisible="False">
+
+                    <!-- ===== Espécie (somente leitura) ===== -->
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Espécie"
+                           FontSize="13"
+                           TextColor="#2E4A30"
+                           FontAttributes="Bold" />
+
+                        <Border Stroke="#775b46"
+                            StrokeShape="RoundRectangle 12"
+                            BackgroundColor="#F6FAF6"
+                            Padding="12,0">
+
+                            <Grid ColumnDefinitions="*, Auto" HeightRequest="52">
+
+                                <Label x:Name="SpeciesNameLabel"
+                                   Grid.Column="0"
+                                   Text="—"
+                                   FontSize="15"
+                                   TextColor="#8A9A8C"
+                                   VerticalOptions="Center" />
+
+                                <Label Grid.Column="1"
+                                   Text="🔒"
+                                   FontSize="14"
+                                   TextColor="#8A9A8C"
+                                   VerticalOptions="Center" />
+                            </Grid>
+                        </Border>
+
+                        <Label Text="A espécie não pode ser alterada após o cadastro."
+                           FontSize="11"
+                           TextColor="#8A9A8C" />
+                    </VerticalStackLayout>
+
+                    <!-- ===== Nome da planta ===== -->
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Nome da planta"
+                           FontSize="13"
+                           TextColor="#3E4A40"
+                           FontAttributes="Bold" />
+
+                        <Border Stroke="#775b46"
+                            StrokeShape="RoundRectangle 12"
+                            BackgroundColor="White">
+                            <Entry x:Name="PlantNameEntry"
+                               Placeholder="Ex: Samambaia da Sala"
+                               ReturnType="Done"
+                               TextChanged="OnPlantNameChanged"
+                               BackgroundColor="Transparent"
+                               TextColor="#5C715E"
+                               Margin="0,0,0,0"
+                               HeightRequest="48" />
+                        </Border>
+
+                        <Label x:Name="PlantNameErrorLabel"
+                           Text="Informe um nome para a planta"
+                           FontSize="12"
+                           TextColor="#C62828"
+                           IsVisible="False" />
+                    </VerticalStackLayout>
+
+                    <!-- ===== Dispositivo associado ===== -->
+                    <VerticalStackLayout Spacing="10">
+
+                        <Label Text="Dispositivo"
+                           FontSize="13"
+                           TextColor="#3E4A40"
+                           FontAttributes="Bold" />
+
+                        <!-- Card mostrando o dispositivo atual -->
+                        <Border x:Name="CurrentDeviceCard"
+                            BackgroundColor="#EAF5EA"
+                            Stroke="#775b46"
+                            StrokeShape="RoundRectangle 12"
+                            Padding="12"
+                            IsVisible="False">
+
+                            <Grid ColumnDefinitions="*, Auto" ColumnSpacing="8">
+                                <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                    <Label Text="Dispositivo atual"
+                                       FontSize="11"
+                                       TextColor="#5C715E" />
+                                    <Label x:Name="CurrentDeviceCodeLabel"
+                                       Text="ESP32-0001"
+                                       FontSize="14"
+                                       FontAttributes="Bold"
+                                       TextColor="#2E4A30" />
+                                </VerticalStackLayout>
+
+                                <Label Grid.Column="1"
+                                   Text="Remover"
+                                   FontSize="12"
+                                   TextColor="#C62828"
+                                   FontAttributes="Bold"
+                                   VerticalOptions="Center">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnRemoveDeviceTapped" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </Grid>
+                        </Border>
+
+                        <!-- Aviso de remoção pendente -->
+                        <Border x:Name="RemoveDeviceWarningBorder"
+                            IsVisible="False"
+                            BackgroundColor="#FFF8E1"
+                            Stroke="#775b46"
+                            StrokeShape="RoundRectangle 10"
+                            Padding="12,8">
+                            <Label Text="⚠️  O dispositivo será desassociado ao salvar."
+                               FontSize="12"
+                               TextColor="#7B5800" />
+                        </Border>
+
+                        <!-- Associar novo dispositivo -->
+                        <VerticalStackLayout x:Name="NewDeviceSection"
+                                             Spacing="5">
+
+                            <Label x:Name="NewDeviceSectionTitle"
+                                   Text="Associar dispositivo"
+                                   FontSize="13"
+                                   Margin="0,10,0,0"
+                                   TextColor="#3E4A40"
+                                   FontAttributes="Bold" />
+
+                            <Border Stroke="#775b46"
+                                    StrokeShape="RoundRectangle 12"
+                                    BackgroundColor="White">
+                                
+                                <Entry x:Name="NewDeviceCodeEntry"
+                                       Placeholder="Ex: ESP32-0001 (opcional)"
+                                       ReturnType="Done"
+                                       TextColor="#5C715E"
+                                       TextChanged="OnDeviceCodeChanged"
+                                       BackgroundColor="Transparent"
+                                       HeightRequest="48" />
+                            </Border>
+
+                            <Label Text="O código está impresso na etiqueta do seu dispositivo."
+                               FontSize="11"
+                               TextColor="#8A9A8C" />
+
+                            <Label x:Name="DeviceCodeErrorLabel"
+                               Text="Código de dispositivo inválido ou não encontrado."
+                               FontSize="12"
+                               TextColor="#C62828"
+                               IsVisible="False" />
+                        </VerticalStackLayout>
+
+                    </VerticalStackLayout>
+
+                    <!-- Erro geral -->
+                    <Border x:Name="GeneralErrorBorder"
+                        IsVisible="False"
+                        BackgroundColor="#FDECEA"
+                        Stroke="#F5C2C0"
+                        StrokeShape="RoundRectangle 10"
+                        Padding="12,8">
+                        <Label x:Name="GeneralErrorLabel"
+                           TextColor="#C62828"
+                           FontSize="13" />
+                    </Border>
+
+                    <!-- Botão Salvar -->
+                    <Button x:Name="SaveButton"
+                        Text="Salvar alterações"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        BackgroundColor="#2E7D32"
+                        TextColor="White"
+                        CornerRadius="12"
+                        HeightRequest="52"
+                        Clicked="OnSaveClicked"
+                        Margin="0,8,0,0" />
+
+                    <ActivityIndicator x:Name="SaveLoadingIndicator"
+                                    IsRunning="False"
+                                    IsVisible="False"
+                                    Color="#2E7D32" />
+
+                    <!-- Separador -->
+                    <BoxView HeightRequest="1"
+                             Color="#E3EFE4"
+                             Margin="0,8,0,0" />
+
+                    <!-- Zona de perigo: excluir planta -->
+                    <VerticalStackLayout Spacing="6" Margin="0,4,0,0">
+
+                        <Label Text="Zona de perigo"
+                               FontSize="13"
+                               TextColor="#C62828"
+                               FontAttributes="Bold" />
+
+                        <Label Text="A exclusão é permanente e remove todos os dados históricos desta planta."
+                               FontSize="12"
+                               TextColor="#5C715E" />
+
+                        <Button x:Name="DeleteButton"
+                                Text="Excluir planta"
+                                FontAttributes="Bold"
+                                FontSize="15"
+                                BackgroundColor="Transparent"
+                                TextColor="#C62828"
+                                BorderColor="#F5C2C0"
+                                BorderWidth="1.5"
+                                CornerRadius="12"
+                                HeightRequest="48"
+                                Clicked="OnDeleteClicked"
+                                Margin="0,4,0,0" />
+
+                        <ActivityIndicator x:Name="DeleteLoadingIndicator"
+                                        IsRunning="False"
+                                        IsVisible="False"
+                                        Color="#C62828" />
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+
+        </Grid>
+    </ScrollView>
+</ContentPage>

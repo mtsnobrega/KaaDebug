@@ -1,0 +1,725 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>KaaDebug</name>
+    </assembly>
+    <members>
+        <member name="T:KaaDebug.Converters.HealthStatusToColorConverter">
+            <summary>
+            Converte PlantHealthStatus para a cor de fundo do badge exibido no card.
+            Verde = saudável, Amarelo/laranja = atenção, Vermelho = crítico
+            (apenas crítico usa vermelho, conforme diretriz de paleta do app:
+            vermelho reservado para alertas críticos).
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Converters.HealthStatusToTextConverter">
+            <summary>
+            Converte PlantHealthStatus para o texto curto exibido no badge.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Converters.PriorityToColorConverter">
+            <summary>
+            Converte NotificationPriority para a cor do indicador (bolinha) na
+            lista de notificações.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Converters.StringNotEmptyConverter">
+            <summary>
+            Usado para esconder o Label de StatusReason quando ele é nulo/vazio
+            (plantas saudáveis não têm motivo de alerta).
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Converters.DiagnosisStatusIconConverter">
+            <summary>
+            Converte o bool IsHealthy do DiagnosisResult para o ícone exibido
+            na linha do histórico de diagnósticos.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Converters.BoolToNotificationBgConverter">
+            <summary>
+            Cor de fundo do card: branco para lidas, verde suave para não lidas.
+            Ajuda o usuário a identificar rapidamente o que ainda não viu.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Converters.BoolToNotificationStrokeConverter">
+            <summary>
+            Borda do card: cinza suave para lidas, verde para não lidas.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Converters.InverseBoolConverter">
+            <summary>
+            Inverte um bool — usado para mostrar a bolinha de "não lida"
+            (IsVisible = !IsRead).
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Converters.DateToRelativeTimeConverter">
+            <summary>
+            Converte uma DateTime para texto relativo legível pelo usuário doméstico:
+            "Agora", "Há 5 min", "Há 2h", "Ontem", "3 dias atrás", "dd/MM/yyyy".
+            Mais humano e mais util do que a data absoluta nas notificações.
+            </summary>
+        </member>
+        <member name="M:KaaDebug.Core.Interfaces.Auth.IAuthService.IsSessionValidAsync">
+            <summary>
+            Verifica se existe um token JWT salvo localmente e se ele ainda é válido.
+            Deve checar: existência do token, expiração (claim "exp") e,
+            futuramente, possibilidade de refresh automático.
+            </summary>
+        </member>
+        <member name="M:KaaDebug.Core.Interfaces.Auth.IAuthService.SaveSessionAsync(System.String)">
+            <summary>
+            Persiste o token JWT recebido após login bem-sucedido.
+            </summary>
+        </member>
+        <member name="M:KaaDebug.Core.Interfaces.Auth.IAuthService.ClearSessionAsync">
+            <summary>
+            Remove o token salvo (logout).
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Interfaces.Auth.LoginResult">
+            <summary>
+            Resultado de uma tentativa de login.
+            Modelado como objeto de resultado (em vez de lançar exceção para
+            credenciais inválidas) para diferenciar claramente erros de negócio
+            (senha errada) de erros técnicos (sem internet, servidor fora).
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Interfaces.Auth.ILoginService">
+            <summary>
+            Abstração para autenticação contra a API.
+            A implementação real (LoginService) será criada quando o endpoint
+            POST /auth/login estiver definido no backend. Até então, usar
+            FakeLoginService para desenvolvimento e testes de tela.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Interfaces.Auth.OperationResult">
+            <summary>
+            Resultado genérico de operação, usado nas etapas de recuperação de senha.
+            Evita exceptions para fluxos de erro esperados (e-mail não cadastrado,
+            código incorreto, etc).
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Interfaces.Auth.IPasswordRecoveryService">
+             <summary>
+             Abstração para o fluxo de recuperação de senha em 3 etapas:
+             1. Solicitar envio do código para o e-mail
+             2. Validar o código recebido
+             3. Definir a nova senha
+            
+             A implementação real dependerá de 3 endpoints futuros:
+               POST /auth/recovery/request-code
+               POST /auth/recovery/validate-code
+               POST /auth/recovery/reset-password
+             </summary>
+        </member>
+        <member name="M:KaaDebug.Core.Interfaces.Auth.IPasswordRecoveryService.ResetPasswordAsync(System.String,System.String,System.String)">
+            <summary>
+            Redefine a senha. O código é reenviado aqui também (e não só na
+            validação) porque, por segurança, o backend deve revalidar o código
+            no momento efetivo da troca - ele pode ter expirado entre as etapas.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Interfaces.Auth.RegisterRequest">
+            <summary>
+            Dados necessários para registrar um novo usuário.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Interfaces.Auth.IRegisterService">
+            <summary>
+            Abstração para o cadastro de novos usuários.
+            A implementação real dependerá do endpoint futuro POST /auth/register.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Interfaces.Devices.IDeviceVerificationService">
+             <summary>
+             Abstração para verificação do status de comunicação de um dispositivo
+             ESP32 após a associação, confirmando se ele está acessível na rede.
+            
+             A implementação real dependerá de um endpoint futuro, por exemplo:
+               GET /devices/{code}/status
+             que consulta o broker MQTT ou o registro de heartbeats do dispositivo.
+             </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Interfaces.Diagnostic.IDiagnosisService">
+            <summary>
+            Abstração para o envio de imagem à IA e obtenção do diagnóstico.
+            A implementação real dependerá de um endpoint futuro:
+              POST /plants/{id}/diagnosis
+            com a imagem em base64 no corpo da requisição.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Interfaces.Notifications.INotificationsService">
+            <summary>
+            Abstração para operações sobre notificações do usuário.
+            A implementação real dependerá de endpoints futuros:
+              GET    /notifications
+              PUT    /notifications/{id}/read
+              DELETE /notifications
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Interfaces.Plants.DashboardResult">
+            <summary>
+            Resultado da busca de dados do Dashboard. Usamos um result object (em
+            vez de deixar a página capturar exceções de rede diretamente) para que
+            a tela trate "erro de carregamento" de forma uniforme com as demais.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Interfaces.Plants.IDashboardService">
+            <summary>
+            Abstração para obtenção dos dados consolidados do Dashboard.
+            A implementação real dependerá de um endpoint futuro, por exemplo:
+              GET /dashboard
+            que devolve resumo de plantas + alertas + notificações recentes
+            em uma única resposta.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Interfaces.Plants.IPlantHistoryService">
+            <summary>
+            Abstração para obtenção do histórico completo de leituras de uma planta.
+            A implementação real dependerá de um endpoint futuro:
+              GET /plants/{id}/history?period=24h|7d|30d
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Interfaces.Plants.IPlantsCatalogService">
+            <summary>
+            Abstração para o catálogo de espécies cadastradas no sistema.
+            A implementação real dependerá de um endpoint futuro, por exemplo:
+              GET /species
+            Esse catálogo é provavelmente mantido pela equipe/admin do sistema,
+            e não pelo usuário final.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Interfaces.Plants.IPlantDetailsService">
+            <summary>
+            Abstração para obtenção dos dados completos de uma planta.
+            A implementação real dependerá de um endpoint futuro, por exemplo:
+              GET /plants/{id}
+            que deve agregar: dados cadastrais, leituras atuais dos sensores +
+            histórico recente (24h), status do dispositivo, e notificações
+            relacionadas a essa planta especificamente.
+            </summary>
+        </member>
+        <member name="P:KaaDebug.Core.Interfaces.Plants.EditPlantRequest.DeviceCode">
+            <summary>
+            Código do dispositivo ESP32. Nulo = manter o dispositivo atual sem alteração.
+            String vazia = desassociar o dispositivo atual.
+            String preenchida = associar novo dispositivo (ou substituir o atual).
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Interfaces.Plants.IPlantsEditService">
+            <summary>
+            Abstração para edição e exclusão de uma planta existente.
+            A implementação real dependerá de endpoints futuros:
+              PUT  /plants/{id}
+              DELETE /plants/{id}
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Interfaces.Plants.PlantsListResult">
+            <summary>
+            Resultado da busca da lista completa de plantas do usuário.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Interfaces.Plants.IPlantsListService">
+            <summary>
+            Abstração para operações sobre o conjunto completo de plantas do usuário.
+            A implementação real dependerá de um endpoint futuro, por exemplo:
+              GET /plants
+            Diferente do IDashboardService (que traz um resumo agregado e limitado),
+            este serviço é responsável por trazer TODAS as plantas cadastradas,
+            usado na tela de Lista de Plantas.
+            </summary>
+        </member>
+        <member name="P:KaaDebug.Core.Interfaces.Plants.CreatePlantRequest.DeviceCode">
+            <summary>
+            Código do dispositivo ESP32, se o usuário optou por associar
+            um dispositivo já durante o cadastro. Nulo se for pular essa etapa.
+            </summary>
+        </member>
+        <member name="P:KaaDebug.Core.Interfaces.Plants.CreatePlantResult.PlantId">
+            <summary>Id da planta recém-criada, usado para navegar aos Detalhes.</summary>
+        </member>
+        <member name="T:KaaDebug.Core.Interfaces.Plants.IPlantsRegistrationService">
+            <summary>
+            Abstração para o cadastro de uma nova planta.
+            A implementação real dependerá de um endpoint futuro, por exemplo:
+              POST /plants
+            que deve validar o código do dispositivo (se informado) antes de
+            concluir o cadastro.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Interfaces.Plants.PlantsUserListResult">
+            <summary>
+            Resultado da busca da lista completa de plantas do usuário.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Interfaces.Plants.IPlantsUserService">
+            <summary>
+            Abstração para operações sobre o conjunto completo de plantas do usuário.
+            A implementação real dependerá de um endpoint futuro, por exemplo:
+              GET /plants
+            Diferente do IDashboardService (que traz um resumo agregado e limitado),
+            este serviço é responsável por trazer TODAS as plantas cadastradas,
+            usado na tela de Lista de Plantas.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Interfaces.Plants.IPlantTipsService">
+            <summary>
+            Abstração para obtenção das dicas de cuidados de uma planta específica.
+            A implementação real dependerá de um endpoint futuro:
+              GET /plants/{id}/care-tips
+            que retorna as informações baseadas na espécie da planta.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Interfaces.Profile.IProfileService">
+            <summary>
+            Abstração para leitura e atualização do perfil do usuário.
+            Endpoints futuros:
+              GET  /profile
+              PUT  /profile
+              POST /profile/change-password
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Models.Dashboard.PlantHealthStatus">
+            <summary>
+            Nível de saúde da planta, calculado pelo backend com base nos
+            parâmetros ideais da espécie x leituras recentes dos sensores.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Models.Dashboard.PlantSummary">
+            <summary>
+            Representação resumida de uma planta, usada em listagens (Dashboard,
+            Lista de Plantas). Não contém o histórico completo de sensores -
+            isso fica na tela de Detalhes.
+            </summary>
+        </member>
+        <member name="P:KaaDebug.Core.Models.Dashboard.PlantSummary.StatusReason">
+            <summary>
+            Texto curto explicando o motivo do status, quando não saudável.
+            Ex: "Solo seco há 2 dias". Nulo quando HealthStatus = Healthy.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Models.Dashboard.DashboardData">
+            <summary>
+            Payload agregado retornado pelo endpoint do Dashboard.
+            Agregamos no backend (em vez de fazer 3 chamadas separadas no app)
+            para reduzir round-trips em uma tela que é acessada com alta frequência.
+            </summary>
+        </member>
+        <member name="P:KaaDebug.Core.Models.Diagnostic.DiagnosisIssue.ConfidencePercent">
+            <summary>Nível de confiança da IA, de 0 a 100.</summary>
+        </member>
+        <member name="P:KaaDebug.Core.Models.Diagnostic.DiagnosisResult.Issues">
+            <summary>
+            Lista de possíveis problemas identificados pela IA, ordenados
+            por confiança decrescente. Pode ser vazia se a planta estiver saudável.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Models.Plants.SensorReadingPoint">
+            <summary>
+            Um ponto de leitura histórica de um sensor, usado para montar o
+            mini-gráfico de tendência das últimas 24h.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Models.Plants.SensorIndicator">
+            <summary>
+            Estado atual de um indicador ambiental, incluindo o histórico recente
+            (para o mini-gráfico) e se o valor está dentro da faixa ideal da espécie.
+            </summary>
+        </member>
+        <member name="P:KaaDebug.Core.Models.Plants.SensorIndicator.IsWithinIdealRange">
+            <summary>True quando CurrentValue está dentro de IdealRange.</summary>
+        </member>
+        <member name="P:KaaDebug.Core.Models.Plants.SensorIndicator.RecentHistory">
+            <summary>Últimas leituras (24h), usadas no mini-gráfico de tendência.</summary>
+        </member>
+        <member name="T:KaaDebug.Core.Models.Plants.PlantDetails">
+            <summary>
+            Payload completo exibido na tela de Detalhes da Planta - a tela
+            operacional principal do app. Reúne dados cadastrais, indicadores
+            ambientais em tempo real (com histórico recente), status do
+            dispositivo associado, e notificações relacionadas a esta planta.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Models.Plants.IdealRange">
+            <summary>
+            Faixa ideal de um parâmetro ambiental para uma espécie, usada como
+            referência para geração de alertas (ex: solo fora da faixa = alerta).
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Models.Plants.SpeciesIdealParameters">
+            <summary>
+            Conjunto completo de parâmetros ideais de monitoramento para uma espécie.
+            Esses valores são carregados automaticamente ao selecionar a espécie
+            durante o cadastro da planta, e servirão de referência para o backend
+            gerar alertas (ex: Central de Notificações) quando os sensores do ESP32
+            detectarem leituras fora dessas faixas.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Models.Plants.PlantSpecies">
+            <summary>
+            Espécie de planta previamente cadastrada no catálogo do sistema,
+            usada como referência para o cadastro de novas plantas.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Core.Models.Plants.PlantCareInfo">
+            <summary>
+            Informações completas de cuidados para uma espécie de planta.
+            Exibidas na tela de Dicas de Cuidados, acessada a partir de Detalhes.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Services.Auth.AuthService">
+            <summary>
+            Implementação de IAuthService baseada em SecureStorage do MAUI.
+            Já é funcional para a parte local (salvar/ler/limpar token e checar expiração).
+            O que ainda depende da API futura é apenas o LOGIN em si (feito na LoginPage),
+            que vai chamar um endpoint e então usar SaveSessionAsync().
+            </summary>
+        </member>
+        <member name="M:KaaDebug.Services.Auth.AuthService.IsTokenValid(System.String)">
+            <summary>
+            Decodifica o JWT localmente (sem validar assinatura, pois isso é
+            responsabilidade do backend) apenas para checar a claim "exp".
+            Requer o pacote NuGet: System.IdentityModel.Tokens.Jwt
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Services.Auth.LoginService">
+             <summary>
+             Implementação temporária de ILoginService, usada enquanto a API de
+             autenticação não está disponível. Permite testar toda a tela de Login
+             (estados de loading, erro, sucesso) sem depender do backend.
+            
+             SUBSTITUIR por uma implementação real (HttpClient -> POST /auth/login)
+             quando o endpoint existir. O contrato (ILoginService) não deve mudar,
+             então a LoginPage não precisará de nenhuma alteração nesse momento.
+             </summary>
+        </member>
+        <member name="T:KaaDebug.Services.Auth.PasswordRecoveryService">
+             <summary>
+             Implementação temporária de IPasswordRecoveryService, para desenvolvimento
+             e testes da tela enquanto a API não existe.
+            
+             Código de teste fixo: 123456 (qualquer e-mail é aceito na etapa 1).
+            
+             SUBSTITUIR pela implementação real (HttpClient) quando os endpoints
+             de recuperação de senha estiverem disponíveis no backend.
+             </summary>
+        </member>
+        <member name="T:KaaDebug.Services.Auth.RegisterService">
+             <summary>
+             Implementação temporária de IRegisterService, para desenvolvimento e
+             testes da tela enquanto a API de cadastro não existe.
+            
+             Simula a regra de negócio "e-mail já cadastrado" para um endereço fixo,
+             permitindo testar esse cenário de erro na tela.
+            
+             SUBSTITUIR pela implementação real (HttpClient -> POST /auth/register)
+             quando o endpoint estiver disponível.
+             </summary>
+        </member>
+        <member name="T:KaaDebug.Services.Devices.DeviceVerificationService">
+             <summary>
+             Implementação temporária de IDeviceVerificationService, para
+             desenvolvimento e testes da tela enquanto o endpoint de status
+             do dispositivo não existe.
+            
+             Regras de teste:
+               "ESP32-0001" → Online  (dispositivo ativo)
+               "ESP32-0002" → Offline (dispositivo registrado mas sem heartbeat recente)
+               qualquer outro → NotFound (código não registrado no sistema)
+            
+             SUBSTITUIR pela implementação real (HttpClient -> GET /devices/{code}/status)
+             quando o endpoint estiver disponível.
+             </summary>
+        </member>
+        <member name="T:KaaDebug.Services.Notifications.NotificationsService">
+             <summary>
+             Implementação temporária de INotificationsService.
+             Cobre todos os cenários visuais: alta/média/baixa prioridade,
+             lidas e não lidas, múltiplas plantas.
+            
+             SUBSTITUIR pela implementação real (HttpClient) quando os endpoints
+             estiverem disponíveis.
+             </summary>
+        </member>
+        <member name="T:KaaDebug.Services.Plants.DashboardService">
+             <summary>
+             Implementação temporária de IDashboardService, para desenvolvimento e
+             testes da tela enquanto o endpoint agregado não existe.
+            
+             Por padrão devolve um cenário com 3 plantas em estados diferentes
+             (saudável, atenção, crítico) e 2 notificações, para validar visualmente
+             todos os estados do Dashboard. Para testar o estado vazio (usuário sem
+             plantas), troque o construtor para simulateEmptyState: true.
+            
+             SUBSTITUIR pela implementação real (HttpClient -> GET /dashboard)
+             quando o endpoint estiver disponível.
+             </summary>
+        </member>
+        <member name="T:KaaDebug.Services.Plants.PlantHistoryService">
+             <summary>
+             Implementação temporária de IPlantHistoryService.
+             Gera leituras sintéticas com variação aleatória realista para cada
+             sensor, cobrindo os 3 períodos (24h, 7d, 30d).
+            
+             SUBSTITUIR pela implementação real (HttpClient -> GET /plants/{id}/history)
+             quando o endpoint estiver disponível.
+             </summary>
+        </member>
+        <member name="T:KaaDebug.Services.Plants.PlantsCatalogService">
+             <summary>
+             Implementação temporária de ISpeciesService, para desenvolvimento e
+             testes da tela enquanto o endpoint GET /species não existe.
+            
+             SUBSTITUIR pela implementação real (HttpClient) quando o endpoint
+             estiver disponível.
+             </summary>
+              ISpeciesService
+        </member>
+        <member name="T:KaaDebug.Services.Plants.PlantDetailsService">
+             <summary>
+             Implementação temporária de IPlantDetailsService, para desenvolvimento
+             e testes da tela enquanto o endpoint GET /plants/{id} não existe.
+            
+             Gera um histórico sintético de 24h (leitura a cada hora) para cada
+             sensor, permitindo validar visualmente os mini-gráficos de tendência.
+            
+             SUBSTITUIR pela implementação real (HttpClient) quando o endpoint
+             estiver disponível.
+             </summary>
+        </member>
+        <member name="M:KaaDebug.Services.Plants.PlantDetailsService.BuildIndicator(KaaDebug.Core.Models.Plants.SensorType,System.Double,System.String,System.Double,System.Double,System.Double,System.Double)">
+            <summary>
+            Gera um indicador com histórico sintético de 24h, interpolando
+            linearmente entre um valor inicial e final (suficiente para
+            visualizar a tendência no mini-gráfico).
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Services.Plants.PlantsEditService">
+             <summary>
+             Implementação temporária de IPlantEditService, para desenvolvimento
+             e testes da tela enquanto os endpoints PUT/DELETE /plants/{id}
+             não existem.
+            
+             Código de dispositivo inválido de teste: "ESP32-XXXX" → retorna erro.
+             Qualquer outro código (ou nulo/vazio) é aceito.
+            
+             SUBSTITUIR pela implementação real (HttpClient) quando os endpoints
+             estiverem disponíveis.
+             </summary>
+        </member>
+        <member name="T:KaaDebug.Services.Plants.PlantsListService">
+             <summary>
+             Implementação temporária de IPlantsService, para desenvolvimento e
+             testes da tela enquanto o endpoint GET /plants não existe.
+            
+             Devolve 5 plantas com status variados, consistente com o
+             TotalPlants = 5 usado no FakeDashboardService.
+            
+             SUBSTITUIR pela implementação real (HttpClient) quando o endpoint
+             estiver disponível.
+             </summary>
+        </member>
+        <member name="T:KaaDebug.Services.Plants.PlantsRegistrationService">
+             <summary>
+             Implementação temporária de IPlantRegistrationService, para
+             desenvolvimento e testes da tela enquanto o endpoint POST /plants
+             não existe.
+            
+             Código de dispositivo de teste válido: "ESP32-0001"
+             Qualquer outro código informado retorna erro de validação.
+            
+             SUBSTITUIR pela implementação real (HttpClient) quando o endpoint
+             estiver disponível.
+             </summary>
+        </member>
+        <member name="T:KaaDebug.Services.Plants.PlantTipsService">
+            <summary>
+            Implementação temporária de IBudflowService.
+            Retorna dicas fixas de Suculenta, independente do plantId,
+            para validar o layout da tela.
+            SUBSTITUIR pela implementação real quando o endpoint existir.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Services.Plants.PlantsUserService">
+             <summary>
+             Implementação temporária de IPlantsService, para desenvolvimento e
+             testes da tela enquanto o endpoint GET /plants não existe.
+            
+             Devolve 5 plantas com status variados, consistente com o
+             TotalPlants = 5 usado no FakeDashboardService.
+            
+             SUBSTITUIR pela implementação real (HttpClient) quando o endpoint
+             estiver disponível.
+             </summary>
+        </member>
+        <member name="T:KaaDebug.Simulation.AppScenarioSimulator">
+             <summary>
+             Popula o InMemoryDataStore com um cenário completo e realista,
+             simulando o ciclo de vida de um usuário desde o cadastro até o
+             monitoramento ativo de múltiplas plantas com dispositivos IoT.
+            
+             O cenário cobre:
+               ✅ Usuário cadastrado e autenticado
+               ✅ 4 plantas com espécies diferentes
+               ✅ 3 dispositivos (1 online, 1 offline, 1 não associado)
+               ✅ 30 dias de histórico de leituras por sensor por planta
+               ✅ Status variados: saudável, atenção, crítico
+               ✅ Notificações em todos os níveis de prioridade (lidas e não lidas)
+               ✅ Histórico de diagnósticos de IA
+               ✅ Uma planta SEM dispositivo (para testar o fluxo de associação)
+            
+             USO: chamar Initialize() uma vez, no MauiProgram.cs,
+             antes de registrar os SimulatedXxxServices no DI.
+             </summary>
+        </member>
+        <member name="M:KaaDebug.Simulation.AppScenarioSimulator.GenerateFakeJwt">
+            <summary>
+            JWT fake com expiração em 2099 — suficiente para que o AuthService
+            local valide como "sessão ativa" e dirija o usuário ao Dashboard.
+            Não é um token real assinado; serve apenas para o fluxo da Splash.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Simulation.InMemoryDataStore">
+             <summary>
+             Banco de dados em memória compartilhado por todos os serviços simulados.
+             Representa o estado completo do sistema para um usuário de teste,
+             desde o cadastro até o monitoramento das plantas.
+            
+             É um singleton: todos os SimulatedXxxService leem e escrevem aqui,
+             garantindo consistência entre telas (ex: planta cadastrada aparece
+             na lista, notificações refletem o estado dos sensores, etc).
+            
+             NÃO mexe em nenhum FakeService já existente.
+             </summary>
+        </member>
+        <member name="T:KaaDebug.Simulation.AppScenarioSimulator_TokenHelper">
+            <summary>Helper interno para geração do token fake compartilhado.</summary>
+        </member>
+        <member name="M:KaaDebug.Views.Auth.LoginPage.OnAnyFieldChanged(System.Object,Microsoft.Maui.Controls.TextChangedEventArgs)">
+            <summary>
+            Limpa mensagens de erro conforme o usuário digita, evitando que
+            erros antigos fiquem visíveis enquanto ele corrige os dados.
+            </summary>
+        </member>
+        <member name="M:KaaDebug.Views.Auth.LoginPage.ValidateFields">
+            <summary>
+            Validação local dos campos antes de chamar a API.
+            Evita requisições desnecessárias para erros óbvios (campo vazio,
+            formato de e-mail incorreto).
+            </summary>
+        </member>
+        <member name="M:KaaDebug.Views.Auth.PasswordRecoveryPage.MaskEmail(System.String)">
+            <summary>
+            Mascara parte do e-mail por privacidade visual, ex: "jo***@gmail.com"
+            </summary>
+        </member>
+        <member name="M:KaaDebug.Views.Auth.PasswordRecoveryPage.StartResendCooldown">
+            <summary>
+            Inicia cooldown de 60s antes de permitir novo reenvio,
+            evitando spam de solicitações de código.
+            </summary>
+        </member>
+        <member name="M:KaaDebug.Views.Auth.RegisterPage.ShowSuccessAndRedirectToLoginAsync">
+            <summary>
+            Conforme o fluxo definido: após concluir o cadastro, o usuário é
+            direcionado para o Login (não há login automático nesta etapa).
+            </summary>
+        </member>
+        <member name="M:KaaDebug.Views.Auth.SplashPage.InitializeAppAsync">
+            <summary>
+            Executa as verificações iniciais do app (sessão, preferências locais)
+            e direciona o usuário para a tela correta.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Views.Controls.IndicatorsCardPage">
+             Card reutilizável que representa um único indicador ambiental
+             (umidade do solo, umidade do ar, temperatura ou luminosidade) dentro
+             do carrossel horizontal da tela de Detalhes da Planta.
+            
+             Centralizamos aqui a lógica de:
+             - Ícone/rótulo conforme o tipo de sensor
+             - Cor de status (dentro/fora da faixa ideal)
+             - Geração do mini-gráfico de tendência (Microcharts.Maui)
+             para evitar duplicar XAML/lógica 4 vezes na tela principal.
+        </member>
+        <member name="M:KaaDebug.Views.Controls.IndicatorsCardPage.SetIndicator(KaaDebug.Core.Models.Plants.SensorIndicator)">
+            <summary>
+            Ponto único de entrada: popula todo o card a partir de um SensorIndicator.
+            </summary>
+        </member>
+        <member name="M:KaaDebug.Views.Notifications.NotificationsPage.RenderNotifications(System.Collections.Generic.List{KaaDebug.Core.Models.Dashboard.NotificationSummary})">
+            <summary>
+            Agrupa as notificações por período (Hoje / Esta semana / Anteriores)
+            para facilitar a leitura — padrão adotado por apps como Gmail e iMessage.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Views.Notifications.NotificationGroup">
+            <summary>
+            Grupo de notificações para exibição agrupada no CollectionView.
+            Herda de List para ser diretamente bindável ao CollectionView.IsGrouped.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Views.Plants.PlantsDetailsPage">
+            <summary>
+            Implementa IQueryAttributable para receber o "plantId" enviado via
+            Shell.Current.GoToAsync("PlantDetails?plantId=..."), conforme o padrão
+            de navegação com parâmetros do .NET MAUI Shell.
+            </summary>
+        </member>
+        <member name="P:KaaDebug.Views.Plants.PlantsDetailsPage.PlantId">
+            <summary>
+            Recebido automaticamente pelo Shell a partir do parâmetro de rota
+            "plantId" (ver atributo QueryProperty acima).
+            </summary>
+        </member>
+        <member name="M:KaaDebug.Views.Plants.PlantsDetailsPage.PopulateIndicators(System.Collections.Generic.List{KaaDebug.Core.Models.Plants.SensorIndicator})">
+            <summary>
+            Popula o carrossel horizontal recriando os IndicatorCard a cada
+            carga. Como são poucos itens fixos (4 sensores), recriar é mais
+            simples do que reutilizar instâncias e não tem custo perceptível.
+            </summary>
+        </member>
+        <member name="F:KaaDebug.Views.Plants.PlantsEditPage._pendingDeviceRemoval">
+            <summary>
+            Flag que controla se o usuário pediu para REMOVER o dispositivo atual.
+            Verdadeiro = ao salvar, enviaremos DeviceCode = "" (string vazia)
+            para o backend, sinalizando desassociação.
+            </summary>
+        </member>
+        <member name="M:KaaDebug.Views.Plants.PlantsListPage.ApplyFiltersAndRender">
+            <summary>
+            Aplica busca por nome + filtro de status sobre a lista completa
+            (em memória, pois o volume de plantas de um usuário doméstico é
+            pequeno - não justifica busca paginada no servidor).
+            </summary>
+        </member>
+        <member name="P:KaaDebug.Views.Plants.SelectSpeciesPage.OnSpeciesPicked">
+            <summary>
+            Callback executado quando uma espécie é selecionada. Definido pela
+            página que abriu este modal (RegisterPlantPage), para receber o
+            resultado sem precisar de um sistema de mensageria mais complexo.
+            </summary>
+        </member>
+        <member name="T:KaaDebug.Resource">
+            <summary>
+            Android Resource Designer class.
+            Exposes the Android Resource designer assembly into the project Namespace.
+            </summary>
+        </member>
+        <member name="T:LineChartDrawable">
+             <summary>
+             Desenha um gráfico de linha simples usando IDrawable nativo do .NET MAUI.
+             Substitui o Microcharts.Maui, eliminando a dependência do SkiaSharp
+             que causava crash no Windows com .NET MAUI 9 / Microsoft.Maui.Controls 9.0.120+.
+            
+             Uso no XAML:
+               &lt;GraphicsView x:Name="ChartView" HeightRequest="80" /&gt;
+            
+             Uso no code-behind:
+               var drawable = new LineChartDrawable(values, idealMin, idealMax);
+               ChartView.Drawable = drawable;
+               ChartView.Invalidate();
+             </summary>
+        </member>
+    </members>
+</doc>

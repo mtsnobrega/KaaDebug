@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KaaDebug.Views.Controls.IndicatorsCardPage">
+
+    <Border BackgroundColor="White"
+            Stroke="#775b46"
+            StrokeShape="RoundRectangle 16"
+            Padding="14"
+            WidthRequest="170"
+            HeightRequest="200">
+
+        <Grid RowDefinitions="Auto, Auto, Auto, *, Auto"
+              RowSpacing="4">
+
+            <!-- Ícone + nome do indicador -->
+            <Label Grid.Row="0"
+                   x:Name="IconAndLabel"
+                   Text="💧 Umidade do solo"
+                   FontSize="12"
+                   TextColor="#2E4A30" />
+
+            <!-- Valor atual -->
+            <Label Grid.Row="1"
+                   x:Name="ValueLabel"
+                   Text="—"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   TextColor="#2E4A30" />
+
+            <!-- Badge de status -->
+            <Border Grid.Row="2"
+                    x:Name="StatusBadge"
+                    HorizontalOptions="Start"
+                    Padding="6,2"
+                    StrokeShape="RoundRectangle 6"
+                    BackgroundColor="#2E7D32">
+                <Label x:Name="StatusLabel"
+                       Text="Dentro do ideal"
+                       FontSize="10"
+                       FontAttributes="Bold"
+                       TextColor="White" />
+            </Border>
+
+            <!-- Mini-gráfico de tendência (GraphicsView nativo) -->
+            <GraphicsView x:Name="TrendChart"
+                          Grid.Row="3"
+                          HeightRequest="60"
+                          Margin="0,6,0,0" />
+
+            <!-- Faixa ideal de referência -->
+            <Label Grid.Row="4"
+                   x:Name="IdealRangeLabel"
+                   Text="Ideal: —"
+                   FontSize="10"
+                   TextColor="#8A9A8C" />
+
+        </Grid>
+    </Border>
+</ContentView>

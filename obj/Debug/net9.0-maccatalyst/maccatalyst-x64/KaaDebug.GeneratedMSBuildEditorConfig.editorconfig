@@ -1,0 +1,151 @@
+is_global = true
+build_property.EnableAotAnalyzer = 
+build_property.EnableSingleFileAnalyzer = 
+build_property.EnableTrimAnalyzer = false
+build_property.IncludeAllContentForSelfExtract = 
+build_property.TargetFramework = net9.0-maccatalyst
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = false
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = KaaDebug
+build_property.ProjectDir = C:\TCC\KaaDebug\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.EffectiveAnalysisLevelStyle = 9.0
+build_property.EnableCodeStyleSeverity = 
+
+[C:/TCC/KaaDebug/App.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = KaaDebug.App.xaml
+build_metadata.AdditionalFiles.TargetPath = App.xaml
+build_metadata.AdditionalFiles.RelativePath = App.xaml
+
+[C:/TCC/KaaDebug/AppShell.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = KaaDebug.AppShell.xaml
+build_metadata.AdditionalFiles.TargetPath = AppShell.xaml
+build_metadata.AdditionalFiles.RelativePath = AppShell.xaml
+
+[C:/TCC/KaaDebug/Resources/Styles/Colors.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = KaaDebug.Resources.Styles.Colors.xaml
+build_metadata.AdditionalFiles.TargetPath = Resources\Styles\Colors.xaml
+build_metadata.AdditionalFiles.RelativePath = Resources\Styles\Colors.xaml
+
+[C:/TCC/KaaDebug/Resources/Styles/Styles.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = KaaDebug.Resources.Styles.Styles.xaml
+build_metadata.AdditionalFiles.TargetPath = Resources\Styles\Styles.xaml
+build_metadata.AdditionalFiles.RelativePath = Resources\Styles\Styles.xaml
+
+[C:/TCC/KaaDebug/Views/Auth/LoginPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = KaaDebug.Views.Auth.LoginPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\Auth\LoginPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\Auth\LoginPage.xaml
+
+[C:/TCC/KaaDebug/Views/Auth/PasswordRecoveryPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = KaaDebug.Views.Auth.PasswordRecoveryPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\Auth\PasswordRecoveryPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\Auth\PasswordRecoveryPage.xaml
+
+[C:/TCC/KaaDebug/Views/Auth/RegisterPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = KaaDebug.Views.Auth.RegisterPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\Auth\RegisterPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\Auth\RegisterPage.xaml
+
+[C:/TCC/KaaDebug/Views/Auth/SplashPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = KaaDebug.Views.Auth.SplashPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\Auth\SplashPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\Auth\SplashPage.xaml
+
+[C:/TCC/KaaDebug/Views/Care/PlantTipsPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = KaaDebug.Views.Care.PlantTipsPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\Care\PlantTipsPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\Care\PlantTipsPage.xaml
+
+[C:/TCC/KaaDebug/Views/Controls/IndicatorsCardPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = KaaDebug.Views.Controls.IndicatorsCardPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\Controls\IndicatorsCardPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\Controls\IndicatorsCardPage.xaml
+
+[C:/TCC/KaaDebug/Views/Controls/SensorHistoryCard.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = KaaDebug.Views.Controls.SensorHistoryCard.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\Controls\SensorHistoryCard.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\Controls\SensorHistoryCard.xaml
+
+[C:/TCC/KaaDebug/Views/Dashboard/DashboardPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = KaaDebug.Views.Dashboard.DashboardPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\Dashboard\DashboardPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\Dashboard\DashboardPage.xaml
+
+[C:/TCC/KaaDebug/Views/Devices/RegisterDevicePage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = KaaDebug.Views.Devices.RegisterDevicePage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\Devices\RegisterDevicePage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\Devices\RegisterDevicePage.xaml
+
+[C:/TCC/KaaDebug/Views/Diagnostic/DiagnosisPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = KaaDebug.Views.Diagnostic.DiagnosisPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\Diagnostic\DiagnosisPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\Diagnostic\DiagnosisPage.xaml
+
+[C:/TCC/KaaDebug/Views/Notifications/NotificationsPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = KaaDebug.Views.Notifications.NotificationsPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\Notifications\NotificationsPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\Notifications\NotificationsPage.xaml
+
+[C:/TCC/KaaDebug/Views/Plants/PlantHistoryPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = KaaDebug.Views.Plants.PlantHistoryPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\Plants\PlantHistoryPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\Plants\PlantHistoryPage.xaml
+
+[C:/TCC/KaaDebug/Views/Plants/PlantsDetailsPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = KaaDebug.Views.Plants.PlantsDetailsPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\Plants\PlantsDetailsPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\Plants\PlantsDetailsPage.xaml
+
+[C:/TCC/KaaDebug/Views/Plants/PlantsEditPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = KaaDebug.Views.Plants.PlantsEditPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\Plants\PlantsEditPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\Plants\PlantsEditPage.xaml
+
+[C:/TCC/KaaDebug/Views/Plants/PlantsListPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = KaaDebug.Views.Plants.PlantsListPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\Plants\PlantsListPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\Plants\PlantsListPage.xaml
+
+[C:/TCC/KaaDebug/Views/Plants/RegisterPlantPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = KaaDebug.Views.Plants.RegisterPlantPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\Plants\RegisterPlantPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\Plants\RegisterPlantPage.xaml
+
+[C:/TCC/KaaDebug/Views/Plants/SelectSpeciesPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = KaaDebug.Views.Plants.SelectSpeciesPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\Plants\SelectSpeciesPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\Plants\SelectSpeciesPage.xaml
+
+[C:/TCC/KaaDebug/Views/Profile/ProfilePage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = KaaDebug.Views.Profile.ProfilePage.xaml
+build_metadata.AdditionalFiles.TargetPath = Views\Profile\ProfilePage.xaml
+build_metadata.AdditionalFiles.RelativePath = Views\Profile\ProfilePage.xaml

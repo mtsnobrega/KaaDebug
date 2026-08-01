@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="KaaDebug.Views.Plants.PlantHistoryPage"
+             BackgroundColor="#F4F7F4"
+             Shell.NavBarIsVisible="False"
+             Title="PlantHistoryPage">
+
+    <Grid RowDefinitions="Auto, Auto, Auto, *">
+
+        <!-- Barra superior -->
+        <Grid Grid.Row="0"
+              ColumnDefinitions="Auto, *, Auto"
+              Padding="20,30,20,30">
+
+            <ImageButton Grid.Column="0"
+                     Source="go_back.png"
+                     BackgroundColor="Transparent"
+                     WidthRequest="40"
+                     HeightRequest="40"
+                     Clicked="OnBackClicked"
+                     SemanticProperties.Description="Voltar" />
+
+            <VerticalStackLayout Grid.Column="1" Spacing="0" HorizontalOptions="Center">
+                <Label Text="Histórico"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="#2E7D32"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
+                <Label x:Name="PlantNameSubtitleLabel"
+                       FontSize="12"
+                       TextColor="#8A9A8C"
+                       HorizontalOptions="Center" />
+            </VerticalStackLayout>
+
+            <BoxView Grid.Column="3"
+                     WidthRequest="40"
+                     Opacity="0"/>
+        </Grid>
+
+        <!-- Seletor de período -->
+        <Grid Grid.Row="1"
+          ColumnDefinitions="*, *, *"
+          ColumnSpacing="8"
+          Padding="20,8,20,0">
+
+            <Border x:Name="Period24hBorder"
+                Grid.Column="0"
+                StrokeShape="RoundRectangle 10"
+                BackgroundColor="#2E7D32"
+                Stroke="#2E7D32"
+                Padding="0,8">
+                <Label x:Name="Period24hLabel" Text="24 horas" FontSize="13"
+                   FontAttributes="Bold" TextColor="White" HorizontalOptions="Center" />
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnPeriod24hTapped" />
+                </Border.GestureRecognizers>
+            </Border>
+
+            <Border x:Name="Period7dBorder"
+                Grid.Column="1"
+                StrokeShape="RoundRectangle 10"
+                BackgroundColor="White"
+                Stroke="#D7E5D9"
+                Padding="0,8">
+                <Label x:Name="Period7dLabel" Text="7 dias" FontSize="13"
+                   FontAttributes="Bold" TextColor="#5C715E" HorizontalOptions="Center" />
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnPeriod7dTapped" />
+                </Border.GestureRecognizers>
+            </Border>
+
+            <Border x:Name="Period30dBorder"
+                Grid.Column="2"
+                StrokeShape="RoundRectangle 10"
+                BackgroundColor="White"
+                Stroke="#D7E5D9"
+                Padding="0,8">
+                <Label x:Name="Period30dLabel" Text="30 dias" FontSize="13"
+                   FontAttributes="Bold" TextColor="#5C715E" HorizontalOptions="Center" />
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnPeriod30dTapped" />
+                </Border.GestureRecognizers>
+            </Border>
+        </Grid>
+
+        <!-- Filtro de sensor -->
+        <ScrollView Grid.Row="2"
+                Orientation="Horizontal"
+                HorizontalScrollBarVisibility="Never"
+                Margin="20,12,20,0">
+            <HorizontalStackLayout Spacing="8">
+
+                <Border x:Name="FilterAllSensorsBorder"
+                    StrokeShape="RoundRectangle 20" Stroke="#2E7D32"
+                    BackgroundColor="#2E7D32" Padding="14,6">
+                    <Label x:Name="FilterAllSensorsLabel" Text="Todos" FontSize="12"
+                       FontAttributes="Bold" TextColor="White" />
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnFilterAllSensorsTapped" />
+                    </Border.GestureRecognizers>
+                </Border>
+
+                <Border x:Name="FilterSoilBorder"
+                    StrokeShape="RoundRectangle 20" Stroke="#D7E5D9"
+                    BackgroundColor="White" Padding="14,6">
+                    <Label x:Name="FilterSoilLabel" Text="💧 Solo" FontSize="12"
+                       FontAttributes="Bold" TextColor="#5C715E" />
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnFilterSoilTapped" />
+                    </Border.GestureRecognizers>
+                </Border>
+
+                <Border x:Name="FilterAirBorder"
+                    StrokeShape="RoundRectangle 20" Stroke="#D7E5D9"
+                    BackgroundColor="White" Padding="14,6">
+                    <Label x:Name="FilterAirLabel" Text="🌫️ Ar" FontSize="12"
+                       FontAttributes="Bold" TextColor="#5C715E" />
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnFilterAirTapped" />
+                    </Border.GestureRecognizers>
+                </Border>
+
+                <Border x:Name="FilterTempBorder"
+                    StrokeShape="RoundRectangle 20" Stroke="#D7E5D9"
+                    BackgroundColor="White" Padding="14,6">
+                    <Label x:Name="FilterTempLabel" Text="🌡️ Temp." FontSize="12"
+                       FontAttributes="Bold" TextColor="#5C715E" />
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnFilterTempTapped" />
+                    </Border.GestureRecognizers>
+                </Border>
+
+                <Border x:Name="FilterLuxBorder"
+                    StrokeShape="RoundRectangle 20" Stroke="#D7E5D9"
+                    BackgroundColor="White" Padding="14,6">
+                    <Label x:Name="FilterLuxLabel" Text="☀️ Luz" FontSize="12"
+                       FontAttributes="Bold" TextColor="#5C715E" />
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnFilterLuxTapped" />
+                    </Border.GestureRecognizers>
+                </Border>
+
+            </HorizontalStackLayout>
+        </ScrollView>
+
+        <!-- Conteúdo -->
+        <RefreshView x:Name="HistoryRefreshView"
+                 Grid.Row="3"
+                 RefreshColor="#2E7D32"
+                 Refreshing="OnRefreshing"
+                 Margin="0,12,0,0">
+            <ScrollView>
+                <Grid Padding="20,0,20,24">
+
+                    <!-- Estado: carregando -->
+                    <VerticalStackLayout x:Name="LoadingStateLayout"
+                                      Spacing="12" VerticalOptions="Center"
+                                      HorizontalOptions="Center" IsVisible="True" HeightRequest="300">
+                        <ActivityIndicator IsRunning="True" Color="#2E7D32" HeightRequest="36" WidthRequest="36" />
+                        <Label Text="Carregando histórico..." FontSize="14" TextColor="#5C715E" />
+                    </VerticalStackLayout>
+
+                    <!-- Estado: erro -->
+                    <VerticalStackLayout x:Name="ErrorStateLayout"
+                                      Spacing="12" VerticalOptions="Center"
+                                      HorizontalOptions="Center" IsVisible="False"
+                                      HeightRequest="300" Padding="24">
+                        <Image Source="error_icon.png" HeightRequest="64" WidthRequest="64" Aspect="AspectFit" />
+                        <Label Text="Não foi possível carregar o histórico"
+                           FontSize="15" FontAttributes="Bold" TextColor="#2E7D32"
+                           HorizontalOptions="Center" HorizontalTextAlignment="Center" />
+                        <Button Text="Tentar novamente" FontAttributes="Bold"
+                            BackgroundColor="#2E7D32" TextColor="White"
+                            CornerRadius="12" HeightRequest="48" WidthRequest="200"
+                            Clicked="OnRetryClicked" />
+                    </VerticalStackLayout>
+
+                    <!-- Gráficos: populados dinamicamente no code-behind -->
+                    <VerticalStackLayout x:Name="ChartsLayout"
+                                      Spacing="16"
+                                      IsVisible="False" />
+
+                </Grid>
+            </ScrollView>
+        </RefreshView>
+
+    </Grid>
+</ContentPage>
