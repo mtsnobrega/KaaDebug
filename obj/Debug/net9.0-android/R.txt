@@ -3195,11 +3195,12 @@ int drawable notification_tile_bg 0x7f0700ee
 int drawable notify_panel_notification_icon_bg 0x7f0700ef
 int drawable orquidea 0x7f0700f0
 int drawable samambaia 0x7f0700f1
-int drawable success_check_icon 0x7f0700f2
-int drawable suculenta 0x7f0700f3
-int drawable test_level_drawable 0x7f0700f4
-int drawable tooltip_frame_dark 0x7f0700f5
-int drawable tooltip_frame_light 0x7f0700f6
+int drawable sprout 0x7f0700f2
+int drawable success_check_icon 0x7f0700f3
+int drawable suculenta 0x7f0700f4
+int drawable test_level_drawable 0x7f0700f5
+int drawable tooltip_frame_dark 0x7f0700f6
+int drawable tooltip_frame_light 0x7f0700f7
 int id ALT 0x7f080000
 int id BOTTOM_END 0x7f080001
 int id BOTTOM_START 0x7f080002

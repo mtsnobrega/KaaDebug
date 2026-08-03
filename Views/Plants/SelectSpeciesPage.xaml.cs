@@ -20,6 +20,7 @@ public partial class SelectSpeciesPage : ContentPage
     {
         InitializeComponent();
         _speciesService = speciesService;
+        NavigationPage.SetHasNavigationBar(this, false);
     }
 
     protected override async void OnAppearing()

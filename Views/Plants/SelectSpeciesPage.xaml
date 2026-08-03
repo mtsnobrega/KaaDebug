@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="KaaDebug.Views.Plants.SelectSpeciesPage"
              xmlns:models="clr-namespace:KaaDebug.Core.Models.Plants"
-             Shell.NavBarIsVisible="True"
+             Shell.NavBarIsVisible="False"
              BackgroundColor="#F4F7F4"
              Title="SelectSpeciesPage">
 
@@ -26,12 +26,12 @@
             </Label>
 
             <Label Grid.Column="1"
-               Text="Selecionar espécie"
-               FontSize="16"
-               FontAttributes="Bold"
-               TextColor="#2E7D32"
-               HorizontalOptions="Center"
-               VerticalOptions="Center" />
+                   Text="Selecionar espécie"
+                   FontSize="16"
+                   FontAttributes="Bold"
+                   TextColor="#2E7D32"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center" />
 
         </Grid>
 

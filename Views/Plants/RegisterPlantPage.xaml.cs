@@ -29,6 +29,8 @@ public partial class RegisterPlantPage : ContentPage
         selectPage.OnSpeciesPicked = OnSpeciesPicked;
 
         await Navigation.PushModalAsync(new NavigationPage(selectPage));
+        //await Navigation.PushModalAsync(selectPage);
+
     }
 
     private void OnSpeciesPicked(PlantSpecies species)

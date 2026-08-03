@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "WPP/2OUs6FY=",
+  "dgSpecHash": "SNGWfnCNp8s=",
   "success": true,
   "projectFilePath": "C:\\TCC\\KaaDebug\\KaaDebug.csproj",
   "expectedPackageFiles": [
@@ -135,7 +135,11 @@
     "C:\\Users\\mathe\\.nuget\\packages\\xamarin.kotlinx.coroutines.core.jvm\\1.9.0.3\\xamarin.kotlinx.coroutines.core.jvm.1.9.0.3.nupkg.sha512",
     "C:\\Users\\mathe\\.nuget\\packages\\xamarin.kotlinx.serialization.core\\1.7.3.4\\xamarin.kotlinx.serialization.core.1.7.3.4.nupkg.sha512",
     "C:\\Users\\mathe\\.nuget\\packages\\xamarin.kotlinx.serialization.core.jvm\\1.7.3.4\\xamarin.kotlinx.serialization.core.jvm.1.7.3.4.nupkg.sha512",
-    "C:\\Users\\mathe\\.nuget\\packages\\microsoft.windows.sdk.net.ref\\10.0.19041.57\\microsoft.windows.sdk.net.ref.10.0.19041.57.nupkg.sha512"
+    "C:\\Users\\mathe\\.nuget\\packages\\microsoft.netcore.app.crossgen2.win-x64\\9.0.18\\microsoft.netcore.app.crossgen2.win-x64.9.0.18.nupkg.sha512",
+    "C:\\Users\\mathe\\.nuget\\packages\\microsoft.windows.sdk.net.ref\\10.0.19041.57\\microsoft.windows.sdk.net.ref.10.0.19041.57.nupkg.sha512",
+    "C:\\Users\\mathe\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\9.0.18\\microsoft.aspnetcore.app.runtime.win-x64.9.0.18.nupkg.sha512",
+    "C:\\Users\\mathe\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\9.0.18\\microsoft.windowsdesktop.app.runtime.win-x64.9.0.18.nupkg.sha512",
+    "C:\\Users\\mathe\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\9.0.18\\microsoft.netcore.app.runtime.win-x64.9.0.18.nupkg.sha512"
   ],
   "logs": []
 }

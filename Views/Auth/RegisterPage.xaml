@@ -157,7 +157,7 @@
                                TextChanged="OnAnyFieldChanged"
                                Completed="OnRegisterClicked"
                                BackgroundColor="Transparent"
-                               TextColor="#fff"
+                               TextColor="#5C715E"
                                HeightRequest="48" />
                     </Border>
 

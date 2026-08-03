@@ -11893,11 +11893,12 @@ public final class R {
     public static final int notify_panel_notification_icon_bg=0x7f0700ef;
     public static final int orquidea=0x7f0700f0;
     public static final int samambaia=0x7f0700f1;
-    public static final int success_check_icon=0x7f0700f2;
-    public static final int suculenta=0x7f0700f3;
-    public static final int test_level_drawable=0x7f0700f4;
-    public static final int tooltip_frame_dark=0x7f0700f5;
-    public static final int tooltip_frame_light=0x7f0700f6;
+    public static final int sprout=0x7f0700f2;
+    public static final int success_check_icon=0x7f0700f3;
+    public static final int suculenta=0x7f0700f4;
+    public static final int test_level_drawable=0x7f0700f5;
+    public static final int tooltip_frame_dark=0x7f0700f6;
+    public static final int tooltip_frame_light=0x7f0700f7;
   }
   public static final class id {
     public static final int ALT=0x7f080000;

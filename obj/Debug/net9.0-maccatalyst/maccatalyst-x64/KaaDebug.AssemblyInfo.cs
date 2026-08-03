@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("KaaDebug")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+48cdb64c714e2399fa8f2c6a045691d5bfd27a32")]
 [assembly: System.Reflection.AssemblyProductAttribute("KaaDebug")]
 [assembly: System.Reflection.AssemblyTitleAttribute("KaaDebug")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

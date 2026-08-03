@@ -17,9 +17,12 @@ public partial class SplashPage : ContentPage
         _authService = authService;
     }
 
+
+
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+        Debug.WriteLine("====== SPLASH PAGE APARECEU ======");
         await InitializeAppAsync();
     }
 
