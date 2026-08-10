@@ -18,6 +18,7 @@ using KaaDebug.Views.Notifications;
 using KaaDebug.Views.Plants;
 using KaaDebug.Views.Profile;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
 /*
 namespace Budflow
@@ -146,6 +147,35 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
+
+
+
+
+
+
+
+
+
+        var bffBaseUrl = new Uri("https://sua-api-bff.com/");
+
+        builder.Services.AddHttpClient<IRegisterService, RegisterService>(client =>
+        {
+            client.BaseAddress = bffBaseUrl;
+        });
+        builder.Services.AddHttpClient<IAuthService, AuthService>(client =>
+        {
+            client.BaseAddress = bffBaseUrl;
+        });
+
+
+
+
+
+
+
+
+
+
 
 #if DEBUG
         builder.Logging.AddDebug();

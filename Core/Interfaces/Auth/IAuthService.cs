@@ -25,5 +25,8 @@ namespace KaaDebug.Core.Interfaces.Auth
         /// Remove o token salvo (logout).
         /// </summary>
         Task ClearSessionAsync();
+
+
+
     }
 }

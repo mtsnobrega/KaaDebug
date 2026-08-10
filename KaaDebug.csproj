@@ -120,6 +120,7 @@
 		<!--PackageReference Include="Microcharts.Maui" Version="1.0.1" -->
 
 		<!-- Força o MAUI para a versão exigida, corrigindo o erro de downgrade -->
+		<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.10" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.120" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.120" />
 

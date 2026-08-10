@@ -1,10 +1,46 @@
 ﻿using KaaDebug.Core.Interfaces.Auth;
+using KaaDebug.Infrastructure.http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+namespace KaaDebug.Services.Auth;
+
+public class LoginService : ILoginService
+{
+    private readonly ApiClient _apiClient;
+    private readonly IAuthService _authService;
+
+    public LoginService(ApiClient apiClient, IAuthService authService)
+    {
+        _apiClient = apiClient;
+        _authService = authService;
+    }
+
+    public async Task<LoginResult> LoginAsync(string email, string password)
+    {
+        var result = await _apiClient.PostAsync<LoginResponseDto>(
+            ApiConstants.Auth.Login,
+            new { email, password });
+
+        if (!result.Success)
+            return LoginResult.Fail(result.ErrorMessage!);
+
+        await _authService.SaveSessionAsync(result.Data!.Token);
+
+        return LoginResult.Ok(result.Data.Token);
+    }
+}
+
+
+
+
+
+
+
+/*
 namespace KaaDebug.Services.Auth
 {
     /// <summary>
@@ -87,3 +123,4 @@ namespace KaaDebug.Services.Auth
     //     public string Token { get; set; } = string.Empty;
     // }
 }
+*/
