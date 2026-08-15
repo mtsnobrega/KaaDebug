@@ -148,7 +148,7 @@ public partial class RegisterPlantPage : ContentPage
 
             // Conforme o fluxo definido: Salvar ? Detalhes da Planta,
             // independentemente de ter associado dispositivo ou não.
-            await Shell.Current.GoToAsync($"PlantDetails?plantId={result.PlantId}");
+            await Shell.Current.GoToAsync($"PlantsDetails?plantId={result.PlantId}");
         }
         catch (Exception ex)
         {

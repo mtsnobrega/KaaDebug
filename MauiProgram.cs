@@ -94,6 +94,7 @@ public static class MauiProgram
 
         // Dispositivos
         services.AddSingleton<IDeviceVerificationService, DeviceVerificationService>();
+        services.AddTransient<IDeviceAssociationService, DeviceAssociationService>();
 
         // Notificações
         services.AddSingleton<INotificationsService, NotificationsService>();
@@ -133,6 +134,7 @@ public static class MauiProgram
 
         // Dispositivos
         services.AddTransient<RegisterDevicePage>();
+
 
         // Notificações
         services.AddTransient<NotificationsPage>();

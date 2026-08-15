@@ -8,21 +8,47 @@
     xmlns:PlantsList="clr-namespace:KaaDebug.Views.Plants"
     xmlns:Notifications="clr-namespace:KaaDebug.Views.Notifications"
     xmlns:Profile="clr-namespace:KaaDebug.Views.Profile"
+    Shell.NavBarIsVisible="False"
+    Shell.TabBarIsVisible="False"
     Title="KaaDebug">
     <!--
     <ShellContent Title="Home" ContentTemplate="{DataTemplate local:MainPage}" Route="MainPage" />
 -->
-    <!-- Telas de autenticação: navegação direta -->
+    <!-- Telas de autenticação: navegação direta 
     <ShellContent Route="MainPage" ContentTemplate="{DataTemplate Auth:SplashPage}" />
     <ShellContent Route="Login" ContentTemplate="{DataTemplate Auth:LoginPage}" />
     <ShellContent Route="Register" ContentTemplate="{DataTemplate Auth:RegisterPage}" />
     <ShellContent Route="PasswordRecovery" ContentTemplate="{DataTemplate Auth:PasswordRecoveryPage}" />
 
-    <!-- Telas principais (pós-login) -->
+    Telas principais (pós-login) 
     <ShellContent Route="Dashboard" ContentTemplate="{DataTemplate Dashboard:DashboardPage}" />
     <ShellContent Route="PlantsList" ContentTemplate="{DataTemplate PlantsList:PlantsListPage}" />
     <ShellContent Route="RegisterPlant" ContentTemplate="{DataTemplate PlantsList:RegisterPlantPage}" />
     <ShellContent Route="Notifications" ContentTemplate="{DataTemplate Notifications:NotificationsPage}" />
     <ShellContent Route="Profile" ContentTemplate="{DataTemplate Profile:ProfilePage}" />
+    -->
+    <!-- Telas de Autenticação e Fluxos Soltos (Fora do menu principal) -->
+    <ShellContent Route="MainPage" ContentTemplate="{DataTemplate Auth:SplashPage}" />
+    <ShellContent Route="Login" ContentTemplate="{DataTemplate Auth:LoginPage}" />
+    <ShellContent Route="Register" ContentTemplate="{DataTemplate Auth:RegisterPage}" />
+    <ShellContent Route="PasswordRecovery" ContentTemplate="{DataTemplate Auth:PasswordRecoveryPage}" />
+
+    <!-- Telas Principais da Aplicação (Com navegação estruturada) -->
+    <ShellContent Route="RegisterPlant" ContentTemplate="{DataTemplate PlantsList:RegisterPlantPage}"/>
+    <TabBar>
+        <Tab Title="Dashboard" Route="Dashboard">
+            <ShellContent ContentTemplate="{DataTemplate Dashboard:DashboardPage}" />
+        </Tab>
+        <Tab Title="Plantas" Route="PlantsList">
+            <ShellContent ContentTemplate="{DataTemplate PlantsList:PlantsListPage}" />
+        </Tab>
+        <Tab Title="Notificações" Route="Notifications">
+            <ShellContent ContentTemplate="{DataTemplate Notifications:NotificationsPage}" />
+        </Tab>
+        <Tab Title="Perfil" Route="Profile">
+            <ShellContent ContentTemplate="{DataTemplate Profile:ProfilePage}" />
+        </Tab>
+    </TabBar>
+
 
 </Shell>

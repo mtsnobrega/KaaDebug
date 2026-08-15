@@ -11,6 +11,7 @@ namespace KaaDebug.Core.Interfaces.Devices
         Checking,
         Online,
         Offline,
+        Unassociated,
         NotFound
     }
 

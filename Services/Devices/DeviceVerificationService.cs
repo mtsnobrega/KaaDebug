@@ -21,6 +21,8 @@ public class DeviceVerificationService : IDeviceVerificationService
         var result = await _apiClient.GetAsync<DeviceVerificationDto>(
             ApiConstants.Devices.Verify(deviceCode));
 
+
+       
         if (!result.Success)
             return result.StatusCode == 404
                 ? DeviceVerificationResult.Fail("Dispositivo não encontrado. Verifique o código.")
@@ -30,12 +32,41 @@ public class DeviceVerificationService : IDeviceVerificationService
         {
             "ONLINE" => DeviceVerificationStatus.Online,
             "OFFLINE" => DeviceVerificationStatus.Offline,
+            "UNASSOCIATED" => DeviceVerificationStatus.Unassociated,
             _ => DeviceVerificationStatus.NotFound
         };
+
 
         return DeviceVerificationResult.Ok(status);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 
 /// <summary>

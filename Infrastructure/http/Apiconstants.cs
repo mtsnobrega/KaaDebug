@@ -19,7 +19,7 @@ namespace KaaDebug.Infrastructure.http
 #if ANDROID
     public const string BaseUrl = "http://10.0.2.2:5000/";
 #else
-        public const string BaseUrl = "http://localhost:5000/";
+        public const string BaseUrl = "http://localhost:5160/";
 #endif
 
         public static class Auth
@@ -52,11 +52,13 @@ namespace KaaDebug.Infrastructure.http
             public static string GetCareTips(Guid id) => $"plants/{id}/care-tips";
             public static string Diagnose(Guid id) => $"plants/{id}/diagnosis";
             public static string GetDiagnoses(Guid id) => $"plants/{id}/diagnosis";
+            public static string AssociateDevice(Guid plantId) => $"plants/{plantId}/device";
         }
 
         public static class Devices
         {
             public static string Verify(string code) => $"devices/{code}/status";
+           // public static string AssociateDevice(Guid plantId) => $"plants/{plantId}/device";
         }
 
         public static class Notifications
