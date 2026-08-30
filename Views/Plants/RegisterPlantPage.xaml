@@ -81,7 +81,7 @@
                 <Border x:Name="IdealParametersCard"
                     IsVisible="False"
                     BackgroundColor="#EAF5EA"
-                    Stroke="#775b46"
+                    Stroke="#D2D6DB"
                     StrokeShape="RoundRectangle 14"
                     Padding="14">
 

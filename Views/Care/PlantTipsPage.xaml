@@ -98,7 +98,7 @@
                     <Border x:Name="CuriosityCard"
                             Margin="0,10,0,20"
                         BackgroundColor="#EAF5EA"
-                        Stroke="#775b46"
+                        Stroke="#D2D6DB"
                         StrokeShape="RoundRectangle 14"
                         Padding="14"
                         IsVisible="False">
@@ -128,7 +128,7 @@
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="models:CareTip">
                                 <Border BackgroundColor="White"
-                                    Stroke="#775b46"
+                                    Stroke="#D2D6DB"
                                     StrokeShape="RoundRectangle 14"
                                     Padding="14">
 

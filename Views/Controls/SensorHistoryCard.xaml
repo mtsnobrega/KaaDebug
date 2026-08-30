@@ -4,7 +4,7 @@
              x:Class="KaaDebug.Views.Controls.SensorHistoryCard">
     
     <Border BackgroundColor="White"
-            Stroke="#775b46"
+            Stroke="#D2D6DB"
             StrokeShape="RoundRectangle 16"
             Padding="14">
 

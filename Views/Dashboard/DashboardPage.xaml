@@ -94,7 +94,7 @@
 
                             <Border Grid.Column="0"
                                 BackgroundColor="White"
-                                Stroke="#775b46"
+                                Stroke="#D2D6DB"
                                 StrokeShape="RoundRectangle 16"
                                 Padding="16">
                                 <VerticalStackLayout Spacing="4">
@@ -113,7 +113,7 @@
 
                             <Border Grid.Column="1"
                                 BackgroundColor="White"
-                                Stroke="#775b46"
+                                Stroke="#D2D6DB"
                                 StrokeShape="RoundRectangle 16"
                                 Padding="16">
                                 <VerticalStackLayout Spacing="4">
@@ -296,7 +296,7 @@
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate x:DataType="models:NotificationSummary">
                                         <Border BackgroundColor="White"
-                                            Stroke="#775b46"
+                                            Stroke="#D2D6DB"
                                             StrokeShape="RoundRectangle 14"
                                             Padding="12,10">
 

@@ -23,10 +23,12 @@ public partial class DashboardPage : ContentPage
         // Só recarrega do zero se ainda não há dados (primeira navegação).
         // Em retornos subsequentes à tela (ex: voltar de Detalhes), evitamos
         // um loading completo - o pull-to-refresh cobre a atualização manual.
-        if (_currentData is null)
-        {
-            await LoadDashboardAsync(showFullLoading: true);
-        }
+        //if (_currentData is null)
+        //{
+        //    await LoadDashboardAsync(showFullLoading: true);
+        //}
+        await LoadDashboardAsync(showFullLoading: false);
+
     }
 
     private async void OnRetryClicked(object? sender, EventArgs e)

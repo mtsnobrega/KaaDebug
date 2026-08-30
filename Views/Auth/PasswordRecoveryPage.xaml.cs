@@ -161,6 +161,14 @@ public partial class PasswordRecoveryPage : ContentPage
             CodeErrorLabel.IsVisible = true;
             return;
         }
+#if DEBUG
+        // Código temporário para desenvolvimento
+        if (code == "123456")
+        {
+            GoToStep(Step.NewPassword);
+            return;
+        }
+#endif
 
         SetCodeStepLoading(true);
 
@@ -299,6 +307,7 @@ public partial class PasswordRecoveryPage : ContentPage
 
         try
         {
+            /*
             var code = GetOtpCode();
             var result = await _recoveryService.ResetPasswordAsync(_email, code, newPassword);
 
@@ -308,6 +317,37 @@ public partial class PasswordRecoveryPage : ContentPage
                 ResetGeneralErrorBorder.IsVisible = true;
                 return;
             }
+            */
+
+#if DEBUG
+            if (GetOtpCode() == "123456")
+            {
+                // Código temporário de desenvolvimento.
+                // Não chama o backend para validar o OTP.
+                GoToStep(Step.Success);
+                return;
+            }
+#endif
+
+            var code = GetOtpCode();
+            var result = await _recoveryService.ResetPasswordAsync(
+                _email,
+                code,
+                newPassword);
+
+            if (!result.Success)
+            {
+                ResetGeneralErrorLabel.Text =
+                    result.ErrorMessage ?? "Não foi possível redefinir a senha.";
+
+                ResetGeneralErrorBorder.IsVisible = true;
+                return;
+            }
+
+
+
+
+
 
             GoToStep(Step.Success);
         }

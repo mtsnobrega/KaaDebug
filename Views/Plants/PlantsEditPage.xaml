@@ -89,7 +89,7 @@
                            TextColor="#2E4A30"
                            FontAttributes="Bold" />
 
-                        <Border Stroke="#775b46"
+                        <Border Stroke="#D2D6DB"
                             StrokeShape="RoundRectangle 12"
                             BackgroundColor="#F6FAF6"
                             Padding="12,0">
@@ -154,7 +154,7 @@
                         <!-- Card mostrando o dispositivo atual -->
                         <Border x:Name="CurrentDeviceCard"
                             BackgroundColor="#EAF5EA"
-                            Stroke="#775b46"
+                            Stroke="#D2D6DB"
                             StrokeShape="RoundRectangle 12"
                             Padding="12"
                             IsVisible="False">
@@ -188,7 +188,7 @@
                         <Border x:Name="RemoveDeviceWarningBorder"
                             IsVisible="False"
                             BackgroundColor="#FFF8E1"
-                            Stroke="#775b46"
+                            Stroke="#D2D6DB"
                             StrokeShape="RoundRectangle 10"
                             Padding="12,8">
                             <Label Text="⚠️  O dispositivo será desassociado ao salvar."

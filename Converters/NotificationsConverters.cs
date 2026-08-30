@@ -33,7 +33,8 @@ namespace KaaDebug.Converters
             var isRead = value is true;
             return new SolidColorBrush(
                 //isRead ? Color.FromArgb("#E3EFE4") : Color.FromArgb("#A5D6A7"));
-                isRead? Color.FromArgb("#775b46") : Color.FromArgb("#775b46"));
+                //isRead? Color.FromArgb("#775b46") : Color.FromArgb("#775b46"));
+                isRead? Color.FromArgb("#D2D6DB") : Color.FromArgb("#D2D6DB"));
         }
 
         public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>

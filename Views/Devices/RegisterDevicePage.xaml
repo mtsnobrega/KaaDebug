@@ -49,7 +49,7 @@
 
                 <!-- Instruções visuais: onde encontrar o código -->
                 <Border BackgroundColor="#EAF5EA"
-                        Stroke="#775b46"
+                        Stroke="#D2D6DB"
                         StrokeShape="RoundRectangle 14"
                         Padding="14">
 

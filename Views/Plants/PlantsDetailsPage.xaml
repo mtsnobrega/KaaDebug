@@ -299,19 +299,19 @@
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate x:DataType="models:NotificationSummary">
                                         <Border BackgroundColor="White"
-                                            Stroke="#775b46"
+                                            Stroke="#D2D6DB"
                                             StrokeShape="RoundRectangle 14"
                                             Padding="12,10">
 
                                             <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="10">
 
                                                 <BoxView Grid.Column="0"
-                                                     WidthRequest="8"
-                                                     HeightRequest="8"
-                                                     CornerRadius="4"
-                                                     VerticalOptions="Start"
-                                                     Margin="0,5,0,0"
-                                                     Color="{Binding Priority, Converter={StaticResource PriorityToColorConverter}}" />
+                                                         WidthRequest="8"
+                                                         HeightRequest="8"
+                                                         CornerRadius="4"
+                                                         VerticalOptions="Start"
+                                                         Margin="0,5,0,0"
+                                                         Color="{Binding Priority, Converter={StaticResource PriorityToColorConverter}}" />
 
                                                 <Label Grid.Column="1"
                                                    Text="{Binding Message}"

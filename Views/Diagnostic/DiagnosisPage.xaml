@@ -58,7 +58,7 @@
                     <!-- Placeholder antes de capturar -->
                     <Border x:Name="ImagePlaceholderBorder"
                             BackgroundColor="#EAF5EA"
-                            Stroke="#775b46"
+                            Stroke="#D2D6DB"
                             StrokeShape="RoundRectangle 16"
                             HeightRequest="180"
                             Margin="0,10,0,10"
