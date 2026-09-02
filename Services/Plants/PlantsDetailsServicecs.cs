@@ -80,6 +80,7 @@ public class PlantDetailsService : IPlantDetailsService
         {
             "ONLINE" => DeviceConnectionStatus.Online,
             "OFFLINE" => DeviceConnectionStatus.Offline,
+            "ASSOCIATED" => DeviceConnectionStatus.Associated,
             _ => DeviceConnectionStatus.NotAssociated
         };
 

@@ -12,7 +12,7 @@ namespace KaaDebug
             InitializeComponent();
 
             
-            Routing.RegisterRoute("RegisterPlant", typeof(RegisterPlantPage));
+            //Routing.RegisterRoute("RegisterPlant", typeof(RegisterPlantPage));
             Routing.RegisterRoute("SelectSpecies", typeof(SelectSpeciesPage));
             Routing.RegisterRoute("PlantsDetails", typeof(PlantsDetailsPage));
             Routing.RegisterRoute("EditPlant", typeof(PlantsEditPage));

@@ -30,6 +30,7 @@ public class DeviceVerificationService : IDeviceVerificationService
 
         var status = result.Data!.ConnectionStatus.ToUpper() switch
         {
+            "ASSOCIATED" => DeviceVerificationStatus.Associated,
             "ONLINE" => DeviceVerificationStatus.Online,
             "OFFLINE" => DeviceVerificationStatus.Offline,
             "UNASSOCIATED" => DeviceVerificationStatus.Unassociated,

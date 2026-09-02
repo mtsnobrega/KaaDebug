@@ -145,12 +145,13 @@
 
                     <!-- ===== Dispositivo associado ===== -->
                     <VerticalStackLayout Spacing="10">
+                        <!--
 
                         <Label Text="Dispositivo"
-                           FontSize="13"
-                           TextColor="#3E4A40"
-                           FontAttributes="Bold" />
-
+                               FontSize="13"
+                               TextColor="#3E4A40"
+                               FontAttributes="Bold" />
+                            -->
                         <!-- Card mostrando o dispositivo atual -->
                         <Border x:Name="CurrentDeviceCard"
                             BackgroundColor="#EAF5EA"
@@ -196,10 +197,10 @@
                                TextColor="#7B5800" />
                         </Border>
 
-                        <!-- Associar novo dispositivo -->
+                        <!-- Associar novo dispositivo 
                         <VerticalStackLayout x:Name="NewDeviceSection"
                                              Spacing="5">
-
+               
                             <Label x:Name="NewDeviceSectionTitle"
                                    Text="Associar dispositivo"
                                    FontSize="13"
@@ -230,6 +231,7 @@
                                TextColor="#C62828"
                                IsVisible="False" />
                         </VerticalStackLayout>
+                        -->
 
                     </VerticalStackLayout>
 

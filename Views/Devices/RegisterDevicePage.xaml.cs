@@ -68,8 +68,83 @@ public partial class RegisterDevicePage : ContentPage
 
     private async Task PerformAssociationAsync(string fullCode)
     {
-        SetLoadingState(true);
 
+        try
+        {
+            // PASSO 1: Verifica se o dispositivo existe e está disponível
+            var verifyResult = await _verificationService.VerifyDeviceAsync(fullCode);
+
+            if (!verifyResult.Success)
+            {
+                ShowError(
+                    verifyResult.ErrorMessage ??
+                    "Não foi possível verificar o dispositivo.");
+
+                return;
+            }
+
+            // Dispositivo não encontrado
+            if (verifyResult.Status == DeviceVerificationStatus.NotFound)
+            {
+                ShowStatusCard(
+                    checking: false,
+                    status: DeviceVerificationStatus.NotFound);
+
+                return;
+            }
+
+            // Dispositivo encontrado, mas offline
+            if (verifyResult.Status == DeviceVerificationStatus.Offline)
+            {
+                ShowStatusCard(
+                    checking: false,
+                    status: DeviceVerificationStatus.Offline);
+
+                ShowError(
+                    "O dispositivo está offline. Ligue o dispositivo e tente novamente.");
+
+                return;
+            }
+
+            // PASSO 2: Só associa se estiver ONLINE
+            var associationResult =
+                await _associationService.AssociateAsync(_plantId!, fullCode);
+
+            if (!associationResult.Success)
+            {
+                ShowError(
+                    associationResult.ErrorMessage ??
+                    "Não foi possível associar o dispositivo.");
+
+                return;
+            }
+            SetLoadingState(false);
+
+            // PASSO 3: Associação concluída
+            ShowStatusCard(
+                checking: false,
+                status: DeviceVerificationStatus.Online);
+
+            _associationDone = true;
+
+            AssociateButton.IsVisible = false;
+            DoneButton.IsVisible = true;
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(
+                $"Erro ao associar dispositivo: {ex}");
+
+            ShowError(
+                "Ocorreu um erro inesperado. Tente novamente.");
+        }
+        finally
+        {
+            SetLoadingState(false);
+        }
+
+        SetLoadingState(true);
+        /*
         try
         {
             // PASSO 1: Tenta "tomar posse" (Associar) o dispositivo primeiro.
@@ -132,6 +207,7 @@ public partial class RegisterDevicePage : ContentPage
                 SetLoadingState(false);
             }
         }
+        */
 
 
 
@@ -227,6 +303,13 @@ public partial class RegisterDevicePage : ContentPage
                 StatusIconLabel.Text = "🔗";
                 StatusTitleLabel.Text = "Dispositivo livre";
                 StatusSubtitleLabel.Text = "O ESP32 está conectado à rede e pronto para ser associado.";
+                break;
+
+            case DeviceVerificationStatus.Associated:
+                ApplyStatusCardTheme("#E3F2FD", "#90CAF9");
+                StatusIconLabel.Text = "🔗";
+                StatusTitleLabel.Text = "Dispositivo livre";
+                StatusSubtitleLabel.Text = "O ESP32 não pode ser utilizado em mais de uma planta";
                 break;
 
             default: // Qualquer outra coisa, ou NotFound

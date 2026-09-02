@@ -9,6 +9,7 @@ namespace KaaDebug.Core.Interfaces.Devices
     public enum DeviceVerificationStatus
     {
         Checking,
+        Associated,
         Online,
         Offline,
         Unassociated,

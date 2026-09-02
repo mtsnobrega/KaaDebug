@@ -115,7 +115,8 @@ public partial class DashboardPage : ContentPage
 
     private async void OnAddPlantClicked(object? sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync("RegisterPlant");
+        //await Shell.Current.GoToAsync("RegisterPlant");
+        await Shell.Current.GoToAsync("//RegisterPlant");
     }
 
     // ===================== NAVEGAÇÃO: NOTIFICAÇÕES =====================

@@ -95,14 +95,14 @@ public partial class PlantsEditPage : ContentPage
             CurrentDeviceCard.IsVisible = true;
 
             // Quando já tem dispositivo, o campo "novo" fica como "substituir"
-            NewDeviceSectionTitle.Text = "Substituir por outro dispositivo (opcional)";
-            NewDeviceCodeEntry.Placeholder = "Código do novo dispositivo (opcional)";
+            //NewDeviceSectionTitle.Text = "Substituir por outro dispositivo (opcional)";
+            //NewDeviceCodeEntry.Placeholder = "Código do novo dispositivo (opcional)";
         }
         else
         {
             CurrentDeviceCard.IsVisible = false;
-            NewDeviceSectionTitle.Text = "Associar dispositivo (opcional)";
-            NewDeviceCodeEntry.Placeholder = "Ex: ESP32-0001 (opcional)";
+            //NewDeviceSectionTitle.Text = "Associar dispositivo (opcional)";
+            //NewDeviceCodeEntry.Placeholder = "Ex: ESP32-0001 (opcional)";
         }
 
         RemoveDeviceWarningBorder.IsVisible = false;
@@ -127,8 +127,8 @@ public partial class PlantsEditPage : ContentPage
 
     private void OnDeviceCodeChanged(object? sender, TextChangedEventArgs e)
     {
-        if (DeviceCodeErrorLabel.IsVisible)
-            DeviceCodeErrorLabel.IsVisible = false;
+       // if (DeviceCodeErrorLabel.IsVisible)
+         //   DeviceCodeErrorLabel.IsVisible = false;
     }
 
     private void OnRemoveDeviceTapped(object? sender, EventArgs e)
@@ -140,8 +140,8 @@ public partial class PlantsEditPage : ContentPage
         RemoveDeviceWarningBorder.IsVisible = true;
 
         // Muda o rótulo da seção para indicar que agora é "associar novo"
-        NewDeviceSectionTitle.Text = "Associar novo dispositivo (opcional)";
-        NewDeviceCodeEntry.Placeholder = "Ex: ESP32-0001 (opcional)";
+        //NewDeviceSectionTitle.Text = "Associar novo dispositivo (opcional)";
+        //NewDeviceCodeEntry.Placeholder = "Ex: ESP32-0001 (opcional)";
     }
 
     // ===================== SALVAR =====================
@@ -170,6 +170,7 @@ public partial class PlantsEditPage : ContentPage
 
         try
         {
+            /*
             // Lógica de resolução do DeviceCode enviado ao backend:
             // - Remoção pendente + sem novo código = "" (desassociar)
             // - Novo código digitado = novo código (associar/substituir)
@@ -179,7 +180,7 @@ public partial class PlantsEditPage : ContentPage
             var newCode = NewDeviceCodeEntry.Text?.Trim();
             if (!string.IsNullOrEmpty(newCode))
             {
-                resolvedDeviceCode = newCode;         // substituir/associar
+                //resolvedDeviceCode = newCode;         // substituir/associar
             }
             else if (_pendingDeviceRemoval)
             {
@@ -188,7 +189,24 @@ public partial class PlantsEditPage : ContentPage
             else
             {
                 resolvedDeviceCode = null;            // sem alteração
+            }*/
+
+            string? resolvedDeviceCode = null;
+
+            if (_pendingDeviceRemoval)
+            {
+                resolvedDeviceCode = string.Empty;
             }
+
+            System.Diagnostics.Debug.WriteLine("========== UPDATE PLANT ==========");
+            System.Diagnostics.Debug.WriteLine($"PENDING REMOVAL: {_pendingDeviceRemoval}");
+            System.Diagnostics.Debug.WriteLine($"DEVICE CODE ENVIADO: '{resolvedDeviceCode}'");
+            System.Diagnostics.Debug.WriteLine($"PLANT ID: {_plantId}");
+            System.Diagnostics.Debug.WriteLine($"PLANT NAME: '{PlantNameEntry.Text}'");
+            System.Diagnostics.Debug.WriteLine("==================================");
+
+
+
 
             var request = new EditPlantRequest
             {
@@ -204,8 +222,8 @@ public partial class PlantsEditPage : ContentPage
                 // Erro de dispositivo: destaca o campo de código, não o erro geral
                 if (result.ErrorMessage?.Contains("dispositivo") == true)
                 {
-                    DeviceCodeErrorLabel.Text = result.ErrorMessage;
-                    DeviceCodeErrorLabel.IsVisible = true;
+                   // DeviceCodeErrorLabel.Text = result.ErrorMessage;
+                    //DeviceCodeErrorLabel.IsVisible = true;
                 }
                 else
                 {
@@ -236,7 +254,7 @@ public partial class PlantsEditPage : ContentPage
         SaveLoadingIndicator.IsRunning = isLoading;
 
         PlantNameEntry.IsEnabled = !isLoading;
-        NewDeviceCodeEntry.IsEnabled = !isLoading;
+        //NewDeviceCodeEntry.IsEnabled = !isLoading;
         DeleteButton.IsEnabled = !isLoading;
     }
 

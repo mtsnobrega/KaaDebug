@@ -47,6 +47,7 @@ namespace KaaDebug.Core.Models.Plants
     {
         Online,
         Offline,
+        Associated,
         NotAssociated
     }
 

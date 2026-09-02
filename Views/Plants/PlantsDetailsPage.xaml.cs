@@ -158,12 +158,22 @@ public partial class PlantsDetailsPage : ContentPage
 
         switch (device.ConnectionStatus)
         {
-            case DeviceConnectionStatus.Online:
+            case DeviceConnectionStatus.Associated:
                 DeviceStatusTitleLabel.Text = "Dispositivo conectado";
                 DeviceStatusDot.Color = Color.FromArgb("#2E7D32");
                 DeviceStatusSubtitleLabel.Text = device.LastReadingAt is { } lastReading
                     ? $"Última leitura há {FormatElapsed(lastReading)}"
                     : "Aguardando primeira leitura";
+                break;
+
+            case DeviceConnectionStatus.Online:
+                DeviceStatusTitleLabel.Text = "Dispositivo disponível";
+                DeviceStatusDot.Color = Color.FromArgb("#2E7D32");
+
+                DeviceStatusSubtitleLabel.Text = "Dispositivo conectado e disponível para associação";
+
+                AssociateDeviceButton.IsVisible = true;
+
                 break;
 
             case DeviceConnectionStatus.Offline:
@@ -273,6 +283,9 @@ public partial class PlantsDetailsPage : ContentPage
 
     private async void OnBackClicked(object? sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync("..");
+        //await Shell.Current.GoToAsync("..");
+        await Shell.Current.GoToAsync("//PlantsList");
+
+
     }
 }
