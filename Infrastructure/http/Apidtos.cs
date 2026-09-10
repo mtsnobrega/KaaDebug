@@ -1,8 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿/*
+ * Responsabilidade:
+ * Definir os Data Transfer Objects (DTOs) que representam as cargas úteis (payloads) 
+ * literais enviadas e recebidas da API.
+ * 
+ * Papel na arquitetura:
+ * Camada de Contrato de Rede. A utilização de "records" garante a imutabilidade 
+ * dos dados no trânsito entre a rede e a conversão para os Modelos de Domínio (Core). 
+ * Protege o aplicativo contra mudanças acidentais de estado.
+ */
 
 namespace KaaDebug.Infrastructure.http
 {

@@ -1,10 +1,15 @@
-﻿using KaaDebug.Core.Interfaces.Devices;
+﻿/*
+ * Responsabilidade:
+ * Consumir o endpoint de verificação de status do ESP32 na BFF API.
+ * 
+ * Papel na arquitetura:
+ * Camada Anticorrupção (Adapter). Realiza duas tarefas vitais: 
+ * 1) Intercepta erros HTTP 404 mapeando-os para regras de negócio amigáveis 
+ *    ("Dispositivo não encontrado"); 
+ * 2) Converte strings da API (ex: "UNASSOCIATED") para Enums internos.
+ */
+using KaaDebug.Core.Interfaces.Devices;
 using KaaDebug.Infrastructure.http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KaaDebug.Services.Devices;
 public class DeviceVerificationService : IDeviceVerificationService
@@ -36,8 +41,6 @@ public class DeviceVerificationService : IDeviceVerificationService
             "UNASSOCIATED" => DeviceVerificationStatus.Unassociated,
             _ => DeviceVerificationStatus.NotFound
         };
-
-
         return DeviceVerificationResult.Ok(status);
     }
 }

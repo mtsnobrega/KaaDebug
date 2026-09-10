@@ -1,9 +1,16 @@
-﻿/// <summary>
-/// Abstração responsável por verificar e gerenciar a sessão do usuário.
-/// A implementação concreta (HTTP + JWT) será criada quando os endpoints
-/// de autenticação da API estiverem definidos. Até então, usar
-/// FakeAuthService para permitir o desenvolvimento e testes das telas.
-/// </summary>
+﻿/*
+ * Responsabilidade:
+ * Definir o contrato para o gerenciamento do ciclo de vida da sessão (token JWT) no dispositivo.
+ * 
+ * Papel na arquitetura:
+ * Atua como a interface de persistência de segurança (Core/Interfaces). Isola a lógica 
+ * de como o token é validado e armazenado (neste caso, usando SecureStorage) das 
+ * demais regras de negócio e de interface.
+ * 
+ * Dependências:
+ * A implementação (AuthService) consome o `SecureStorage` nativo do MAUI e a 
+ * biblioteca de manipulação de JWT (JwtSecurityTokenHandler).
+ */
 
 namespace KaaDebug.Core.Interfaces.Auth
 {
@@ -11,22 +18,14 @@ namespace KaaDebug.Core.Interfaces.Auth
     {
         /// <summary>
         /// Verifica se existe um token JWT salvo localmente e se ele ainda é válido.
-        /// Deve checar: existência do token, expiração (claim "exp") e,
-        /// futuramente, possibilidade de refresh automático.
+        /// Deve checar: existência do token, expiração (claim "exp") e futuramente, possibilidade de refresh automático.
         /// </summary>
         Task<bool> IsSessionValidAsync();
 
-        /// <summary>
         /// Persiste o token JWT recebido após login bem-sucedido.
-        /// </summary>
         Task SaveSessionAsync(string token);
 
-        /// <summary>
         /// Remove o token salvo (logout).
-        /// </summary>
         Task ClearSessionAsync();
-
-
-
     }
 }

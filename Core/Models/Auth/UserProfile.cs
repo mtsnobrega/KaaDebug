@@ -1,8 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿/*
+ * Responsabilidade:
+ * Representar a estrutura de dados e as entidades de negócio utilizadas pelo aplicativo.
+ * 
+ * Papel na arquitetura:
+ * Camada de Domínio (Core Models). Estes modelos são independentes de framework visual 
+ * e de bibliotecas de rede. Eles atuam como a "Linguagem Ubíqua" do sistema, 
+ * definindo Enums (como PlantHealthStatus), agregados de informações 
+ * (como DashboardData) e Tipos de Valor (como IdealRange).
+ */
 
 namespace KaaDebug.Core.Models.Auth
 {

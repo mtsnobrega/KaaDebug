@@ -1,4 +1,17 @@
-﻿<?xml version = "1.0" encoding = "UTF-8" ?>
+﻿<!--
+ * Responsabilidade:
+ * Armazenar recursos globais, dicionários de estilos e inicializar a janela raiz.
+ * 
+ * Papel na arquitetura:
+ * Disponibiliza conversores de dados (Converters) e cores padronizadas (Styles) 
+ * para que possam ser consumidos em qualquer arquivo XAML da aplicação sem 
+ * necessidade de re-declaração.
+ * 
+ * Principais recursos globais:
+ * - Dicionários de Cores e Estilos (Colors.xaml, Styles.xaml).
+ * - Conversores de visualização (ex: HealthStatusToColorConverter).
+ -->
+<?xml version = "1.0" encoding = "UTF-8" ?>
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:KaaDebug"

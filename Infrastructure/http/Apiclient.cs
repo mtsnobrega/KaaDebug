@@ -1,11 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿/*
+ * Responsabilidade:
+ * Centralizar e padronizar toda a comunicação HTTP do aplicativo com a API externa.
+ * 
+ * Papel na arquitetura:
+ * Atua como um API Gateway (lado cliente) e Factory de requisições. 
+ * Isola a complexidade do HttpClient nativo, injeta automaticamente o Token JWT, 
+ * centraliza a desserialização de JSON e encapsula o tratamento de exceções 
+ * de rede (Timeout, Falha de Conexão) em Result Objects padronizados (ApiResult).
+ */
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using System.Text;
+using System.Net.Http.Json; 
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace KaaDebug.Infrastructure.http
 {
@@ -39,7 +44,6 @@ namespace KaaDebug.Infrastructure.http
         }
 
         // ── GET ───────────────────────────────────────────────────────────────────
-
         public async Task<ApiResult<T>> GetAsync<T>(string endpoint)
         {
             try
@@ -59,7 +63,6 @@ namespace KaaDebug.Infrastructure.http
         }
 
         // ── POST ──────────────────────────────────────────────────────────────────
-
         public async Task<ApiResult<T>> PostAsync<T>(string endpoint, object body)
         {
             try
@@ -77,7 +80,6 @@ namespace KaaDebug.Infrastructure.http
                 return ApiResult<T>.Timeout();
             }
         }
-
         public async Task<ApiResult> PostAsync(string endpoint, object body)
         {
             try
@@ -97,7 +99,6 @@ namespace KaaDebug.Infrastructure.http
         }
 
         // ── POST multipart (upload de imagem para diagnóstico) ────────────────────
-
         public async Task<ApiResult<T>> PostMultipartAsync<T>(string endpoint, MultipartFormDataContent content)
         {
             try
@@ -117,7 +118,6 @@ namespace KaaDebug.Infrastructure.http
         }
 
         // ── PUT ───────────────────────────────────────────────────────────────────
-
         public async Task<ApiResult> PutAsync(string endpoint, object body)
         {
             try
@@ -135,7 +135,6 @@ namespace KaaDebug.Infrastructure.http
                 return ApiResult.Timeout();
             }
         }
-
         public async Task<ApiResult> PutAsync(string endpoint)
         {
             try
@@ -155,7 +154,6 @@ namespace KaaDebug.Infrastructure.http
         }
 
         // ── DELETE ────────────────────────────────────────────────────────────────
-
         public async Task<ApiResult> DeleteAsync(string endpoint)
         {
             try
@@ -175,7 +173,6 @@ namespace KaaDebug.Infrastructure.http
         }
 
         // ── Helpers ───────────────────────────────────────────────────────────────
-
         private async Task AttachTokenAsync()
         {
             var token = await _tokenProvider.GetTokenAsync();
@@ -244,7 +241,6 @@ namespace KaaDebug.Infrastructure.http
     }
 
     // ── Result types do ApiClient ────────────────────────────────────────────────
-
     public class ApiResult
     {
         public bool Success { get; protected init; }

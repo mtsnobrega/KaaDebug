@@ -1,8 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿/*
+ * Responsabilidade:
+ * Definir o contrato para consultar o estado de comunicação (heartbeat/MQTT) 
+ * e disponibilidade de um ESP32 antes de permitir sua associação.
+ * 
+ * Papel na arquitetura:
+ * Fornece um enumerador (DeviceVerificationStatus) e um Result Object, 
+ * criando uma camada de abstração entre a regra de negócio de IoT e 
+ * as respostas JSON da BFF API.
+ */
 
 namespace KaaDebug.Core.Interfaces.Devices
 {
@@ -28,15 +33,6 @@ namespace KaaDebug.Core.Interfaces.Devices
         public static DeviceVerificationResult Fail(string message) =>
             new() { Success = false, ErrorMessage = message, Status = DeviceVerificationStatus.NotFound };
     }
-
-    /// <summary>
-    /// Abstração para verificação do status de comunicação de um dispositivo
-    /// ESP32 após a associação, confirmando se ele está acessível na rede.
-    ///
-    /// A implementação real dependerá de um endpoint futuro, por exemplo:
-    ///   GET /devices/{code}/status
-    /// que consulta o broker MQTT ou o registro de heartbeats do dispositivo.
-    /// </summary>
     public interface IDeviceVerificationService
     {
         Task<DeviceVerificationResult> VerifyDeviceAsync(string deviceCode);

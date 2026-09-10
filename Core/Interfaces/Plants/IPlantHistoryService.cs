@@ -1,9 +1,13 @@
-﻿using KaaDebug.Core.Models.Plants;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿/*
+ * Responsabilidade:
+ * Contrato para obtenção do histórico de leituras dos sensores de uma planta.
+ * 
+ * Papel na arquitetura:
+ * Define os modelos de domínio (SensorHistory, PlantHistoryData) e o 
+ * enumerador de períodos, garantindo que a UI não dependa dos DTOs da API.
+ */
+
+using KaaDebug.Core.Models.Plants;
 
 namespace KaaDebug.Core.Interfaces.Plants
 {

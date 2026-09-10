@@ -1,3 +1,13 @@
+/*
+ * Responsabilidade:
+ * Code-Behind da tela modal para seleção de espécie no catálogo.
+ * 
+ * Papel na arquitetura:
+ * Utiliza o padrão de Callback (Action<PlantSpecies>) para devolver o dado 
+ * selecionado à tela chamadora (RegisterPlantPage), evitando o uso de rotas 
+ * complexas ou passagem de mensagens globais.
+ */
+
 using KaaDebug.Core.Interfaces.Plants;
 using KaaDebug.Core.Models.Plants;
 
@@ -6,12 +16,6 @@ namespace KaaDebug.Views.Plants;
 public partial class SelectSpeciesPage : ContentPage
 {
     private readonly IPlantsCatalogService _speciesService;
-
-    /// <summary>
-    /// Callback executado quando uma espécie é selecionada. Definido pela
-    /// página que abriu este modal (RegisterPlantPage), para receber o
-    /// resultado sem precisar de um sistema de mensageria mais complexo.
-    /// </summary>
     public Action<PlantSpecies>? OnSpeciesPicked { get; set; }
 
     private List<PlantSpecies> _allSpecies = new();
@@ -100,7 +104,6 @@ public partial class SelectSpeciesPage : ContentPage
         OnSpeciesPicked?.Invoke(species);
         await Shell.Current.GoToAsync("..");
     }
-
     private async void OnCancelTapped(object? sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("..");

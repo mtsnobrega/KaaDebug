@@ -1,9 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿/*
+ * Responsabilidade:
+ * Fornecer o Token de Autenticação (JWT) para as requisições HTTP.
+ * 
+ * Papel na arquitetura:
+ * Abstração de Segurança. Permite que o ApiClient não dependa diretamente do 
+ * sistema de armazenamento físico (SecureStorage), respeitando a Inversão de 
+ * Dependência (DIP do SOLID) e facilitando testes unitários do cliente HTTP.
+ */
 namespace KaaDebug.Infrastructure.http
 {
     /// <summary>

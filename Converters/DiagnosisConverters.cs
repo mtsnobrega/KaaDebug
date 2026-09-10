@@ -1,9 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿/*
+ * Responsabilidade:
+ * Converter resultados booleanos de diagnósticos em representações visuais (Ícones/Emojis).
+ * 
+ * Papel na arquitetura:
+ * Camada de Apresentação. Isola a lógica de formatação visual do histórico de IA,
+ * permitindo que o XAML resolva automaticamente o ícone com base no estado "IsHealthy".
+ */
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KaaDebug.Converters
 {

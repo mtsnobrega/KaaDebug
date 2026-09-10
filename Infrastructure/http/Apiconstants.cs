@@ -1,8 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿/*
+ * Responsabilidade:
+ * Armazenar de forma centralizada todas as rotas (endpoints) da BFF API.
+ * 
+ * Papel na arquitetura:
+ * Dicionário estático de rotas. Utiliza diretivas de compilação (#if ANDROID) 
+ * para alternar dinamicamente a URL base (BaseUrl) dependendo do ambiente 
+ * de execução (Emulador Android vs Computador Local), facilitando o desenvolvimento.
+ */
 
 namespace KaaDebug.Infrastructure.http
 {

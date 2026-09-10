@@ -1,3 +1,13 @@
+/*
+ * Responsabilidade:
+ * Code-Behind da página de diagnóstico inteligente de plantas via câmera/galeria.
+ * 
+ * Papel na arquitetura:
+ * Camada de Apresentação com integração de Hardware. Consome APIs nativas do 
+ * sistema operacional via .NET MAUI Essentials (Permissions, MediaPicker) para 
+ * capturar mídia, gerencia a conversão do arquivo em stream (MemoryStream) e 
+ * orquestra a alternância de painéis visuais (Captura -> Analisando -> Resultado).
+ */
 using KaaDebug.Core.Interfaces.Diagnostic;
 
 namespace KaaDebug.Views.Diagnostic;

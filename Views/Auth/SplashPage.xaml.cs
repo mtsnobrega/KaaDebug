@@ -1,3 +1,15 @@
+/*
+ * Responsabilidade:
+ * Code-Behind da tela inicial de carregamento (Splash Screen). Responsável por 
+ * decidir qual fluxo o aplicativo deve seguir (Logado vs Deslogado).
+ * 
+ * Papel na arquitetura:
+ * Camada de Apresentação/Roteador inicial. Consome o `IAuthService` para validar 
+ * a expiração do Token JWT antes de permitir a entrada no sistema.
+ * 
+ * Fluxo:
+ * OnAppearing -> IsSessionValidAsync (Check JWT) -> Delay Mínimo -> Shell.GoToAsync.
+ */
 using KaaDebug.Core.Interfaces.Auth;
 using System.Diagnostics;
 
@@ -8,7 +20,6 @@ public partial class SplashPage : ContentPage
     private readonly IAuthService _authService;
 
     // Tempo mínimo de exibição da splash, para evitar "flash" na tela
-    // mesmo quando a verificação de sessão é muito rápida.
     private const int MinSplashDurationMs = 1200;
 
     public SplashPage(IAuthService authService)
@@ -16,13 +27,9 @@ public partial class SplashPage : ContentPage
         InitializeComponent();
         _authService = authService;
     }
-
-
-
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        Debug.WriteLine("====== SPLASH PAGE APARECEU ======");
         await InitializeAppAsync();
     }
 
@@ -42,19 +49,11 @@ public partial class SplashPage : ContentPage
             StatusLabel.IsVisible = true;
 
             //sessionValid = await _authService.IsSessionValidAsync();
-            Debug.WriteLine("Antes");
-
             await Task.Delay(2000);
-
-            Debug.WriteLine("Depois");
-
             sessionValid = false;
         }
         catch (Exception ex)
         {
-            // Falha ao verificar sessão (ex: erro inesperado local) não deve
-            // travar o usuário na Splash. Em caso de erro, tratamos como
-            // sessão inválida e seguimos para o Login.
             System.Diagnostics.Debug.WriteLine($"Erro ao verificar sessão: {ex.Message}");
             sessionValid = false;
         }

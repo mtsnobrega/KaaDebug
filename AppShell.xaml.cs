@@ -1,4 +1,17 @@
-﻿using KaaDebug.Views.Care;
+﻿/*
+ * Responsabilidade:
+ * Definir a estrutura de navegação principal e o roteamento de páginas secundárias.
+ * 
+ * Papel na arquitetura:
+ * Atua como o gerenciador de rotas e contêiner principal da interface de usuário. 
+ * Isola a lógica de navegação profunda (Deep Linking) das demais páginas.
+ * 
+ * Estrutura visual:
+ * Define abas (TabBar) para as funções principais e registra rotas nomeadas para 
+ * navegação baseada em URI (ex: "SelectSpecies", "PlantTips").
+ */
+
+using KaaDebug.Views.Care;
 using KaaDebug.Views.Devices;
 using KaaDebug.Views.Diagnostic;
 using KaaDebug.Views.Plants;

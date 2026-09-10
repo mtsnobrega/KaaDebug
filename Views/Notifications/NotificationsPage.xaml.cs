@@ -1,3 +1,13 @@
+/*
+ * Responsabilidade:
+ * Code-Behind da central de notificações do aplicativo.
+ * 
+ * Papel na arquitetura:
+ * Camada de Apresentação. Responsável por agrupar os dados localmente por data 
+ * (Hoje, Esta semana, Anteriores) utilizando LINQ, gerenciar o contador numérico 
+ * de itens não lidos (Badge) e acionar a atualização de leitura (MarkAsRead) 
+ * de forma não bloqueante.
+ */
 using KaaDebug.Core.Interfaces.Notifications;
 using KaaDebug.Core.Models.Dashboard;
 
@@ -61,11 +71,6 @@ public partial class NotificationsPage : ContentPage
             ShowState(loading: false, error: true, empty: false, list: false);
         }
     }
-
-    /// <summary>
-    /// Agrupa as notificações por período (Hoje / Esta semana / Anteriores)
-    /// para facilitar a leitura — padrão adotado por apps como Gmail e iMessage.
-    /// </summary>
     private void RenderNotifications(List<NotificationSummary> notifications)
     {
         // Ordena: não lidas primeiro, depois por data decrescente

@@ -1,9 +1,11 @@
-﻿using KaaDebug.Core.Models.Plants;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿/*
+ * Responsabilidade:
+ * Contrato para agregação dos detalhes de uma planta (cadastros, sensores, status e notificações).
+ * 
+ * Papel na arquitetura:
+ * Age como o principal ponto de consulta para a tela operacional da planta.
+ */
+using KaaDebug.Core.Models.Plants;
 
 namespace KaaDebug.Core.Interfaces.Plants
 {
@@ -16,15 +18,6 @@ namespace KaaDebug.Core.Interfaces.Plants
         public static PlantDetailsResult Ok(PlantDetails details) => new() { Success = true, Details = details };
         public static PlantDetailsResult Fail(string message) => new() { Success = false, ErrorMessage = message };
     }
-
-    /// <summary>
-    /// Abstração para obtenção dos dados completos de uma planta.
-    /// A implementação real dependerá de um endpoint futuro, por exemplo:
-    ///   GET /plants/{id}
-    /// que deve agregar: dados cadastrais, leituras atuais dos sensores +
-    /// histórico recente (24h), status do dispositivo, e notificações
-    /// relacionadas a essa planta especificamente.
-    /// </summary>
     public interface IPlantDetailsService
     {
         Task<PlantDetailsResult> GetPlantDetailsAsync(string plantId);

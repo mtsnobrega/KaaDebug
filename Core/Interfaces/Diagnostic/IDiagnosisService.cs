@@ -1,9 +1,12 @@
-﻿using KaaDebug.Core.Models.Diagnostic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿/*
+ * Responsabilidade:
+ * Definir o contrato para as operações de Inteligência Artificial (Visão Computacional).
+ * 
+ * Papel na arquitetura:
+ * Contrato de domínio (Core). Abstrai a complexidade do envio da imagem (byte[]) 
+ * para análise e a recuperação do histórico de laudos fitossanitários gerados.
+ */
+using KaaDebug.Core.Models.Diagnostic;
 
 namespace KaaDebug.Core.Interfaces.Diagnostic
 {
@@ -18,13 +21,6 @@ namespace KaaDebug.Core.Interfaces.Diagnostic
         public static IADiagnosisResult Fail(string message) =>
             new() { Success = false, ErrorMessage = message };
     }
-
-    /// <summary>
-    /// Abstração para o envio de imagem à IA e obtenção do diagnóstico.
-    /// A implementação real dependerá de um endpoint futuro:
-    ///   POST /plants/{id}/diagnosis
-    /// com a imagem em base64 no corpo da requisição.
-    /// </summary>
     public interface IDiagnosisService
     {
         Task<IADiagnosisResult> AnalyzeImageAsync(string plantId, byte[] imageBytes);

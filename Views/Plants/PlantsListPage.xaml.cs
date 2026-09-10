@@ -1,3 +1,13 @@
+/*
+ * Responsabilidade:
+ * Code-Behind da listagem principal de plantas do usuário.
+ * 
+ * Papel na arquitetura:
+ * Gerencia a busca em texto e filtragem por status (Healthy, Attention, Critical). 
+ * Como o volume de plantas por usuário é baixo, a filtragem é feita em 
+ * memória (LINQ over IEnumerable), otimizando o consumo de rede.
+ */
+
 using KaaDebug.Core.Interfaces.Plants;
 using KaaDebug.Core.Models.Dashboard;
 
@@ -24,24 +34,20 @@ public partial class PlantsListPage : ContentPage
         InitializeComponent();
         _plantsService = plantsService;
     }
-
     protected override async void OnAppearing()
     {
         base.OnAppearing();
         await LoadPlantsAsync(showFullLoading: true);
     }
-
     private async void OnRetryClicked(object? sender, EventArgs e)
     {
         await LoadPlantsAsync(showFullLoading: true);
     }
-
     private async void OnRefreshing(object? sender, EventArgs e)
     {
         await LoadPlantsAsync(showFullLoading: false);
         PlantsRefreshView.IsRefreshing = false;
     }
-
     private async Task LoadPlantsAsync(bool showFullLoading)
     {
         if (showFullLoading)
@@ -99,11 +105,6 @@ public partial class PlantsListPage : ContentPage
         ApplyFiltersAndRender();
     }
 
-    /// <summary>
-    /// Aplica busca por nome + filtro de status sobre a lista completa
-    /// (em memória, pois o volume de plantas de um usuário doméstico é
-    /// pequeno - não justifica busca paginada no servidor).
-    /// </summary>
     private void ApplyFiltersAndRender()
     {
         var filtered = _allPlants.AsEnumerable();

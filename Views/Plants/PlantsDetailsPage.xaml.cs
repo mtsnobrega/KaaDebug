@@ -1,15 +1,20 @@
-﻿using KaaDebug.Core.Interfaces.Plants;
+﻿/*
+ * Responsabilidade:
+ * Code-Behind da página de Detalhes da Planta (Dashboard Individual).
+ * 
+ * Papel na arquitetura:
+ * Orquestrador central da interface de planta. Recebe o "plantId" por rota, 
+ * consome o IPlantDetailsService e constrói a tela dinamicamente (criando 
+ * componentes como IndicatorsCardPage em tempo de execução).
+ */
+
+using KaaDebug.Core.Interfaces.Plants;
 using KaaDebug.Core.Models.Dashboard;
 using KaaDebug.Core.Models.Plants;
 using KaaDebug.Views.Controls;
 
 namespace KaaDebug.Views.Plants;
 
-/// <summary>
-/// Implementa IQueryAttributable para receber o "plantId" enviado via
-/// Shell.Current.GoToAsync("PlantDetails?plantId=..."), conforme o padrão
-/// de navegação com parâmetros do .NET MAUI Shell.
-/// </summary>
 [QueryProperty(nameof(PlantId), "plantId")]
 public partial class PlantsDetailsPage : ContentPage
 {
@@ -18,19 +23,10 @@ public partial class PlantsDetailsPage : ContentPage
     private string? _plantId;
     private PlantDetails? _currentDetails;
 
-    /// <summary>
-    /// Recebido automaticamente pelo Shell a partir do parâmetro de rota
-    /// "plantId" (ver atributo QueryProperty acima).
-    /// </summary>
     public string PlantId
     {
         get => _plantId ?? string.Empty;
-        //set => _plantId = value;
-        set
-        {
-            _plantId = value;
-            System.Diagnostics.Debug.WriteLine($"PlantId recebido: {_plantId}");
-        }
+        set => _plantId = value;
     }
 
     public PlantsDetailsPage(IPlantDetailsService detailsService)
@@ -131,25 +127,6 @@ public partial class PlantsDetailsPage : ContentPage
         StatusReasonLabel.Text = reason;
         StatusReasonLabel.IsVisible = !string.IsNullOrWhiteSpace(reason);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     private void PopulateDeviceStatus(DeviceInformation device)
     {
         // Oculta ambos os botões por padrão
@@ -193,14 +170,6 @@ public partial class PlantsDetailsPage : ContentPage
                 break;
         }
     }
-
-
-
-
-
-
-
-
     private async void OnAssociateDeviceClicked(object? sender, EventArgs e)
     {
         await Shell.Current.GoToAsync($"RegisterDevice?plantId={_plantId}");
@@ -211,7 +180,6 @@ public partial class PlantsDetailsPage : ContentPage
         // Recarrega a tela para verificar se o dispositivo voltou a responder
         await LoadDetailsAsync(showFullLoading: false);
     }
-
     private static string FormatElapsed(DateTime timestamp)
     {
         var elapsed = DateTime.Now - timestamp;
@@ -224,12 +192,6 @@ public partial class PlantsDetailsPage : ContentPage
 
         return $"{(int)elapsed.TotalDays} dia(s)";
     }
-
-    /// <summary>
-    /// Popula o carrossel horizontal recriando os IndicatorCard a cada
-    /// carga. Como são poucos itens fixos (4 sensores), recriar é mais
-    /// simples do que reutilizar instâncias e não tem custo perceptível.
-    /// </summary>
     private void PopulateIndicators(List<SensorIndicator> indicators)
     {
         IndicatorsStackLayout.Children.Clear();
@@ -241,7 +203,6 @@ public partial class PlantsDetailsPage : ContentPage
             IndicatorsStackLayout.Children.Add(card);
         }
     }
-
     private void PopulateNotifications(List<NotificationSummary> notifications)
     {
         NotificationsCollectionView.ItemsSource = notifications;
@@ -283,9 +244,6 @@ public partial class PlantsDetailsPage : ContentPage
 
     private async void OnBackClicked(object? sender, EventArgs e)
     {
-        //await Shell.Current.GoToAsync("..");
         await Shell.Current.GoToAsync("//PlantsList");
-
-
     }
 }

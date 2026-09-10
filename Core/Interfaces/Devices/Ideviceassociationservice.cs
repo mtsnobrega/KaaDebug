@@ -1,14 +1,17 @@
-﻿using System;
-using KaaDebug.Infrastructure.http;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿/*
+ * Responsabilidade:
+ * Definir o contrato exclusivo para a associação e desassociação de um 
+ * dispositivo físico (ESP32) a uma planta específica.
+ * 
+ * Papel na arquitetura:
+ * Demonstra a aplicação do Princípio da Segregação de Interfaces (ISP do SOLID). 
+ * Foi separado do IPlantsEditService para que telas focadas apenas no hardware 
+ * não precisem conhecer ou transitar dados botânicos (como nome ou espécie).
+ */
 
 namespace KaaDebug.Core.Interfaces.Devices
 {
     // ── Interface ─────────────────────────────────────────────────────────────────
-
     public class DeviceAssociationResult
     {
         public bool Success { get; init; }
@@ -18,12 +21,6 @@ namespace KaaDebug.Core.Interfaces.Devices
         public static DeviceAssociationResult Fail(string message) =>
             new() { Success = false, ErrorMessage = message };
     }
-
-    /// <summary>
-    /// Abstração exclusiva para associar/desassociar um dispositivo ESP32 a uma planta.
-    /// Separada do IPlantsEditService para que a RegisterDevicePage não precise
-    /// enviar o nome da planta — operação que não tem relação com dados cadastrais.
-    /// </summary>
     public interface IDeviceAssociationService
     {
         /// <summary>

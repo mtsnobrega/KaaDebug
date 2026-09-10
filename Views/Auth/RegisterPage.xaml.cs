@@ -1,6 +1,18 @@
+/*
+ * Responsabilidade:
+ * Code-Behind da tela de Cadastro. Realiza validações de formulário (nome, e-mail, 
+ * senha, confirmação de senha, aceite de termos) e aciona a criação da conta.
+ * 
+ * Papel na arquitetura:
+ * Camada de Apresentação (View). Depende do `IRegisterService`.
+ * 
+ * Fluxo:
+ * Validação rigorosa local -> Chamada HTTP via Service -> Exibição de Alerta 
+ * de Sucesso -> Redirecionamento forçado para a tela de Login.
+ */
+
 using KaaDebug.Core.Interfaces.Auth;
 using System.Text.RegularExpressions;
-
 
 namespace KaaDebug.Views.Auth;
 
@@ -44,8 +56,6 @@ public partial class RegisterPage : ContentPage
         // Alterna o checkbox também ao tocar no texto, melhorando a usabilidade
         TermsCheckBox.IsChecked = !TermsCheckBox.IsChecked;
 
-        // TODO: quando as páginas de Termos/Privacidade existirem,
-        // abrir aqui via Shell.Current.GoToAsync("TermsOfUse") ou WebView.
     }
 
     private void OnTogglePasswordClicked(object? sender, EventArgs e)

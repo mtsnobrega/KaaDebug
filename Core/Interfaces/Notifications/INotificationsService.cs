@@ -1,10 +1,15 @@
-﻿using KaaDebug.Core.Interfaces.Auth;
+﻿/*
+ * Responsabilidade:
+ * Definir o contrato para o gerenciamento da caixa de notificações do usuário.
+ * 
+ * Papel na arquitetura:
+ * Contrato de domínio (Core). Centraliza as ações de buscar histórico, marcar 
+ * notificações individuais como lidas e limpar o repositório completo, utilizando 
+ * o padrão de Result Objects (NotificationsListResult, OperationResult).
+ */
+
+using KaaDebug.Core.Interfaces.Auth;
 using KaaDebug.Core.Models.Dashboard;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KaaDebug.Core.Interfaces.Notifications
 {
@@ -19,14 +24,6 @@ namespace KaaDebug.Core.Interfaces.Notifications
         public static NotificationsListResult Fail(string message) =>
             new() { Success = false, ErrorMessage = message };
     }
-
-    /// <summary>
-    /// Abstração para operações sobre notificações do usuário.
-    /// A implementação real dependerá de endpoints futuros:
-    ///   GET    /notifications
-    ///   PUT    /notifications/{id}/read
-    ///   DELETE /notifications
-    /// </summary>
     public interface INotificationsService
     {
         Task<NotificationsListResult> GetAllNotificationsAsync();

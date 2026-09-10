@@ -1,8 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿/*
+ * Responsabilidade:
+ * Contrato para operações de mutação (Atualizar e Excluir) de uma planta existente.
+ * 
+ * Papel na arquitetura:
+ * Isola a complexidade dos métodos HTTP PUT e DELETE, fornecendo métodos 
+ * semânticos (UpdatePlantAsync, DeletePlantAsync) para a View.
+ */
 
 namespace KaaDebug.Core.Interfaces.Plants
 {
@@ -10,12 +13,6 @@ namespace KaaDebug.Core.Interfaces.Plants
     {
         public string PlantId { get; init; } = string.Empty;
         public string Name { get; init; } = string.Empty;
-
-        /// <summary>
-        /// Código do dispositivo ESP32. Nulo = manter o dispositivo atual sem alteração.
-        /// String vazia = desassociar o dispositivo atual.
-        /// String preenchida = associar novo dispositivo (ou substituir o atual).
-        /// </summary>
         public string? DeviceCode { get; init; }
     }
 
@@ -27,13 +24,6 @@ namespace KaaDebug.Core.Interfaces.Plants
         public static EditPlantResult Ok() => new() { Success = true };
         public static EditPlantResult Fail(string message) => new() { Success = false, ErrorMessage = message };
     }
-
-    /// <summary>
-    /// Abstração para edição e exclusão de uma planta existente.
-    /// A implementação real dependerá de endpoints futuros:
-    ///   PUT  /plants/{id}
-    ///   DELETE /plants/{id}
-    /// </summary>
     public interface IPlantsEditService
     {
         Task<EditPlantResult> UpdatePlantAsync(EditPlantRequest request);

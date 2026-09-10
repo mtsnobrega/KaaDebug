@@ -1,3 +1,13 @@
+/*
+ * Responsabilidade:
+ * Code-Behind da página de Perfil, Configurações e Logout.
+ * 
+ * Papel na arquitetura:
+ * Camada de Apresentação. Gerencia a detecção de alterações não salvas (Dirty State), 
+ * lida com entradas sensíveis através de componentes nativos do sistema operacional 
+ * (DisplayPromptAsync para troca de senha) e orquestra o encerramento da sessão 
+ * através do IAuthService.
+ */
 using KaaDebug.Core.Interfaces.Auth;
 using KaaDebug.Core.Interfaces.Profile;
 using KaaDebug.Core.Models.Auth;

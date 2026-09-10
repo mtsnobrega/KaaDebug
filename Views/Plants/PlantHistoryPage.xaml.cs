@@ -1,3 +1,12 @@
+/*
+ * Responsabilidade:
+ * Code-Behind da página de histórico. Gerencia a renderização dos gráficos de sensores e filtros.
+ * 
+ * Papel na arquitetura:
+ * Camada de Apresentação. Recebe o "plantId" via QueryProperty do Shell e 
+ * gerencia manualmente o estado visual (Loading/Erro/Gráficos). 
+ * Realiza filtragem de dados em memória para evitar chamadas redundantes à API.
+ */
 using KaaDebug.Core.Interfaces.Plants;
 using KaaDebug.Core.Models.Plants;
 using KaaDebug.Views.Controls;

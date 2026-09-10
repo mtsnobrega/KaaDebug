@@ -1,20 +1,16 @@
-﻿using KaaDebug.Core.Interfaces.Auth;
+﻿/*
+ * Responsabilidade:
+ * Definir o contrato para gerenciamento dos dados do usuário logado e de sua conta.
+ * 
+ * Papel na arquitetura:
+ * Contrato de domínio (Core). Centraliza as ações de leitura e atualização 
+ * de preferências (Notificações) e segurança (Troca de senha).
+ */
+using KaaDebug.Core.Interfaces.Auth;
 using KaaDebug.Core.Models.Auth;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KaaDebug.Core.Interfaces.Profile
 {
-    /// <summary>
-    /// Abstração para leitura e atualização do perfil do usuário.
-    /// Endpoints futuros:
-    ///   GET  /profile
-    ///   PUT  /profile
-    ///   POST /profile/change-password
-    /// </summary>
     public interface IProfileService
     {
         Task<ProfileResult> GetProfileAsync();

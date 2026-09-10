@@ -1,9 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿/*
+ * Responsabilidade:
+ * Fornecer conversores visuais para o estado de notificações (Lida vs Não Lida) e 
+ * formatar datas de maneira humanizada.
+ * 
+ * Papel na arquitetura:
+ * Camada de Apresentação. O DateToRelativeTimeConverter é especialmente importante 
+ * por centralizar a regra de negócio de "Tempo Relativo" (ex: "Há 5 min", "Ontem"), 
+ * removendo essa complexidade dos Services e do Code-Behind.
+ */
+
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KaaDebug.Converters
 {
@@ -32,8 +38,6 @@ namespace KaaDebug.Converters
         {
             var isRead = value is true;
             return new SolidColorBrush(
-                //isRead ? Color.FromArgb("#E3EFE4") : Color.FromArgb("#A5D6A7"));
-                //isRead? Color.FromArgb("#775b46") : Color.FromArgb("#775b46"));
                 isRead? Color.FromArgb("#D2D6DB") : Color.FromArgb("#D2D6DB"));
         }
 

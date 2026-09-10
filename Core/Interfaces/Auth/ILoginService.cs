@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿/*
+ * Responsabilidade:
+ * Definir o contrato para a operação de autenticação (Login) perante a API.
+ * 
+ * Papel na arquitetura:
+ * Atua como contrato de serviço de negócio. A utilização da classe `LoginResult` 
+ * (Result Pattern) demonstra a intenção de não usar `Exceptions` para controle de fluxo 
+ * (como senha incorreta), reservando as exceções apenas para falhas técnicas críticas.
+ */
 
 namespace KaaDebug.Core.Interfaces.Auth
 {
-    /// <summary>
-    /// Resultado de uma tentativa de login.
-    /// Modelado como objeto de resultado (em vez de lançar exceção para
-    /// credenciais inválidas) para diferenciar claramente erros de negócio
-    /// (senha errada) de erros técnicos (sem internet, servidor fora).
-    /// </summary>
     public class LoginResult
     {
         public bool Success { get; init; }
@@ -24,13 +22,6 @@ namespace KaaDebug.Core.Interfaces.Auth
         public static LoginResult Fail(string message) =>
             new() { Success = false, ErrorMessage = message };
     }
-
-    /// <summary>
-    /// Abstração para autenticação contra a API.
-    /// A implementação real (LoginService) será criada quando o endpoint
-    /// POST /auth/login estiver definido no backend. Até então, usar
-    /// FakeLoginService para desenvolvimento e testes de tela.
-    /// </summary>
     public interface ILoginService
     {
         Task<LoginResult> LoginAsync(string email, string password);

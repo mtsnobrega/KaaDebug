@@ -1,10 +1,13 @@
-﻿using KaaDebug.Core.Interfaces.Devices;
+﻿/*
+ * Responsabilidade:
+ * Implementar a requisição HTTP (PUT) para associar o dispositivo à planta.
+ * 
+ * Papel na arquitetura:
+ * Camada de Serviço (Service Layer). Encapsula o uso do ApiClient e 
+ * converte a resposta da rede em um DeviceAssociationResult uniforme.
+ */
+using KaaDebug.Core.Interfaces.Devices;
 using KaaDebug.Infrastructure.http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KaaDebug.Services.Devices
 {

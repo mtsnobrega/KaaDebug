@@ -1,3 +1,16 @@
+/*
+ * Responsabilidade:
+ * Code-Behind da tela de Recuperação de Senha. Gerencia um assistente (wizard) 
+ * de 4 etapas (Email -> OTP -> Nova Senha -> Sucesso) em uma única página.
+ * 
+ * Papel na arquitetura:
+ * Camada de Apresentação (View) com controle complexo de estado. Alterna a 
+ * visibilidade de Layouts (Containers) com base no enum interno `Step`.
+ * 
+ * Fluxo:
+ * Solicita código (Email) -> Valida 6 dígitos (OTP) -> Envia Nova Senha -> Conclui.
+ */
+
 using KaaDebug.Core.Interfaces.Auth;
 using System.Text.RegularExpressions;
 
@@ -57,11 +70,6 @@ public partial class PasswordRecoveryPage : ContentPage
 
             if (!result.Success)
             {
-                /*
-                EmailGeneralErrorLabel.Text = result.ErrorMessage ?? "Não foi possível enviar o código.";
-                EmailGeneralErrorBorder.IsVisible = true;
-                return;
-                */
                 ClearOtpFields();
 
                 CodeErrorLabel.Text = result.ErrorMessage ?? "Código incorreto.";
@@ -343,12 +351,6 @@ public partial class PasswordRecoveryPage : ContentPage
                 ResetGeneralErrorBorder.IsVisible = true;
                 return;
             }
-
-
-
-
-
-
             GoToStep(Step.Success);
         }
         catch (Exception ex)

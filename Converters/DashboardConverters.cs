@@ -1,10 +1,16 @@
-﻿using KaaDebug.Core.Models.Dashboard;
-using System;
-using System.Collections.Generic;
+﻿/*
+ * Responsabilidade:
+ * Fornecer conversores de dados (IValueConverter) para os elementos visuais do Dashboard e Listas.
+ * 
+ * Papel na arquitetura:
+ * Camada de Apresentação (UI Bridge). Mantém os Models puros ao centralizar 
+ * a regra de transformação de Tipos de Domínio (ex: PlantHealthStatus, NotificationPriority) 
+ * em Tipos Visuais (ex: Color, String formatada), viabilizando o Data Binding no XAML 
+ * sem poluir o Code-Behind com lógicas de interface.
+ */
+
+using KaaDebug.Core.Models.Dashboard;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KaaDebug.Converters
 {

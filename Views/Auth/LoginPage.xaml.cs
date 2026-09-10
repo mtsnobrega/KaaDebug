@@ -1,3 +1,17 @@
+/*
+ * Responsabilidade:
+ * Code-Behind da tela de Login. Gerencia a captura de credenciais, validações 
+ * visuais em tempo real e aciona o serviço de autenticação.
+ * 
+ * Papel na arquitetura:
+ * Camada de Apresentação (View). Coordena o estado da UI (Loading, visibilidade 
+ * de senhas, exibição de erros) e orquestra a chamada ao `ILoginService` e `IAuthService`.
+ * 
+ * Fluxo:
+ * Validação Local (Regex/Empty) -> `LoginService.LoginAsync` -> 
+ * Se sucesso: `AuthService.SaveSessionAsync` -> Navegação para `//Dashboard`.
+ */
+
 using KaaDebug.Core.Interfaces.Auth;
 using System.Text.RegularExpressions;
 
@@ -79,7 +93,6 @@ public partial class LoginPage : ContentPage
         // A validação definitiva de existência do e-mail é responsabilidade do backend.
         return Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
     }
-
     private async Task PerformLoginAsync()
     {
         SetLoadingState(true);
@@ -102,8 +115,7 @@ public partial class LoginPage : ContentPage
         }
         catch (Exception ex)
         {
-            // Erros inesperados (ex: falha de SecureStorage) não devem
-            // travar o usuário sem explicação.
+            // Erros inesperados (ex: falha de SecureStorage) não devem travar o usuário sem explicação.
             System.Diagnostics.Debug.WriteLine($"Erro inesperado no login: {ex.Message}");
             ShowGeneralError("Ocorreu um erro inesperado. Tente novamente.");
         }
@@ -139,5 +151,4 @@ public partial class LoginPage : ContentPage
     {
         await Shell.Current.GoToAsync("//Register");
     }
-
 }

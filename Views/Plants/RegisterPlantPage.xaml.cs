@@ -1,3 +1,11 @@
+/*
+ * Responsabilidade:
+ * Code-Behind do formulário de criação de plantas.
+ * 
+ * Papel na arquitetura:
+ * Interage com múltiplas fontes: captura a espécie via modal, valida formulários 
+ * e controla a visibilidade da etapa de associação de dispositivo (ESP32).
+ */
 using KaaDebug.Core.Interfaces.Plants;
 using KaaDebug.Core.Models.Plants;
 
@@ -29,10 +37,7 @@ public partial class RegisterPlantPage : ContentPage
         selectPage.OnSpeciesPicked = OnSpeciesPicked;
 
         await Navigation.PushModalAsync(new NavigationPage(selectPage));
-        //await Navigation.PushModalAsync(selectPage);
-
     }
-
     private void OnSpeciesPicked(PlantSpecies species)
     {
         _selectedSpecies = species;
