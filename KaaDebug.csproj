@@ -134,15 +134,6 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-	  <Folder Include="Core\Models\Device\" />
-	  <Folder Include="Core\Models\Notifications\" />
-	  <Folder Include="Core\Models\Sensors\" />
-	  <Folder Include="Infrastructure\Auth\" />
-	  <Folder Include="Infrastructure\Devices\" />
-	  <Folder Include="Infrastructure\Notifications\" />
-	  <Folder Include="Infrastructure\Diagnostic\" />
-	  <Folder Include="Infrastructure\Profile\" />
-	  <Folder Include="Infrastructure\Plants\" />
 	  <Folder Include="Infrastructure\zSimulation\SimulatedServices\" />
 	</ItemGroup>
 	
